@@ -1,0 +1,18 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/typography' as *;
+
+.link {
+  @include small;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $color-primary;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-accent;
+  }
+}

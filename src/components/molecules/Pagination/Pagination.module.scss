@@ -1,0 +1,27 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/typography' as *;
+
+.pagination {
+  display: flex;
+  gap: 4px;
+}
+
+.page {
+  @include body;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: $color-surface-1;
+  color: $color-primary;
+  cursor: pointer;
+
+  &:hover {
+    background: $color-elements;
+  }
+}
+
+.active,
+.active:hover {
+  background: $color-accent;
+}

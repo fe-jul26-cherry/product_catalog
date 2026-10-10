@@ -1,0 +1,29 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/typography' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform $transition,
+    box-shadow $transition;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: $shadow-card;
+  }
+}
+
+.imageLink {
+  display: block;
+  overflow: hidden;
+
+  &:hover .image {
+    transform: scale(1.1);
+  }
+}
+
+.image {
+  transition: transform $transition;
+}
