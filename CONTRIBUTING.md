@@ -2,6 +2,33 @@
 
 Джерела: «group project setup», «Робота з Git та Github», «Чекліст роботи над завданням», «Код-ревʼю».
 
+## Старт після клонування
+
+```bash
+git clone <адреса репо>
+cd product_catalog
+npm install
+npm run dev
+```
+
+- `npm install` ставить усі пакети з `package.json`: React, React Router, Swiper, Zustand та інші. Окремо `npm install react-router-dom` чи інші пакети ставити не треба. Команду виконуй один раз після клонування і після кожного `git pull`, якщо змінився `package.json`.
+- `npm run dev` запускає сайт локально і сам відкриває браузер. Зміни видно одразу після збереження файлу.
+- Усі сторінки вже відкриваються з тестовими даними з `src/mocks`. Готові атоми (кнопки, іконки, Dropdown, Pagination) і сітка товарів. Решта блоків без дизайну: це заглушки, які треба довести до вигляду з Figma. Твій блок визначено в `docs/PLAN.md`.
+- Перед роботою прочитай `docs/TECH.md`, `docs/STRUCTURE.md` і `docs/HOW_TO_COMPONENT.md`.
+
+## Ключові команди
+
+| Коли                 | Команда                                                    |
+| -------------------- | ---------------------------------------------------------- |
+| Почати день          | `git checkout main`, `git pull origin main`, `npm install` |
+| Нова задача          | `git checkout -b DEV-1234_short-name`                      |
+| Подивитись результат | `npm run dev`                                              |
+| Коміт не проходить   | `npm run fix-style`                                        |
+| Перед пушем          | `npm run check`                                            |
+| Запушити гілку       | `git push origin DEV-1234_short-name`                      |
+
+Після пушу відкрий Pull Request на GitHub.
+
 ## Гілки
 
 - `main`: стабільний код, з нього йде деплой. Пушити напряму заборонено.
@@ -65,6 +92,8 @@ git push origin DEV-1234_implement-home-page-slider
 ## Розподіл і графік
 
 Хто що робить, по днях, з пріоритетами: `docs/PLAN.md`.
+
+Задачі для імпорту в Jira: `docs/jira-tasks.csv`.
 
 ## Хто кого ревʼюїть
 

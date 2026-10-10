@@ -4,37 +4,18 @@
 
 Стек: React 18, TypeScript, Vite, SCSS Modules, React Router (HashRouter), Swiper, Zustand, motion.
 
-## Старт після клонування
+## Старт
 
 ```bash
-git clone <адреса репо>
-cd product_catalog
 npm install
 npm run dev
 ```
 
-- `npm install` ставить усі пакети з `package.json`: React, React Router, Swiper, Zustand та інші. Окремо `npm install react-router-dom` чи інші пакети ставити не треба. Команду виконуй один раз після клонування і після кожного `git pull`, якщо змінився `package.json`.
-- `npm run dev` запускає сайт локально і сам відкриває браузер. Зміни видно одразу після збереження файлу.
-- Нові пакети самі не ставимо, це робить тімлід.
-
-Що ти побачиш: усі сторінки вже відкриваються з тестовими даними з `src/mocks`. Готові атоми (кнопки, іконки, Dropdown, Pagination) і сітка товарів. Решта блоків без дизайну: це заглушки, які треба довести до вигляду з Figma. Твій блок визначено в `docs/PLAN.md`.
+Відкрий http://localhost:5173.
 
 ## Перед роботою
 
 Прочитай `docs/TECH.md`, `docs/STRUCTURE.md`, `docs/HOW_TO_COMPONENT.md` і `CONTRIBUTING.md`.
-
-## Ключові команди
-
-| Коли                 | Команда                                                    |
-| -------------------- | ---------------------------------------------------------- |
-| Почати день          | `git checkout main`, `git pull origin main`, `npm install` |
-| Нова задача          | `git checkout -b DEV-1234_short-name`                      |
-| Подивитись результат | `npm run dev`                                              |
-| Коміт не проходить   | `npm run fix-style`                                        |
-| Перед пушем          | `npm run check`                                            |
-| Запушити гілку       | `git push origin DEV-1234_short-name`                      |
-
-Після пушу відкрий Pull Request на GitHub. Деталі: `CONTRIBUTING.md`.
 
 ## Скрипти
 
