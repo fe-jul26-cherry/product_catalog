@@ -216,7 +216,7 @@ product_catalog/
 - `public/api/phones.json`, `tablets.json`, `accessories.json`: детальний формат для сторінки товару.
 - Окремих файлів `phones/:id.json` немає. Деталі шукаємо за `id` у файлі категорії.
 - У всіх 194 товарів є знижка. Блок «Brand new» сортуємо за `year`, від найновіших.
-- У `phones.json` 4 записи iPhone 14 Pro Gold мають назву «Space Black». Назву беремо з `products.json`.
+- Назви 4 записів iPhone 14 Pro Gold у `phones.json` виправлені з «Space Black» на «Gold». Дані з донора не редагуємо без потреби.
 - Назви кольорів непослідовні (`space gray`, `space-gray`, `spacegray`). Використовуємо `getColorHex` з `constants/colors.ts`.
 
 ## Що ще потрібно з Figma
