@@ -3,5 +3,27 @@
 @use '../../../styles/typography' as *;
 
 .root {
-  display: block;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 0;
+}
+
+.spinner {
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  border: 0.3em solid $color-elements;
+  border-left-color: $color-primary;
+  animation: spin 1.2s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

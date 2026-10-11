@@ -1,7 +1,18 @@
 @use '../../../styles/variables' as *;
-@use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
 .root {
-  display: block;
+  @include small;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 4px;
+  border-radius: 7px;
+  background: $color-red;
+  color: $color-primary;
+  font-size: 9px;
+  line-height: 1;
 }

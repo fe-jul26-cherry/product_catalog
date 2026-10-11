@@ -5,5 +5,7 @@ export const Loader = () => (
     className={styles.root}
     role="status"
     aria-label="Loading"
-  />
+  >
+    <div className={styles.spinner} />
+  </div>
 );

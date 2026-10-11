@@ -9,6 +9,7 @@ import { FavoritesPage } from '@/pages/FavoritesPage';
 import { HomePage } from '@/pages/HomePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { ProductDetailsPage } from '@/pages/ProductDetailsPage';
+import { UiKitPage } from '@/pages/UiKitPage';
 
 export const App = () => (
   <AnimationProvider>
@@ -43,6 +44,12 @@ export const App = () => (
             path={ROUTES.FAVORITES}
             element={<FavoritesPage />}
           />
+          {import.meta.env.DEV && (
+            <Route
+              path={ROUTES.UI_KIT}
+              element={<UiKitPage />}
+            />
+          )}
           <Route
             path={ROUTES.NOT_FOUND}
             element={<NotFoundPage />}
