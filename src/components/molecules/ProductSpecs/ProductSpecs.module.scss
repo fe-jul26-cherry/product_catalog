@@ -3,5 +3,27 @@
 @use '../../../styles/typography' as *;
 
 .root {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.label {
+  @include small;
+  color: $color-secondary;
+  margin: 0;
+}
+
+.value {
+  @include small;
+  color: $color-primary;
+  margin: 0;
+  text-align: right;
 }
