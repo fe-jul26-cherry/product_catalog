@@ -1,3 +1,5 @@
+import scrollToTopIcon from '@/assets/icons/chevron-up.svg';
+import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
 
 import styles from './Footer.module.scss';
@@ -9,7 +11,9 @@ const scrollToTop = () => {
 export const Footer = () => (
   <footer className={styles.root}>
     <div className={styles.content}>
-      <Logo />
+      <div className={styles.logo}>
+        <Logo />
+      </div>
 
       <nav
         className={styles.links}
@@ -26,13 +30,24 @@ export const Footer = () => (
         <a href="#rights">Rights</a>
       </nav>
 
-      <button
-        type="button"
-        className={styles.backToTop}
-        onClick={scrollToTop}
-      >
-        Back to top
-      </button>
+      <div className={styles.action}>
+        <button
+          type="button"
+          className={styles.backToTop}
+          onClick={scrollToTop}
+        >
+          Back to top
+          <span
+            className={styles.arrow}
+            aria-hidden="true"
+          >
+            <Icon
+              src={scrollToTopIcon}
+              alt=""
+            />
+          </span>
+        </button>
+      </div>
     </div>
   </footer>
 );
