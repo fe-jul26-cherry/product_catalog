@@ -31,7 +31,12 @@ export const CartPage = () => {
         <ul className={styles.list}>
           {mockCart.map((item) => (
             <li key={item.id}>
-              <CartItem item={item} />
+              <CartItem
+                item={item}
+                onDecrease={() => {}}
+                onIncrease={() => {}}
+                onRemove={() => {}}
+              />
             </li>
           ))}
         </ul>
