@@ -37,10 +37,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         {product.name}
       </Link>
 
-      <ProductPrice
-        price={product.price}
-        fullPrice={product.fullPrice}
-      />
+      <div className={styles.priceContainer}>
+        <ProductPrice
+          price={product.price}
+          fullPrice={product.fullPrice}
+        />
+      </div>
+
+      <div className={styles.divider} />
 
       <ProductSpecs
         specs={[
