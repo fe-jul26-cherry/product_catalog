@@ -3,5 +3,7 @@
 @use '../../../styles/typography' as *;
 
 .root {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
 }
