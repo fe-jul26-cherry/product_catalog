@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
+import { Loader } from '@/components/atoms/Loader';
 import { Breadcrumbs } from '@/components/molecules/Breadcrumbs';
 import { Pagination } from '@/components/molecules/Pagination';
 import { CatalogControls } from '@/components/organisms/CatalogControls';
@@ -19,8 +20,32 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
   const [sortBy, setSortBy] = useState<SortBy>(DEFAULT_SORT);
   const [perPage, setPerPage] = useState<PerPage>(DEFAULT_PER_PAGE);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [prevCategory, setPrevCategory] = useState<Category>(category);
+  const [prevPerPage, setPrevPerPage] = useState<PerPage>(perPage);
+
+  if (category !== prevCategory) {
+    setPrevCategory(category);
+    setPage(1);
+    setIsLoading(true);
+  }
+
+  if (perPage !== prevPerPage) {
+    setPrevPerPage(perPage);
+    setPage(1);
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [category]);
 
   const info = CATEGORIES.find(({ id }) => id === category);
+
   const filteredProducts = mockProducts.filter(
     (product) => product.category === category,
   );
@@ -52,6 +77,7 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
   return (
     <div className={styles.root}>
       <Breadcrumbs items={[{ label: info?.title ?? category }]} />
+
       <h1 className={styles.title}>{info?.title}</h1>
       <p className={styles.count}>{filteredProducts.length} models</p>
 
@@ -62,13 +88,24 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
         onPerPageChange={setPerPage}
       />
 
-      <ProductsList products={visibleProducts} />
+      {isLoading ?
+        <Loader />
+      : visibleProducts.length === 0 ?
+        <p className={styles.empty}>
+          There are no models in this category yet.
+        </p>
+      : <>
+          <ProductsList products={visibleProducts} />
 
-      <Pagination
-        current={page}
-        total={totalPages}
-        onChange={setPage}
-      />
+          {totalPages > 1 && (
+            <Pagination
+              current={page}
+              total={totalPages}
+              onChange={setPage}
+            />
+          )}
+        </>
+      }
     </div>
   );
 };

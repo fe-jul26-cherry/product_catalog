@@ -34,3 +34,10 @@
     margin: -24px 0 0 0;
   }
 }
+
+.empty {
+  @include body;
+  color: $color-secondary;
+  text-align: center;
+  padding: 40px 0;
+}
