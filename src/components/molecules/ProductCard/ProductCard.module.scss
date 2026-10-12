@@ -6,8 +6,11 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   padding: 32px;
   background: $color-surface-1;
+  box-sizing: border-box;
+  transition: box-shadow $transition;
 }
 
 .imageLink {
@@ -36,8 +39,37 @@
   min-height: 42px;
   margin-bottom: 8px;
   color: $color-primary;
+  text-decoration: none;
+  transition: color $transition;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .title:hover {
   color: $color-accent-hover;
+}
+
+.priceContainer {
+  margin-bottom: 8px;
+}
+
+.divider {
+  height: 1px;
+  background-color: $color-elements;
+  margin-bottom: 16px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: auto;
+}
+
+.actions > :first-child {
+  flex: 1;
 }
