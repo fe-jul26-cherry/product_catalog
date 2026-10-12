@@ -68,8 +68,9 @@
   gap: 8px;
   align-items: center;
   margin-top: auto;
-}
+  padding-top: 8px;
 
-.actions > :first-child {
-  flex: 1;
+  > :first-child {
+    flex: 1;
+  }
 }
