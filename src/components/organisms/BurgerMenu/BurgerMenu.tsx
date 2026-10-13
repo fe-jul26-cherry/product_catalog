@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import close from '@/assets/icons/close.svg';
 import favoriteOutline from '@/assets/icons/favorite-outline.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
-import logoSrc from '@/assets/logo-dark-theme.svg';
 import { Icon } from '@/components/atoms/Icon';
+import { Logo } from '@/components/atoms/Logo';
 import { CATEGORIES, ROUTES } from '@/constants';
 
 import styles from './BurgerMenu.module.scss';
@@ -65,18 +65,9 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
       aria-label="Menu"
     >
       <div className={styles.top}>
-        <Link
-          to={ROUTES.HOME}
-          className={styles.logo}
-          aria-label="Nice Gadgets home"
-          onClick={onClose}
-        >
-          <img
-            className={styles.logoImage}
-            src={logoSrc}
-            alt="Nice Gadgets"
-          />
-        </Link>
+        <div className={styles.logo}>
+          <Logo onClick={onClose} />
+        </div>
 
         <button
           type="button"

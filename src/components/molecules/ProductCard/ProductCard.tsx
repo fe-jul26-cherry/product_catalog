@@ -44,6 +44,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           className={styles.image}
           src={product.image}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
         />
       </Link>
 

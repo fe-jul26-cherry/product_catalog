@@ -1,15 +1,39 @@
+import { lazy } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
 import { AnimationProvider } from '@/animations';
 import { MainLayout } from '@/components/templates/MainLayout';
 import { ROUTES } from '@/constants';
-import { CartPage } from '@/pages/CartPage';
-import { CatalogPage } from '@/pages/CatalogPage';
-import { FavoritesPage } from '@/pages/FavoritesPage';
-import { HomePage } from '@/pages/HomePage';
-import { NotFoundPage } from '@/pages/NotFoundPage';
-import { ProductDetailsPage } from '@/pages/ProductDetailsPage';
-import { UiKitPage } from '@/pages/UiKitPage';
+
+const CartPage = lazy(() =>
+  import('@/pages/CartPage').then((module) => ({ default: module.CartPage })),
+);
+const CatalogPage = lazy(() =>
+  import('@/pages/CatalogPage').then((module) => ({
+    default: module.CatalogPage,
+  })),
+);
+const FavoritesPage = lazy(() =>
+  import('@/pages/FavoritesPage').then((module) => ({
+    default: module.FavoritesPage,
+  })),
+);
+const HomePage = lazy(() =>
+  import('@/pages/HomePage').then((module) => ({ default: module.HomePage })),
+);
+const NotFoundPage = lazy(() =>
+  import('@/pages/NotFoundPage').then((module) => ({
+    default: module.NotFoundPage,
+  })),
+);
+const ProductDetailsPage = lazy(() =>
+  import('@/pages/ProductDetailsPage').then((module) => ({
+    default: module.ProductDetailsPage,
+  })),
+);
+const UiKitPage = lazy(() =>
+  import('@/pages/UiKitPage').then((module) => ({ default: module.UiKitPage })),
+);
 
 export const App = () => (
   <AnimationProvider>
