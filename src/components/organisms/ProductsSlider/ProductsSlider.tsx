@@ -1,26 +1,85 @@
+import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import chevronLeftIcon from '@/assets/icons/chevron-left.svg';
+import chevronRightIcon from '@/assets/icons/chevron-right.svg';
+import { Icon } from '@/components/atoms/Icon';
+import { IconButton } from '@/components/atoms/IconButton';
 import { ProductCard } from '@/components/molecules/ProductCard';
 
 import styles from './ProductsSlider.module.scss';
 
+import 'swiper/css';
+
 import type { Product } from '@/types';
+import type { Swiper as SwiperInstance } from 'swiper/types';
 
 interface ProductsSliderProps {
   title: string;
   products: Product[];
 }
 
-export const ProductsSlider = ({ title, products }: ProductsSliderProps) => (
-  <section className={styles.root}>
-    <h2 className={styles.title}>{title}</h2>
-    <ul className={styles.track}>
-      {products.map((product) => (
-        <li
-          key={product.id}
-          className={styles.slide}
-        >
-          <ProductCard product={product} />
-        </li>
-      ))}
-    </ul>
-  </section>
-);
+export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
+  const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
+
+  const syncEdges = (instance: SwiperInstance) => {
+    setIsBeginning(instance.isBeginning);
+    setIsEnd(instance.isEnd);
+  };
+
+  return (
+    <section className={styles.root}>
+      <div className={styles.header}>
+        <h2 className={styles.title}>{title}</h2>
+
+        <div className={styles.controls}>
+          <IconButton
+            variant="slider"
+            aria-label="Previous products"
+            disabled={isBeginning}
+            onClick={() => swiper?.slidePrev()}
+          >
+            <Icon
+              src={chevronLeftIcon}
+              alt=""
+            />
+          </IconButton>
+          <IconButton
+            variant="slider"
+            aria-label="Next products"
+            disabled={isEnd}
+            onClick={() => swiper?.slideNext()}
+          >
+            <Icon
+              src={chevronRightIcon}
+              alt=""
+            />
+          </IconButton>
+        </div>
+      </div>
+
+      <Swiper
+        spaceBetween={16}
+        slidesPerView={1.2}
+        breakpoints={{
+          640: { slidesPerView: 2.5 },
+          1200: { slidesPerView: 4 },
+        }}
+        onSwiper={(instance) => {
+          setSwiper(instance);
+          syncEdges(instance);
+        }}
+        onSlideChange={syncEdges}
+        onResize={syncEdges}
+      >
+        {products.map((product) => (
+          <SwiperSlide key={product.id}>
+            <ProductCard product={product} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
+  );
+};

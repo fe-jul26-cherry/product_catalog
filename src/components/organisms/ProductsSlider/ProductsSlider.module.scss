@@ -5,3 +5,20 @@
 .root {
   display: block;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.title {
+  @include h2;
+  color: $color-primary;
+}
+
+.controls {
+  display: flex;
+  gap: 16px;
+}
