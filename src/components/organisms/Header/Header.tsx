@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+import favoriteOutline from '@/assets/icons/favorite-outline.svg';
+import menu from '@/assets/icons/menu.svg';
+import shoppingBag from '@/assets/icons/shopping-bag.svg';
+import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
 import { IconLink } from '@/components/molecules/IconLink';
 import { NavItem } from '@/components/molecules/NavItem';
@@ -13,47 +17,63 @@ export const Header = () => {
 
   return (
     <header className={styles.root}>
-      <Logo />
+      <div className={styles.bar}>
+        <div className={styles.left}>
+          <Logo />
 
-      <nav
-        className={styles.nav}
-        aria-label="Main"
-      >
-        <NavItem to={ROUTES.HOME}>Home</NavItem>
-        {CATEGORIES.map((category) => (
-          <NavItem
-            key={category.id}
-            to={category.path}
+          <nav
+            className={styles.nav}
+            aria-label="Main"
           >
-            {category.id}
-          </NavItem>
-        ))}
-      </nav>
+            <NavItem to={ROUTES.HOME}>Home</NavItem>
+            {CATEGORIES.map((category) => (
+              <NavItem
+                key={category.id}
+                to={category.path}
+              >
+                {category.id}
+              </NavItem>
+            ))}
+          </nav>
+        </div>
 
-      <div className={styles.actions}>
-        <IconLink
-          to={ROUTES.FAVORITES}
-          label="Favourites"
-        >
-          FAV
-        </IconLink>
-        <IconLink
-          to={ROUTES.CART}
-          label="Cart"
-        >
-          CART
-        </IconLink>
+        <div className={styles.actions}>
+          <IconLink
+            to={ROUTES.FAVORITES}
+            label="Favourites"
+          >
+            <Icon
+              src={favoriteOutline}
+              alt=""
+              size="sm"
+            />
+          </IconLink>
+          <IconLink
+            to={ROUTES.CART}
+            label="Cart"
+          >
+            <Icon
+              src={shoppingBag}
+              alt=""
+              size="sm"
+            />
+          </IconLink>
+
+          <button
+            type="button"
+            className={styles.burger}
+            aria-label="Open menu"
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen(true)}
+          >
+            <Icon
+              src={menu}
+              alt=""
+              size="sm"
+            />
+          </button>
+        </div>
       </div>
-
-      <button
-        type="button"
-        className={styles.burger}
-        aria-label="Open menu"
-        aria-expanded={isMenuOpen}
-        onClick={() => setIsMenuOpen(true)}
-      >
-        MENU
-      </button>
 
       <BurgerMenu
         isOpen={isMenuOpen}

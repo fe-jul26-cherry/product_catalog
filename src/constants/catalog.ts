@@ -14,5 +14,6 @@ export const PER_PAGE_OPTIONS: Option<PerPage>[] = [
 ];
 
 export const DEFAULT_SORT: SortBy = 'age';
-export const DEFAULT_PER_PAGE: PerPage = 'all';
+export const DEFAULT_PER_PAGE: PerPage = '16';
 export const DEFAULT_PAGE = 1;
+export const LOAD_MORE_STEP = 12;
