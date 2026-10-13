@@ -2,6 +2,311 @@
 @use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
+$slider-radius: 28px;
+$slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .root {
+  position: relative;
   display: block;
+}
+
+.swiper {
+  width: 100%;
+  border-radius: $slider-radius;
+  background: $color-bg;
+  box-shadow: $shadow-card;
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  background: $color-bg;
+
+  @include tablet {
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    aspect-ratio: 16 / 9;
+  }
+
+  @include desktop {
+    aspect-ratio: 2.3 / 1;
+  }
+}
+
+.visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: $color-bg;
+
+  @include tablet {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 68%;
+    aspect-ratio: auto;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+  }
+}
+
+.visualContain {
+  background:
+    radial-gradient(
+      60% 70% at 50% 55%,
+      color-mix(in srgb, $color-accent 35%, transparent),
+      transparent 70%
+    ),
+    $color-bg;
+
+  .image {
+    padding: 16px;
+  }
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+  transition: transform 7s $slider-ease;
+  user-select: none;
+}
+
+.slideActive .image {
+  transform: scale(1);
+}
+
+.panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 24px 64px;
+  text-align: center;
+
+  @include tablet {
+    flex: none;
+    align-items: flex-start;
+    text-align: left;
+    width: 42%;
+    padding: 0 0 0 clamp(32px, 6cqw, 72px);
+  }
+}
+
+.slideActive {
+  .eyebrow,
+  .title,
+  .subtitle,
+  .cta {
+    animation: rise 0.8s $slider-ease backwards;
+  }
+
+  .eyebrow {
+    animation-delay: 0.25s;
+  }
+
+  .title {
+    animation-delay: 0.35s;
+  }
+
+  .subtitle {
+    animation-delay: 0.45s;
+  }
+
+  .cta {
+    animation-delay: 0.55s;
+  }
+}
+
+.eyebrow {
+  margin-bottom: 8px;
+  color: $color-accent-hover;
+  @include uppercase;
+  line-height: 1.2;
+
+  @include tablet {
+    font-size: clamp(11px, 1.3cqw, 14px);
+  }
+}
+
+.title {
+  max-width: 10ch;
+  color: $color-primary;
+  font: 700 28px / 1.1 $font-family;
+  letter-spacing: -0.03em;
+
+  @include tablet {
+    font-size: clamp(28px, 4.2cqw, 52px);
+  }
+}
+
+.subtitle {
+  max-width: 32ch;
+  margin-top: 12px;
+  color: $color-secondary;
+  @include body;
+
+  @include tablet {
+    margin-top: clamp(8px, 1.4cqw, 16px);
+    font-size: clamp(14px, 1.6cqw, 18px);
+    line-height: 1.45;
+  }
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin-top: 20px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: $color-accent;
+  color: $color-primary;
+  transition:
+    background-color $transition,
+    transform $transition;
+  @include button;
+
+  &:hover {
+    background: $color-accent-hover;
+    transform: scale(1.04);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 3px;
+  }
+
+  @include tablet {
+    height: clamp(40px, 4.4cqw, 52px);
+    margin-top: clamp(20px, 3cqw, 36px);
+    padding: 0 clamp(24px, 2.8cqw, 36px);
+  }
+}
+
+.controls {
+  position: absolute;
+  inset: auto 0 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+  @include tablet {
+    inset: auto 0 24px;
+  }
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, $color-bg 55%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: auto;
+}
+
+.dot {
+  --progress: 0;
+
+  box-sizing: content-box;
+  position: relative;
+  width: 8px;
+  height: 8px;
+  padding: 12px 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: width 0.5s $slider-ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 50% 4px auto;
+    height: 8px;
+    border-radius: 999px;
+    background: $color-icons;
+    transform: translateY(-50%);
+    transition: background-color $transition;
+  }
+
+  &:hover::before {
+    background: $color-secondary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: -2px;
+    border-radius: 999px;
+  }
+}
+
+.dotActive {
+  width: 32px;
+
+  &::before,
+  &:hover::before {
+    background: $color-surface-2;
+  }
+}
+
+.fill {
+  position: absolute;
+  inset: 50% 4px auto;
+  height: 8px;
+  border-radius: 999px;
+  background: $color-primary;
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+}
+
+.dotActive .fill {
+  opacity: 1;
+  transform: translateY(-50%) scaleX(var(--progress));
+}
+
+.paused .dotActive .fill {
+  transform: translateY(-50%) scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image,
+  .dot {
+    transition: none;
+  }
+
+  .slideActive {
+    .eyebrow,
+    .title,
+    .subtitle,
+    .cta {
+      animation: none;
+      opacity: 1;
+    }
+  }
 }
