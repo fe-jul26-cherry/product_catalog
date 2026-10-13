@@ -9,10 +9,10 @@
 }
 
 .bar {
-  @include container;
-
+  width: 100%;
+  padding: 0 24px;
   display: flex;
-  align-items: center;
+  align-items: stretch; // Робимо елементи на повну висоту хедера
   justify-content: space-between;
   min-height: $header-height-mobile;
 

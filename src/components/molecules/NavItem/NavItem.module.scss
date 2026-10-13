@@ -5,6 +5,7 @@
 .root {
   display: flex;
   align-items: center;
+  height: 100%;
   @include uppercase;
   color: $color-secondary;
   transition: color $transition;
