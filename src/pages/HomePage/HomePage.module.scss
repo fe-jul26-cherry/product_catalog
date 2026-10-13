@@ -5,3 +5,17 @@
 .root {
   display: block;
 }
+
+.title {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  color: $color-primary;
+  text-align: center;
+  text-wrap: balance;
+  @include h1;
+
+  @include tablet {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+}
