@@ -10,7 +10,7 @@ import { ProductGallery } from '@/components/organisms/ProductGallery';
 import { ProductsSlider } from '@/components/organisms/ProductsSlider';
 import { ProductTechSpecs } from '@/components/organisms/ProductTechSpecs';
 import { ProductVariants } from '@/components/organisms/ProductVariants';
-import { CATEGORIES } from '@/constants';
+import { CATEGORIES, getProductPath } from '@/constants';
 import { useAsync } from '@/hooks';
 import { getProductDetails, getSuggestedProducts } from '@/services';
 
@@ -34,6 +34,21 @@ export const ProductDetailsPage = () => {
 
   const category = CATEGORIES.find(({ id }) => id === product.data?.category);
 
+  const handleVariantChange = (color: string, capacity: string) => {
+    if (!product.data) {
+      return;
+    }
+
+    const { details } = product.data;
+    const variantId = [
+      details.namespaceId,
+      capacity.toLowerCase(),
+      color.toLowerCase().replace(/\s+/g, '-'),
+    ].join('-');
+
+    navigate(getProductPath(variantId));
+  };
+
   return (
     <div className={styles.root}>
       <AsyncContent
@@ -42,42 +57,49 @@ export const ProductDetailsPage = () => {
         onRetry={product.retry}
       >
         {product.data ?
-          <>
+          <div className={styles.content}>
             <Breadcrumbs
               items={[
                 { label: category?.title ?? '', path: category?.path },
                 { label: product.data.details.name },
               ]}
             />
-            <BackLink onClick={() => navigate(-1)}>Back</BackLink>
-            <h1 className={styles.title}>{product.data.details.name}</h1>
+            <header className={styles.header}>
+              <BackLink onClick={() => navigate(-1)}>Back</BackLink>
+              <h1 className={styles.title}>{product.data.details.name}</h1>
+            </header>
 
             <div className={styles.top}>
               <ProductGallery
                 images={product.data.details.images}
                 name={product.data.details.name}
               />
-              <ProductVariants product={product.data.details} />
+              <ProductVariants
+                product={product.data.details}
+                onVariantChange={handleVariantChange}
+              />
             </div>
 
             <div className={styles.bottom}>
               <ProductAbout description={product.data.details.description} />
               <ProductTechSpecs product={product.data.details} />
             </div>
-          </>
+          </div>
         : <ErrorMessage message="Product was not found." />}
       </AsyncContent>
 
-      <AsyncContent
-        isLoading={suggested.isLoading}
-        error={suggested.error}
-        onRetry={suggested.retry}
-      >
-        <ProductsSlider
-          title="You may also like"
-          products={suggested.data ?? []}
-        />
-      </AsyncContent>
+      <div className={styles.suggested}>
+        <AsyncContent
+          isLoading={suggested.isLoading}
+          error={suggested.error}
+          onRetry={suggested.retry}
+        >
+          <ProductsSlider
+            title="You may also like"
+            products={suggested.data ?? []}
+          />
+        </AsyncContent>
+      </div>
     </div>
   );
 };
