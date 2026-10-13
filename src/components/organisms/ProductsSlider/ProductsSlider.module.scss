@@ -5,3 +5,34 @@
 .root {
   display: block;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.title {
+  @include h2;
+  color: $color-primary;
+  flex: 1;
+  min-width: 0;
+}
+
+.controls {
+  display: flex;
+  flex-shrink: 0;
+  gap: 16px;
+  margin-left: 16px;
+}
+
+.arrow {
+  filter: brightness(0) invert(1);
+}
+
+button:disabled {
+  .arrow {
+    opacity: 0.4;
+  }
+}
