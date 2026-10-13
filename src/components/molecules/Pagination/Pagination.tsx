@@ -2,8 +2,12 @@ import chevronLeftIcon from '@/assets/icons/chevron-left.svg';
 import chevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { IconButton } from '@/components/atoms/IconButton';
+import { useMediaQuery } from '@/hooks';
 
 import styles from './Pagination.module.scss';
+
+const MAX_PAGES_DESKTOP = 9;
+const MAX_PAGES_MOBILE = 5;
 
 interface PaginationProps {
   current: number;
@@ -12,7 +16,15 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ current, total, onChange }: PaginationProps) => {
-  const pages = Array.from({ length: total }, (_, i) => i + 1);
+  const isTablet = useMediaQuery('(min-width: 640px)');
+  const maxVisible = isTablet ? MAX_PAGES_DESKTOP : MAX_PAGES_MOBILE;
+
+  const firstPage = Math.floor((current - 1) / maxVisible) * maxVisible + 1;
+  const lastPage = Math.min(firstPage + maxVisible - 1, total);
+  const pages = Array.from(
+    { length: lastPage - firstPage + 1 },
+    (_, i) => firstPage + i,
+  );
 
   const handlePrev = () => {
     if (current > 1) {
