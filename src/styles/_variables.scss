@@ -11,12 +11,9 @@ $color-green: var(--color-green);
 $color-red: var(--color-red);
 $shadow-card: var(--shadow-card);
 
-$color-category-phones: #6d6474;
-$color-category-tablets: #8d8d92;
-$color-category-accessories: #973d5f;
-// $color-category-phones: #6d6474;
-// $color-category-tablets: #8d8d92;
-// $color-category-accessories: #973d5f;
+$color-category-phones: var(--color-c-phones);
+$color-category-tablets: var(--color-c-tablets);
+$color-category-accessories: var(--color-c-accessories);
 
 $font-family: 'Mont', sans-serif;
 
