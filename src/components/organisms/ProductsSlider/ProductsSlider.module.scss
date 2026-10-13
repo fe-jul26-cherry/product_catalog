@@ -16,11 +16,15 @@
 .title {
   @include h2;
   color: $color-primary;
+  flex: 1;
+  min-width: 0;
 }
 
 .controls {
   display: flex;
+  flex-shrink: 0;
   gap: 16px;
+  margin-left: 16px;
 }
 
 .arrow {
