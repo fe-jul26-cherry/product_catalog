@@ -45,7 +45,7 @@ export const Header = () => {
             <Icon
               src={favoriteOutline}
               alt=""
-              size="lg"
+              size="sm"
             />
           </IconLink>
           <IconLink
@@ -55,7 +55,7 @@ export const Header = () => {
             <Icon
               src={shoppingBag}
               alt=""
-              size="lg"
+              size="sm"
             />
           </IconLink>
 
@@ -69,7 +69,7 @@ export const Header = () => {
             <Icon
               src={menu}
               alt=""
-              size="lg"
+              size="sm"
             />
           </button>
         </div>

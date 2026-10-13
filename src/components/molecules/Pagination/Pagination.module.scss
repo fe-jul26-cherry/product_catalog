@@ -3,18 +3,29 @@
 
 .pagination {
   display: flex;
-  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagesWrapper {
+  display: flex;
+  gap: 8px;
 }
 
 .page {
   @include body;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 32px;
   height: 32px;
   padding: 0;
-  border: 0;
+  border: 1px solid $color-elements;
   background: $color-surface-1;
   color: $color-primary;
   cursor: pointer;
+  transition: all $transition;
 
   &:hover {
     background: $color-elements;
@@ -24,4 +35,9 @@
 .active,
 .active:hover {
   background: $color-accent;
+  border-color: $color-accent;
+}
+
+.arrow {
+  filter: brightness(0) invert(1);
 }
