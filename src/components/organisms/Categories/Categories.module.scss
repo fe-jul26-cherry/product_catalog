@@ -5,3 +5,20 @@
 .root {
   display: block;
 }
+
+.title {
+  @include h2;
+  margin-bottom: 24px;
+  color: $color-primary;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+
+  @include tablet {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $grid-gap;
+  }
+}
