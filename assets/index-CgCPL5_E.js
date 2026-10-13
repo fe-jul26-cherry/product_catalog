@@ -1,0 +1,1 @@
+import{j as o}from"./index-w9_DKt9i.js";const s="_root_jbbqu_1",t={root:s},r=()=>o.jsx("div",{className:t.root,children:o.jsx("h1",{className:t.title,children:"Page not found"})});export{r as NotFoundPage};

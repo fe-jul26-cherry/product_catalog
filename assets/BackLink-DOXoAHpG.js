@@ -1,0 +1,1 @@
+import{j as e}from"./index-w9_DKt9i.js";const i="_link_1oftt_1",l={link:i},c=({className:t,children:s,...n})=>{const o=[l.link,t].filter(Boolean).join(" ");return e.jsx("button",{type:"button",className:o,...n,children:s})};export{c as B};
