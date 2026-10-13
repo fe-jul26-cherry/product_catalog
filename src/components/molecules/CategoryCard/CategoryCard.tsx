@@ -12,14 +12,19 @@ interface CategoryCardProps {
 export const CategoryCard = ({ category, count }: CategoryCardProps) => (
   <Link
     to={category.path}
-    className={styles.root}
+    className={`${styles.root} ${styles[category.id]}`}
   >
-    <img
-      className={styles.image}
-      src={category.image}
-      alt={category.title}
-    />
-    <h3 className={styles.title}>{category.title}</h3>
-    <p className={styles.count}>{count} models</p>
+    <div className={styles.preview}>
+      <img
+        className={styles.image}
+        src={category.image}
+        alt={category.title}
+        loading="lazy"
+      />
+    </div>
+    <div className={styles.info}>
+      <h3 className={styles.title}>{category.title}</h3>
+      <p className={styles.count}>{count} models</p>
+    </div>
   </Link>
 );

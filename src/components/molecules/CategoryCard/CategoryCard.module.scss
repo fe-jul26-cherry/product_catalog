@@ -3,5 +3,75 @@
 @use '../../../styles/typography' as *;
 
 .root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: $color-primary;
+  text-decoration: none;
+}
+
+.preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.image {
+  position: absolute;
   display: block;
+  max-width: none;
+  height: auto;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  @include h4;
+  color: $color-primary;
+}
+
+.count {
+  @include body;
+  color: $color-secondary;
+}
+
+.phones {
+  .preview {
+    background: $color-category-phones;
+  }
+
+  .image {
+    top: 1%;
+    left: 10%;
+    width: 105%;
+  }
+}
+
+.tablets {
+  .preview {
+    background: $color-category-tablets;
+  }
+
+  .image {
+    top: 6%;
+    left: 9%;
+    width: 148%;
+  }
+}
+
+.accessories {
+  .preview {
+    background: $color-category-accessories;
+  }
+
+  .image {
+    top: 12%;
+    left: 12%;
+    width: 200%;
+  }
 }
