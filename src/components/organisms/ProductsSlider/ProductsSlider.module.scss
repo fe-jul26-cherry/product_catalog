@@ -22,3 +22,13 @@
   display: flex;
   gap: 16px;
 }
+
+.arrow {
+  filter: brightness(0) invert(1);
+}
+
+button:disabled {
+  .arrow {
+    opacity: 0.4;
+  }
+}

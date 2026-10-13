@@ -44,6 +44,7 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
             <Icon
               src={chevronLeftIcon}
               alt=""
+              className={styles.arrow}
             />
           </IconButton>
           <IconButton
@@ -55,6 +56,7 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
             <Icon
               src={chevronRightIcon}
               alt=""
+              className={styles.arrow}
             />
           </IconButton>
         </div>
