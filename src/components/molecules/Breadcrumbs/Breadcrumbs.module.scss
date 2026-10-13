@@ -30,13 +30,11 @@
 
 .link {
   @include small;
-  font-weight: 700;
   color: $color-primary;
   text-decoration: none;
 }
 
 .current {
   @include small;
-  font-weight: 700;
   color: $color-secondary;
 }
