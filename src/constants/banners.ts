@@ -16,9 +16,9 @@ export interface BannerSlide {
 
 export const BANNERS: BannerSlide[] = [
   {
-    id: 'baner4',
+    id: 'banner_phone',
     category: 'phones',
-    image: 'img/baner4.jpg',
+    image: 'img/banner_phone.jpg',
     alt: 'Three smartphones showing planets above a mountain landscape',
     eyebrow: 'Next level',
     title: 'See beyond the screen',
