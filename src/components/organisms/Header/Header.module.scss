@@ -44,6 +44,17 @@
   }
 }
 
+.theme {
+  display: flex;
+  align-items: center;
+  margin-right: $header-height-mobile;
+  margin-left: auto;
+
+  @include tablet {
+    margin-right: $header-height * 2;
+  }
+}
+
 .actions {
   position: absolute;
   top: 0;

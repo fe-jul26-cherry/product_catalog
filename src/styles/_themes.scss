@@ -15,5 +15,28 @@
   --color-c-phones: #6d6474;
   --color-c-tablets: #4e5b66;
   --color-c-accessories: #803d4c;
+  --color-toggle-start: #905bff;
+  --color-toggle-end: #f099b5;
   --shadow-card: 0 2px 16px rgb(0 0 0 / 40%);
+}
+
+[data-theme='light'] {
+  --color-bg: #ffffff;
+  --color-surface-1: #fafbfc;
+  --color-surface-2: #e2e6e9;
+  --color-banner-bg: #ffffff;
+  --color-elements: #e2e6e9;
+  --color-icons: #b4bdc3;
+  --color-secondary: #89939a;
+  --color-primary: #0f1121;
+  --color-accent: #905bff;
+  --color-accent-hover: #a378ff;
+  --color-green: #27ae60;
+  --color-red: #eb5757;
+  --color-c-phones: #6d6474;
+  --color-c-tablets: #4e5b66;
+  --color-c-accessories: #803d4c;
+  --color-toggle-start: #f19af3;
+  --color-toggle-end: #f099b5;
+  --shadow-card: 0 2px 16px rgb(0 0 0 / 10%);
 }

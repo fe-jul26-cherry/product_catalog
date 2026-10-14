@@ -5,15 +5,19 @@ import menu from '@/assets/icons/menu.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
+import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { IconLink } from '@/components/molecules/IconLink';
 import { NavItem } from '@/components/molecules/NavItem';
 import { BurgerMenu } from '@/components/organisms/BurgerMenu';
 import { CATEGORIES, ROUTES } from '@/constants';
+import { useThemeStore } from '@/store';
 
 import styles from './Header.module.scss';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const theme = useThemeStore((state) => state.theme);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
   return (
     <header className={styles.root}>
@@ -35,6 +39,13 @@ export const Header = () => {
               </NavItem>
             ))}
           </nav>
+        </div>
+
+        <div className={styles.theme}>
+          <ThemeToggle
+            isDark={theme === 'dark'}
+            onToggle={toggleTheme}
+          />
         </div>
 
         <div className={styles.actions}>
