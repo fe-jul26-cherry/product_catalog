@@ -1,7 +1,8 @@
 @use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
 
 .root {
-  --size: 24px;
+  --size: 18px;
   position: relative;
   display: inline-block;
   border-radius: var(--size);
@@ -9,6 +10,10 @@
   font-size: var(--size);
   line-height: 0;
   perspective: 400px;
+
+  @include tablet {
+    --size: 22px;
+  }
 }
 
 .input,
