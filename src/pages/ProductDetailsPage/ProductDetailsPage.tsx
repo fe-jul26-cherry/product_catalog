@@ -24,12 +24,15 @@ export const ProductDetailsPage = () => {
     () => getProductDetails(productId),
     [productId],
   );
-  const loadSuggested = useCallback(
-    () => getSuggestedProducts(productId),
-    [productId],
-  );
 
-  const product = useAsync(loadProduct);
+  const product = useAsync(loadProduct, { keepPrevious: true });
+  const namespaceId = product.data?.details.namespaceId;
+
+  const loadSuggested = useCallback(
+    () =>
+      namespaceId ? getSuggestedProducts(namespaceId) : Promise.resolve([]),
+    [namespaceId],
+  );
   const suggested = useAsync(loadSuggested);
 
   const category = CATEGORIES.find(({ id }) => id === product.data?.category);
@@ -52,7 +55,7 @@ export const ProductDetailsPage = () => {
   return (
     <div className={styles.root}>
       <AsyncContent
-        isLoading={product.isLoading}
+        isLoading={product.isLoading && !product.data}
         error={product.error}
         onRetry={product.retry}
       >
@@ -71,6 +74,7 @@ export const ProductDetailsPage = () => {
 
             <div className={styles.top}>
               <ProductGallery
+                key={product.data.details.id}
                 images={product.data.details.images}
                 name={product.data.details.name}
               />
@@ -88,18 +92,20 @@ export const ProductDetailsPage = () => {
         : <ErrorMessage message="Product was not found." />}
       </AsyncContent>
 
-      <div className={styles.suggested}>
-        <AsyncContent
-          isLoading={suggested.isLoading}
-          error={suggested.error}
-          onRetry={suggested.retry}
-        >
-          <ProductsSlider
-            title="You may also like"
-            products={suggested.data ?? []}
-          />
-        </AsyncContent>
-      </div>
+      {namespaceId && (
+        <div className={styles.suggested}>
+          <AsyncContent
+            isLoading={suggested.isLoading}
+            error={suggested.error}
+            onRetry={suggested.retry}
+          >
+            <ProductsSlider
+              title="You may also like"
+              products={suggested.data ?? []}
+            />
+          </AsyncContent>
+        </div>
+      )}
     </div>
   );
 };

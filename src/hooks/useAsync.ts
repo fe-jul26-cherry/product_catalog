@@ -12,7 +12,10 @@ interface Result<T> {
 const getErrorMessage = (error: unknown) =>
   error instanceof ApiError ? error.message : 'Something went wrong.';
 
-export const useAsync = <T>(load: () => Promise<T>) => {
+export const useAsync = <T>(
+  load: () => Promise<T>,
+  { keepPrevious = false } = {},
+) => {
   const [attempt, setAttempt] = useState(0);
   const [result, setResult] = useState<Result<T> | null>(null);
 
@@ -47,7 +50,7 @@ export const useAsync = <T>(load: () => Promise<T>) => {
     result !== null && result.load === load && result.attempt === attempt;
 
   return {
-    data: isCurrent ? result.data : null,
+    data: isCurrent || keepPrevious ? (result?.data ?? null) : null,
     error: isCurrent ? result.error : null,
     isLoading: !isCurrent,
     retry,

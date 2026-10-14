@@ -13,10 +13,11 @@ export const AnimationProvider = ({ children }: AnimationProviderProps) => (
 
 export const PageTransition = ({ children }: PageTransitionProps) => {
   const { pathname } = useLocation();
+  const section = pathname.split('/')[1];
 
   return (
     <motion.div
-      key={pathname}
+      key={section}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
