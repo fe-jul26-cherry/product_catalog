@@ -14,10 +14,11 @@ export const AnimationProvider = ({ children }: AnimationProviderProps) => (
 
 export const PageTransition = ({ children }: PageTransitionProps) => {
   const { pathname } = useLocation();
+  const section = pathname.split('/')[1];
 
   return (
     <div
-      key={pathname}
+      key={section}
       className={styles.page}
     >
       {children}
