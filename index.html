@@ -29,6 +29,14 @@
       name="theme-color"
       content="#0f1121"
     />
+    <script>
+      try {
+        var saved = JSON.parse(localStorage.getItem('theme'));
+        if (saved && saved.state && saved.state.theme) {
+          document.documentElement.dataset.theme = saved.state.theme;
+        }
+      } catch (error) {}
+    </script>
     <title>Phone catalog</title>
     <style>
       html {
