@@ -20,6 +20,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
 .root {
   position: relative;
   display: block;
+  isolation: isolate;
 }
 
 .swiper {
@@ -207,7 +208,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
 .controls {
   position: absolute;
   inset: auto 0 16px;
-  z-index: 10;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
