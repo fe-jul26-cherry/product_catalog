@@ -21,6 +21,10 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   display: block;
   isolation: isolate;
+
+  @include tablet {
+    cursor: pointer;
+  }
 }
 
 .swiper {
@@ -60,9 +64,51 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
   @include tablet {
     position: absolute;
     inset: 0 0 0 auto;
-    width: 68%;
+    width: 62%;
     aspect-ratio: auto;
     mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+  }
+
+  @include desktop {
+    width: 68%;
+  }
+}
+
+.slideFull {
+  @include tablet {
+    aspect-ratio: 2.1 / 1;
+  }
+
+  @include desktop {
+    aspect-ratio: 1920 / 804;
+  }
+
+  .subtitle {
+    @include tablet {
+      max-width: min(26ch, 100%);
+    }
+  }
+}
+
+.visualFull {
+  @include tablet {
+    inset: 0;
+    width: 100%;
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 40%,
+      #000 56%
+    );
+  }
+
+  @include desktop {
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 38%,
+      #000 58%
+    );
   }
 }
 
@@ -108,8 +154,13 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
     flex: none;
     align-items: flex-start;
     text-align: left;
+    width: 38%;
+    padding: 0 0 0 clamp(24px, 4cqw, 40px);
+  }
+
+  @include desktop {
     width: 42%;
-    padding: 0 0 0 clamp(32px, 6cqw, 72px);
+    padding-left: clamp(32px, 6cqw, 72px);
   }
 }
 
@@ -161,7 +212,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .subtitle {
-  max-width: 32ch;
+  max-width: min(32ch, 100%);
   margin-top: 12px;
   color: $color-secondary;
   @include body;
@@ -231,6 +282,65 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: auto;
 }
 
+.arrow {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color $transition,
+    transform 0.4s $slider-ease;
+
+  @include tablet {
+    display: inline-flex;
+  }
+
+  &:first-child {
+    margin-right: 4px;
+  }
+
+  &:last-child {
+    margin-left: 4px;
+  }
+
+  &:hover {
+    background: color-mix(in srgb, $color-primary 14%, transparent);
+  }
+
+  &:first-child:hover {
+    transform: translateX(-2px);
+  }
+
+  &:last-child:hover {
+    transform: translateX(2px);
+  }
+
+  &:active {
+    background: color-mix(in srgb, $color-primary 24%, transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.arrowIcon {
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  transition: opacity $transition;
+
+  .arrow:hover & {
+    opacity: 1;
+  }
+}
+
 .dot {
   --progress: 0;
 
@@ -297,8 +407,13 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
 @media (prefers-reduced-motion: reduce) {
   .image,
-  .dot {
+  .dot,
+  .arrow {
     transition: none;
+  }
+
+  .arrow:hover {
+    transform: none;
   }
 
   .slideActive {
