@@ -11,41 +11,43 @@ export interface BannerSlide {
   cta: string;
   fit?: 'cover' | 'contain';
   position?: string;
+  fullBleed?: boolean;
 }
 
 export const BANNERS: BannerSlide[] = [
   {
-    id: 'baner1',
+    id: 'banner_phone',
     category: 'phones',
-    image: 'img/baner1.JPG',
-    alt: 'Blue and pink iPhones against a purple sunset',
-    eyebrow: 'Colours',
-    title: 'Pick the shade that is you',
-    subtitle:
-      'From Sierra Blue to soft Pink, there is a colour for every mood.',
-    cta: 'Explore colours',
-    position: 'center',
-  },
-  {
-    id: 'baner3',
-    category: 'phones',
-    image: 'img/baner3.png',
-    alt: 'Two purple smartphones with glowing hexagons',
-    eyebrow: 'Fresh arrivals',
-    title: 'Screens that pop',
-    subtitle: 'Vivid displays and bold design in one light package.',
-    cta: 'See the lineup',
-    fit: 'contain',
-  },
-  {
-    id: 'baner4',
-    category: 'phones',
-    image: 'img/baner4.jpg',
+    image: 'img/banner_phone.jpg',
     alt: 'Three smartphones showing planets above a mountain landscape',
     eyebrow: 'Next level',
     title: 'See beyond the screen',
     subtitle: 'Immersive displays that bring every pixel to life.',
-    cta: 'Discover more',
+    cta: 'Shop phones',
     position: 'center',
+  },
+  {
+    id: 'banner_tablet',
+    category: 'tablets',
+    image: 'img/banner_tablet.jpg',
+    alt: 'Three tablets on a rock ledge in front of a moonlit mountain range',
+    eyebrow: 'Tablets',
+    title: 'Big canvas, bigger ideas',
+    subtitle: 'Create, watch and play on a display that has room for it all.',
+    cta: 'Shop tablets',
+    position: '100% center',
+    fullBleed: true,
+  },
+  {
+    id: 'banner_watch',
+    category: 'accessories',
+    image: 'img/banner_watch.jpg',
+    alt: 'Three smartwatches with green straps against a green mountain night sky',
+    eyebrow: 'Accessories',
+    title: 'Style that keeps time',
+    subtitle: 'Smartwatches and straps to match your mood and your day.',
+    cta: 'Shop accessories',
+    position: '100% center',
+    fullBleed: true,
   },
 ];
