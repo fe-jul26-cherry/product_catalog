@@ -26,7 +26,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
 .swiper {
   width: 100%;
   border-radius: $slider-radius;
-  background: $color-bg;
+  background: $color-banner-bg;
   box-shadow: $shadow-card;
   container-type: inline-size;
   isolation: isolate;
@@ -36,7 +36,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
   flex-direction: column;
   height: auto;
-  background: $color-bg;
+  background: $color-banner-bg;
 
   @include tablet {
     position: relative;
@@ -55,7 +55,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: $color-bg;
+  background: $color-banner-bg;
 
   @include tablet {
     position: absolute;
@@ -73,7 +73,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
       color-mix(in srgb, $color-accent 35%, transparent),
       transparent 70%
     ),
-    $color-bg;
+    $color-banner-bg;
 
   .image {
     padding: 16px;
@@ -225,7 +225,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
   gap: 4px;
   padding: 0 6px;
   border-radius: 999px;
-  background: color-mix(in srgb, $color-bg 55%, transparent);
+  background: color-mix(in srgb, $color-banner-bg 55%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   pointer-events: auto;
