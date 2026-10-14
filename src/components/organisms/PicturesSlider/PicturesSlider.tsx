@@ -5,18 +5,26 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 
+import chevronLeftIcon from '@/assets/icons/chevron-left.svg';
+import chevronRightIcon from '@/assets/icons/chevron-right.svg';
+import { Icon } from '@/components/atoms/Icon';
 import { BANNERS, CATEGORIES, ROUTES } from '@/constants';
 
 import styles from './PicturesSlider.module.scss';
 
 import type { Category } from '@/types';
+import type { MouseEvent } from 'react';
 import type { Swiper as SwiperInstance } from 'swiper';
 
 const AUTOPLAY_DELAY = 6000;
 const FADE_SPEED = 900;
+const TABLET_BREAKPOINT = 640;
 
 const getCategoryPath = (id: Category) =>
   CATEGORIES.find((category) => category.id === id)?.path ?? ROUTES.HOME;
+
+const isTabletUp = () =>
+  window.matchMedia(`(min-width: ${TABLET_BREAKPOINT}px)`).matches;
 
 const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -43,12 +51,32 @@ export const PicturesSlider = () => {
     );
   };
 
+  const handleSideClick = (event: MouseEvent<HTMLElement>) => {
+    const target = event.target as Element;
+
+    if (!swiper || !isTabletUp() || target.closest('a, button')) {
+      return;
+    }
+
+    const { left, width } = event.currentTarget.getBoundingClientRect();
+    const isLeftSide = event.clientX < left + width / 2;
+
+    if (isLeftSide) {
+      swiper.slidePrev();
+    } else {
+      swiper.slideNext();
+    }
+  };
+
   return (
+    // Keyboard users switch slides via the arrow buttons and dots.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <section
       className={
         autoplayEnabled ? styles.root : `${styles.root} ${styles.paused}`
       }
       aria-label="Promotions"
+      onClick={handleSideClick}
     >
       <Swiper
         className={styles.swiper}
@@ -58,8 +86,10 @@ export const PicturesSlider = () => {
         speed={FADE_SPEED}
         slidesPerView={1}
         rewind
-        grabCursor
         keyboard={{ enabled: true }}
+        breakpoints={{
+          [TABLET_BREAKPOINT]: { allowTouchMove: false },
+        }}
         autoplay={{
           enabled: autoplayEnabled,
           delay: AUTOPLAY_DELAY,
@@ -71,23 +101,27 @@ export const PicturesSlider = () => {
       >
         {BANNERS.map((slide, index) => {
           const isActive = index === activeIndex;
+          const slideClasses = [
+            styles.slide,
+            slide.fullBleed && styles.slideFull,
+            isActive && styles.slideActive,
+          ]
+            .filter(Boolean)
+            .join(' ');
+          const visualClasses = [
+            styles.visual,
+            slide.fit === 'contain' && styles.visualContain,
+            slide.fullBleed && styles.visualFull,
+          ]
+            .filter(Boolean)
+            .join(' ');
 
           return (
             <SwiperSlide
               key={slide.id}
-              className={
-                isActive ?
-                  `${styles.slide} ${styles.slideActive}`
-                : styles.slide
-              }
+              className={slideClasses}
             >
-              <div
-                className={
-                  slide.fit === 'contain' ?
-                    `${styles.visual} ${styles.visualContain}`
-                  : styles.visual
-                }
-              >
+              <div className={visualClasses}>
                 <img
                   className={styles.image}
                   src={slide.image}
@@ -120,6 +154,19 @@ export const PicturesSlider = () => {
 
       <div className={styles.controls}>
         <div className={styles.dots}>
+          <button
+            type="button"
+            className={styles.arrow}
+            aria-label="Previous slide"
+            onClick={() => swiper?.slidePrev()}
+          >
+            <Icon
+              src={chevronLeftIcon}
+              alt=""
+              className={styles.arrowIcon}
+            />
+          </button>
+
           {BANNERS.map((slide, index) => (
             <button
               key={slide.id}
@@ -139,6 +186,19 @@ export const PicturesSlider = () => {
               <span className={styles.fill} />
             </button>
           ))}
+
+          <button
+            type="button"
+            className={styles.arrow}
+            aria-label="Next slide"
+            onClick={() => swiper?.slideNext()}
+          >
+            <Icon
+              src={chevronRightIcon}
+              alt=""
+              className={styles.arrowIcon}
+            />
+          </button>
         </div>
       </div>
     </section>
