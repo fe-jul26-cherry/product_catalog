@@ -29,7 +29,7 @@
   gap: 32px;
 
   @include tablet {
-    gap: 24px;
+    gap: 16px;
   }
 
   @include desktop {
@@ -44,7 +44,7 @@
     display: flex;
     align-self: stretch;
     align-items: stretch;
-    gap: 24px;
+    gap: clamp(14px, calc(14px + (100vw - 640px) * 0.05), 24px);
   }
 
   @include desktop {
@@ -52,10 +52,11 @@
   }
 }
 
-.theme {
+.controls {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  gap: 8px;
   margin-right: $header-height-mobile;
   margin-left: auto;
 
