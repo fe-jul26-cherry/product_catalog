@@ -22,6 +22,10 @@ export const IconLink = ({ to, label, count = 0, children }: IconLinkProps) => (
     }
   >
     {children}
-    <Counter value={count} />
+    {count > 0 && (
+      <span className={styles.counter}>
+        <Counter value={count} />
+      </span>
+    )}
   </NavLink>
 );

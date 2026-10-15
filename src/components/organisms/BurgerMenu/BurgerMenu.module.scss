@@ -82,8 +82,15 @@
   flex: 1;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   & + & {
     border-left: 1px solid $color-elements;
   }
+}
+
+.counter {
+  position: absolute;
+  top: 12px;
+  left: calc(50% + 2px);
 }
