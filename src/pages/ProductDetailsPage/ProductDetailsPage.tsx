@@ -11,7 +11,7 @@ import { ProductsSlider } from '@/components/organisms/ProductsSlider';
 import { ProductTechSpecs } from '@/components/organisms/ProductTechSpecs';
 import { ProductVariants } from '@/components/organisms/ProductVariants';
 import { CATEGORIES, getProductPath } from '@/constants';
-import { useAsync } from '@/hooks';
+import { useAsync, useProductActions } from '@/hooks';
 import { getProductDetails, getSuggestedProducts } from '@/services';
 
 import styles from './ProductDetailsPage.module.scss';
@@ -52,6 +52,15 @@ export const ProductDetailsPage = () => {
     navigate(getProductPath(variantId));
   };
 
+  const { isInCart, toggleCart } = useProductActions();
+
+  const handleToggleCart = () => {
+    if (product?.data) {
+      // або product в залежності від того, як у вас названа змінна
+      toggleCart(product.data.product);
+    }
+  };
+
   return (
     <div className={styles.root}>
       <AsyncContent
@@ -81,6 +90,8 @@ export const ProductDetailsPage = () => {
               <ProductVariants
                 product={product.data.details}
                 onVariantChange={handleVariantChange}
+                isInCart={isInCart(product.data.product.itemId)}
+                onToggleCart={handleToggleCart}
               />
             </div>
 

@@ -16,17 +16,22 @@ import type { Product } from '@/types';
 
 interface ProductCardProps {
   product: Product;
+  isInCart: boolean;
+  onToggleCart: () => void;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({
+  product,
+  isInCart,
+  onToggleCart,
+}: ProductCardProps) => {
   const path = getProductPath(product.itemId);
 
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
 
   const handleCartClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    setIsAddedToCart((prev) => !prev);
+    onToggleCart();
   };
 
   const handleFavouriteClick = (event: React.MouseEvent) => {
@@ -75,10 +80,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
       <div className={styles.actions}>
         <Button
-          variant={isAddedToCart ? 'selected' : 'primary'}
+          variant={isInCart ? 'selected' : 'primary'}
           onClick={handleCartClick}
         >
-          {isAddedToCart ? 'Added' : 'Add to cart'}
+          {isInCart ? 'Added' : 'Add to cart'}
         </Button>
 
         <IconButton
