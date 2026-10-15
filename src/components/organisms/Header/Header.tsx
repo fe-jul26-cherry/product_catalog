@@ -4,6 +4,7 @@ import favoriteOutline from '@/assets/icons/favorite-outline.svg';
 import menu from '@/assets/icons/menu.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
 import { Icon } from '@/components/atoms/Icon';
+import { LanguageToggle } from '@/components/atoms/LanguageToggle';
 import { Logo } from '@/components/atoms/Logo';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { IconLink } from '@/components/molecules/IconLink';
@@ -15,6 +16,7 @@ import {
   selectFavoritesCount,
   useCartStore,
   useFavoritesStore,
+  useLanguageStore,
   useThemeStore,
 } from '@/store';
 
@@ -24,6 +26,8 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const language = useLanguageStore((state) => state.language);
+  const toggleLanguage = useLanguageStore((state) => state.toggleLanguage);
   const cartCount = useCartStore(selectCartCount);
   const favoritesCount = useFavoritesStore(selectFavoritesCount);
 
@@ -49,7 +53,11 @@ export const Header = () => {
           </nav>
         </div>
 
-        <div className={styles.theme}>
+        <div className={styles.controls}>
+          <LanguageToggle
+            isUa={language === 'ua'}
+            onToggle={toggleLanguage}
+          />
           <ThemeToggle
             isDark={theme === 'dark'}
             onToggle={toggleTheme}
