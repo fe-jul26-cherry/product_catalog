@@ -210,9 +210,18 @@
 @media (prefers-reduced-motion: reduce) {
   .root,
   .root::after,
+  .image,
   .cartButton,
   .heart {
     transition: none;
+  }
+
+  .root:hover {
+    transform: none;
+  }
+
+  .root:hover .image {
+    transform: none;
   }
 
   .cartButton::before {
