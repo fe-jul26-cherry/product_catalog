@@ -28,7 +28,7 @@
 }
 
 .arrow {
-  filter: brightness(0) invert(1);
+  filter: var(--filter-slider-arrow);
 }
 
 button:disabled {

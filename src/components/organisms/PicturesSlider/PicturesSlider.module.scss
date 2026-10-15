@@ -332,7 +332,7 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .arrowIcon {
-  filter: brightness(0) invert(1);
+  filter: var(--filter-slider-arrow);
   opacity: 0.85;
   transition: opacity $transition;
 

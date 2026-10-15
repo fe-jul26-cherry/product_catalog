@@ -44,7 +44,9 @@
 
   transition:
     transform $transition,
-    box-shadow $transition;
+    box-shadow $transition,
+    border-color $transition;
+  border: 1px solid var(--color-card-border);
 
   &::after {
     content: '';

@@ -9,6 +9,7 @@ import chevronLeftIcon from '@/assets/icons/chevron-left.svg';
 import chevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { BANNERS, CATEGORIES, ROUTES } from '@/constants';
+import { useThemeStore } from '@/store';
 
 import styles from './PicturesSlider.module.scss';
 
@@ -30,6 +31,7 @@ const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const PicturesSlider = () => {
+  const theme = useThemeStore((state) => state.theme);
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoplayEnabled] = useState(() => !prefersReducedMotion());
@@ -100,6 +102,8 @@ export const PicturesSlider = () => {
         onAutoplayTimeLeft={handleTimeLeft}
       >
         {BANNERS.map((slide, index) => {
+          const image =
+            theme === 'light' ? (slide.imageLight ?? slide.image) : slide.image;
           const isActive = index === activeIndex;
           const slideClasses = [
             styles.slide,
@@ -124,7 +128,7 @@ export const PicturesSlider = () => {
               <div className={visualClasses}>
                 <img
                   className={styles.image}
-                  src={slide.image}
+                  src={image}
                   alt={slide.alt}
                   loading={index === 0 ? 'eager' : 'lazy'}
                   draggable={false}
