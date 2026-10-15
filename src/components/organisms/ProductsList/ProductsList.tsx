@@ -17,7 +17,6 @@ export const ProductsList = ({ products }: ProductsListProps) => {
       {products.map((product) => (
         <li key={product.id}>
           <ProductCard
-            key={product.id}
             product={product}
             isInCart={isInCart(product.itemId)}
             onToggleCart={() => toggleCart(product)}

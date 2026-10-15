@@ -56,7 +56,6 @@ export const ProductDetailsPage = () => {
 
   const handleToggleCart = () => {
     if (product?.data) {
-      // або product в залежності від того, як у вас названа змінна
       toggleCart(product.data.product);
     }
   };

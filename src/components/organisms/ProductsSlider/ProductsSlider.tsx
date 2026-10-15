@@ -81,7 +81,6 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
         {products.map((product) => (
           <SwiperSlide key={product.id}>
             <ProductCard
-              key={product.id}
               product={product}
               isInCart={isInCart(product.itemId)}
               onToggleCart={() => toggleCart(product)}
