@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import favoriteFilledIcon from '@/assets/icons/favorite-filled.svg';
 import favoriteOutlineIcon from '@/assets/icons/favorite-outline.svg';
 import { Button } from '@/components/atoms/Button';
@@ -18,20 +16,20 @@ interface ProductVariantsProps {
   product: ProductDetails;
   onVariantChange: (color: string, capacity: string) => void;
   isInCart: boolean;
+  isFavourite: boolean;
   onToggleCart: () => void;
+  onToggleFavourite: () => void;
 }
 export const ProductVariants = ({
   product,
   onVariantChange,
   isInCart,
+  isFavourite,
   onToggleCart,
+  onToggleFavourite,
 }: ProductVariantsProps) => {
-  const [isFavourite, setIsFavourite] = useState(false);
   const handleCartClick = () => {
     onToggleCart();
-  };
-  const handleFavouriteClick = () => {
-    setIsFavourite((prev) => !prev);
   };
   return (
     <div className={styles.root}>
@@ -78,7 +76,7 @@ export const ProductVariants = ({
           aria-label={
             isFavourite ? 'Remove from favourites' : 'Add to favourites'
           }
-          onClick={handleFavouriteClick}
+          onClick={onToggleFavourite}
         >
           <Icon
             src={isFavourite ? favoriteFilledIcon : favoriteOutlineIcon}

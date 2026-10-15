@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import heartFilledIcon from '@/assets/icons/favorite-filled.svg';
@@ -17,17 +16,19 @@ import type { Product } from '@/types';
 interface ProductCardProps {
   product: Product;
   isInCart: boolean;
+  isFavourite: boolean;
   onToggleCart: () => void;
+  onToggleFavourite: () => void;
 }
 
 export const ProductCard = ({
   product,
   isInCart,
+  isFavourite,
   onToggleCart,
+  onToggleFavourite,
 }: ProductCardProps) => {
   const path = getProductPath(product.itemId);
-
-  const [isFavourite, setIsFavourite] = useState(false);
 
   const handleCartClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -36,7 +37,7 @@ export const ProductCard = ({
 
   const handleFavouriteClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    setIsFavourite((prev) => !prev);
+    onToggleFavourite();
   };
 
   return (
@@ -89,7 +90,9 @@ export const ProductCard = ({
         <IconButton
           variant="favourite"
           added={isFavourite}
-          aria-label="Add to favourites"
+          aria-label={
+            isFavourite ? 'Remove from favourites' : 'Add to favourites'
+          }
           onClick={handleFavouriteClick}
         >
           <Icon
