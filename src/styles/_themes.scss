@@ -17,7 +17,10 @@
   --color-c-accessories: #803d4c;
   --color-toggle-start: #905bff;
   --color-toggle-end: #f099b5;
+  --color-team: #0f111c;
+  --color-card-border: transparent;
   --shadow-card: 0 2px 16px rgb(0 0 0 / 40%);
+  --filter-slider-arrow: brightness(0) invert(1);
 }
 
 [data-theme='light'] {
@@ -38,5 +41,7 @@
   --color-c-accessories: #803d4c;
   --color-toggle-start: #f19af3;
   --color-toggle-end: #f099b5;
+  --color-card-border: var(--color-elements);
   --shadow-card: 0 2px 16px rgb(0 0 0 / 10%);
+  --filter-slider-arrow: brightness(0);
 }
