@@ -65,6 +65,7 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
       </div>
 
       <Swiper
+        className={styles.swiperContainer}
         spaceBetween={16}
         slidesPerView={1.2}
         breakpoints={{
@@ -79,7 +80,10 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
         onResize={syncEdges}
       >
         {products.map((product) => (
-          <SwiperSlide key={product.id}>
+          <SwiperSlide
+            className={styles.slider}
+            key={product.id}
+          >
             <ProductCard
               product={product}
               isInCart={isInCart(product.itemId)}

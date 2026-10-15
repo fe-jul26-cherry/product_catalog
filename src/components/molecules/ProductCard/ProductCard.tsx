@@ -80,10 +80,15 @@ export const ProductCard = ({
 
       <div className={styles.actions}>
         <Button
+          className={[styles.cartButton, isInCart && styles.cartButtonAdded]
+            .filter(Boolean)
+            .join(' ')}
           variant={isInCart ? 'selected' : 'primary'}
           onClick={handleCartClick}
         >
-          {isInCart ? 'Added' : 'Add to cart'}
+          {isInCart ?
+            <span className={styles.cartLabelAdded}>Added</span>
+          : 'Add to cart'}
         </Button>
 
         <IconButton
@@ -92,10 +97,16 @@ export const ProductCard = ({
           aria-label="Add to favourites"
           onClick={handleFavouriteClick}
         >
-          <Icon
-            src={isFavourite ? heartFilledIcon : heartIcon}
-            alt="favourite"
-          />
+          <span
+            className={[styles.heart, isFavourite && styles.heartActive]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <Icon
+              src={isFavourite ? heartFilledIcon : heartIcon}
+              alt="favourite"
+            />
+          </span>
         </IconButton>
       </div>
     </article>
