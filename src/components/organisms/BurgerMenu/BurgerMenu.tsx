@@ -4,9 +4,11 @@ import { NavLink } from 'react-router-dom';
 import close from '@/assets/icons/close.svg';
 import favoriteOutline from '@/assets/icons/favorite-outline.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
+import { Counter } from '@/components/atoms/Counter';
 import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
 import { CATEGORIES, ROUTES } from '@/constants';
+import { selectCartCount, useCartStore } from '@/store';
 
 import styles from './BurgerMenu.module.scss';
 
@@ -24,6 +26,8 @@ const getItemClassName = ({ isActive }: { isActive: boolean }) =>
   isActive ? `${styles.item} ${styles.itemActive}` : styles.item;
 
 export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
+  const cartCount = useCartStore(selectCartCount);
+
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -121,6 +125,11 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
             src={shoppingBag}
             alt=""
           />
+          {cartCount > 0 && (
+            <span className={styles.counter}>
+              <Counter value={cartCount} />
+            </span>
+          )}
         </NavLink>
       </div>
     </aside>

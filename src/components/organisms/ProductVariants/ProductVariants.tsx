@@ -17,15 +17,18 @@ import type { ProductDetails } from '@/types';
 interface ProductVariantsProps {
   product: ProductDetails;
   onVariantChange: (color: string, capacity: string) => void;
+  isInCart: boolean;
+  onToggleCart: () => void;
 }
 export const ProductVariants = ({
   product,
   onVariantChange,
+  isInCart,
+  onToggleCart,
 }: ProductVariantsProps) => {
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
   const handleCartClick = () => {
-    setIsAddedToCart((prev) => !prev);
+    onToggleCart();
   };
   const handleFavouriteClick = () => {
     setIsFavourite((prev) => !prev);
@@ -62,11 +65,11 @@ export const ProductVariants = ({
       />
       <div className={styles.actions}>
         <Button
-          variant={isAddedToCart ? 'selected' : 'primary'}
+          variant={isInCart ? 'selected' : 'primary'}
           className={styles.addToCart}
           onClick={handleCartClick}
         >
-          {isAddedToCart ? 'Added' : 'Add to cart'}
+          {isInCart ? 'Added' : 'Add to cart'}
         </Button>
         <IconButton
           variant="favourite"

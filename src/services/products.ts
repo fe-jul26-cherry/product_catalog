@@ -6,6 +6,7 @@ const SLIDER_SIZE = 10;
 
 export interface ProductWithDetails {
   category: Category;
+  product: Product;
   details: ProductDetails;
 }
 
@@ -107,5 +108,5 @@ export const getProductDetails = async (
   const list = await getDetailsList(product.category);
   const details = list.find((item) => item.id === itemId);
 
-  return details ? { category: product.category, details } : null;
+  return details ? { category: product.category, product, details } : null;
 };

@@ -6,6 +6,7 @@ import chevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { IconButton } from '@/components/atoms/IconButton';
 import { ProductCard } from '@/components/molecules/ProductCard';
+import { useProductActions } from '@/hooks';
 
 import styles from './ProductsSlider.module.scss';
 
@@ -23,6 +24,7 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const { isInCart, toggleCart } = useProductActions();
 
   const syncEdges = (instance: SwiperInstance) => {
     setIsBeginning(instance.isBeginning);
@@ -78,7 +80,11 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
       >
         {products.map((product) => (
           <SwiperSlide key={product.id}>
-            <ProductCard product={product} />
+            <ProductCard
+              product={product}
+              isInCart={isInCart(product.itemId)}
+              onToggleCart={() => toggleCart(product)}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

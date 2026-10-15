@@ -10,7 +10,7 @@ import { IconLink } from '@/components/molecules/IconLink';
 import { NavItem } from '@/components/molecules/NavItem';
 import { BurgerMenu } from '@/components/organisms/BurgerMenu';
 import { CATEGORIES, ROUTES } from '@/constants';
-import { useThemeStore } from '@/store';
+import { useThemeStore, selectCartCount, useCartStore } from '@/store';
 
 import styles from './Header.module.scss';
 
@@ -18,6 +18,7 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const cartCount = useCartStore(selectCartCount);
 
   return (
     <header className={styles.root}>
@@ -62,6 +63,7 @@ export const Header = () => {
           <IconLink
             to={ROUTES.CART}
             label="Cart"
+            count={cartCount}
           >
             <Icon
               src={shoppingBag}
