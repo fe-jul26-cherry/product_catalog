@@ -10,7 +10,13 @@ import { IconLink } from '@/components/molecules/IconLink';
 import { NavItem } from '@/components/molecules/NavItem';
 import { BurgerMenu } from '@/components/organisms/BurgerMenu';
 import { CATEGORIES, ROUTES } from '@/constants';
-import { useThemeStore, selectCartCount, useCartStore } from '@/store';
+import {
+  selectCartCount,
+  selectFavoritesCount,
+  useCartStore,
+  useFavoritesStore,
+  useThemeStore,
+} from '@/store';
 
 import styles from './Header.module.scss';
 
@@ -19,6 +25,7 @@ export const Header = () => {
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const cartCount = useCartStore(selectCartCount);
+  const favoritesCount = useFavoritesStore(selectFavoritesCount);
 
   return (
     <header className={styles.root}>
@@ -53,6 +60,7 @@ export const Header = () => {
           <IconLink
             to={ROUTES.FAVORITES}
             label="Favourites"
+            count={favoritesCount}
           >
             <Icon
               src={favoriteOutline}

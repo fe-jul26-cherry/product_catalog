@@ -24,7 +24,8 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
-  const { isInCart, toggleCart } = useProductActions();
+  const { isInCart, isFavourite, toggleCart, toggleFavourite } =
+    useProductActions();
 
   const syncEdges = (instance: SwiperInstance) => {
     setIsBeginning(instance.isBeginning);
@@ -83,7 +84,9 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
             <ProductCard
               product={product}
               isInCart={isInCart(product.itemId)}
+              isFavourite={isFavourite(product.itemId)}
               onToggleCart={() => toggleCart(product)}
+              onToggleFavourite={() => toggleFavourite(product)}
             />
           </SwiperSlide>
         ))}

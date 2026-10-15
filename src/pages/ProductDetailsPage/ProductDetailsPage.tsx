@@ -52,11 +52,18 @@ export const ProductDetailsPage = () => {
     navigate(getProductPath(variantId));
   };
 
-  const { isInCart, toggleCart } = useProductActions();
+  const { isInCart, isFavourite, toggleCart, toggleFavourite } =
+    useProductActions();
 
   const handleToggleCart = () => {
     if (product?.data) {
       toggleCart(product.data.product);
+    }
+  };
+
+  const handleToggleFavourite = () => {
+    if (product?.data) {
+      toggleFavourite(product.data.product);
     }
   };
 
@@ -90,7 +97,9 @@ export const ProductDetailsPage = () => {
                 product={product.data.details}
                 onVariantChange={handleVariantChange}
                 isInCart={isInCart(product.data.product.itemId)}
+                isFavourite={isFavourite(product.data.product.itemId)}
                 onToggleCart={handleToggleCart}
+                onToggleFavourite={handleToggleFavourite}
               />
             </div>
 
