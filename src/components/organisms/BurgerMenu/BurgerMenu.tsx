@@ -8,7 +8,12 @@ import { Counter } from '@/components/atoms/Counter';
 import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
 import { CATEGORIES, ROUTES } from '@/constants';
-import { selectCartCount, useCartStore } from '@/store';
+import {
+  selectCartCount,
+  selectFavoritesCount,
+  useCartStore,
+  useFavoritesStore,
+} from '@/store';
 
 import styles from './BurgerMenu.module.scss';
 
@@ -27,6 +32,7 @@ const getItemClassName = ({ isActive }: { isActive: boolean }) =>
 
 export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
   const cartCount = useCartStore(selectCartCount);
+  const favoritesCount = useFavoritesStore(selectFavoritesCount);
 
   useEffect(() => {
     if (!isOpen) {
@@ -114,6 +120,11 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
             src={favoriteOutline}
             alt=""
           />
+          {favoritesCount > 0 && (
+            <span className={styles.counter}>
+              <Counter value={favoritesCount} />
+            </span>
+          )}
         </NavLink>
         <NavLink
           to={ROUTES.CART}

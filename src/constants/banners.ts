@@ -18,7 +18,7 @@ export const BANNERS: BannerSlide[] = [
   {
     id: 'banner_phone',
     category: 'phones',
-    image: 'img/banner_phone.jpg',
+    image: 'img/slider/banner_phone.jpg',
     alt: 'Three smartphones showing planets above a mountain landscape',
     eyebrow: 'Next level',
     title: 'See beyond the screen',
@@ -29,7 +29,7 @@ export const BANNERS: BannerSlide[] = [
   {
     id: 'banner_tablet',
     category: 'tablets',
-    image: 'img/banner_tablet.jpg',
+    image: 'img/slider/banner_tablet.jpg',
     alt: 'Three tablets on a rock ledge in front of a moonlit mountain range',
     eyebrow: 'Tablets',
     title: 'Big canvas, bigger ideas',
@@ -41,7 +41,7 @@ export const BANNERS: BannerSlide[] = [
   {
     id: 'banner_watch',
     category: 'accessories',
-    image: 'img/banner_watch.jpg',
+    image: 'img/slider/banner_watch.jpg',
     alt: 'Three smartwatches with green straps against a green mountain night sky',
     eyebrow: 'Accessories',
     title: 'Style that keeps time',

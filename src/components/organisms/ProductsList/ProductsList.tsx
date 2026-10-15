@@ -10,7 +10,8 @@ interface ProductsListProps {
 }
 
 export const ProductsList = ({ products }: ProductsListProps) => {
-  const { isInCart, toggleCart } = useProductActions();
+  const { isInCart, isFavourite, toggleCart, toggleFavourite } =
+    useProductActions();
 
   return (
     <ul className={styles.root}>
@@ -19,7 +20,9 @@ export const ProductsList = ({ products }: ProductsListProps) => {
           <ProductCard
             product={product}
             isInCart={isInCart(product.itemId)}
+            isFavourite={isFavourite(product.itemId)}
             onToggleCart={() => toggleCart(product)}
+            onToggleFavourite={() => toggleFavourite(product)}
           />
         </li>
       ))}
