@@ -8,6 +8,10 @@
   width: 176px;
 }
 
+.full {
+  width: 100%;
+}
+
 .description {
   @include small;
   color: $color-secondary;
@@ -36,9 +40,23 @@
   }
 }
 
+.invalid,
+.invalid:hover {
+  border-color: $color-red;
+}
+
 .focus,
 .focus:hover {
   border-color: $color-accent;
+}
+
+.placeholder {
+  color: $color-secondary;
+}
+
+.error {
+  @include small;
+  color: $color-red;
 }
 
 .arrow {
@@ -62,8 +80,10 @@
   left: 0;
   right: 0;
   z-index: 10;
+  max-height: 240px;
   margin: 0;
   padding: 0;
+  overflow-y: auto;
   list-style: none;
   background: $color-bg;
   border: 1px solid $color-elements;
