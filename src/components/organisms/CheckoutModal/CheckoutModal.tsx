@@ -1,18 +1,13 @@
-import { useId, useState } from 'react';
+import { useId } from 'react';
 
 import { Button } from '@/components/atoms/Button';
 import { Modal } from '@/components/molecules/Modal';
-import {
-  CHECKOUT_FIELDS,
-  CHECKOUT_INITIAL_VALUES,
-  DELIVERY_OPTIONS,
-} from '@/constants';
-import { validateCheckout } from '@/utils';
+import { CHECKOUT_FIELDS, DELIVERY_OPTIONS } from '@/constants';
+import { useCheckoutForm } from '@/hooks';
 
 import styles from './CheckoutModal.module.scss';
 
-import type { CheckoutErrors, CheckoutFormValues } from '@/types';
-import type { ChangeEvent, FormEvent } from 'react';
+import type { CheckoutFormValues } from '@/types';
 
 interface CheckoutModalProps {
   total: number;
@@ -28,41 +23,8 @@ export const CheckoutModal = ({
   onClose,
 }: CheckoutModalProps) => {
   const formId = useId();
-  const [values, setValues] = useState<CheckoutFormValues>(
-    CHECKOUT_INITIAL_VALUES,
-  );
-  const [errors, setErrors] = useState<CheckoutErrors>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-
-    setValues((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: undefined }));
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const nextErrors = validateCheckout(values);
-
-    setErrors(nextErrors);
-
-    const firstInvalid = CHECKOUT_FIELDS.find(({ name }) => nextErrors[name]);
-
-    if (firstInvalid) {
-      const element = event.currentTarget.elements.namedItem(firstInvalid.name);
-
-      if (element instanceof HTMLElement) {
-        element.focus();
-      }
-
-      return;
-    }
-
-    onSubmit(values);
-    setIsSubmitted(true);
-  };
+  const { values, errors, isSubmitted, handleChange, handleSubmit } =
+    useCheckoutForm(onSubmit);
 
   if (isSubmitted) {
     return (
