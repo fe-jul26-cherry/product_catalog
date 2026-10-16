@@ -1,6 +1,5 @@
-import { useId } from 'react';
-
 import { Button } from '@/components/atoms/Button';
+import { FormField } from '@/components/molecules/FormField';
 import { Modal } from '@/components/molecules/Modal';
 import { CHECKOUT_FIELDS, DELIVERY_OPTIONS } from '@/constants';
 import { useCheckoutForm } from '@/hooks';
@@ -22,7 +21,6 @@ export const CheckoutModal = ({
   onSubmit,
   onClose,
 }: CheckoutModalProps) => {
-  const formId = useId();
   const { values, errors, isSubmitted, handleChange, handleSubmit } =
     useCheckoutForm(onSubmit);
 
@@ -62,41 +60,18 @@ export const CheckoutModal = ({
         noValidate
         onSubmit={handleSubmit}
       >
-        {CHECKOUT_FIELDS.map(({ name, label, type, autoComplete }) => {
-          const error = errors[name];
-          const errorId = `${formId}-${name}`;
-
-          return (
-            <label
-              key={name}
-              className={styles.field}
-            >
-              <span className={styles.label}>{label}</span>
-              <input
-                className={styles.input}
-                name={name}
-                type={type}
-                autoComplete={autoComplete}
-                value={values[name]}
-                aria-invalid={Boolean(error)}
-                aria-describedby={error ? errorId : undefined}
-                onChange={handleChange}
-              />
-              {error && (
-                <span
-                  id={errorId}
-                  className={styles.error}
-                  role="alert"
-                >
-                  {error}
-                </span>
-              )}
-            </label>
-          );
-        })}
+        {CHECKOUT_FIELDS.map((field) => (
+          <FormField
+            key={field.name}
+            {...field}
+            value={values[field.name]}
+            error={errors[field.name]}
+            onChange={handleChange}
+          />
+        ))}
 
         <fieldset className={styles.delivery}>
-          <legend className={styles.label}>Delivery</legend>
+          <legend className={styles.legend}>Delivery</legend>{' '}
           <div className={styles.options}>
             {DELIVERY_OPTIONS.map(({ value, label }) => (
               <label
