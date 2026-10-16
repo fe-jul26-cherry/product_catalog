@@ -1,1 +1,0 @@
-import{j as c}from"./index-w9_DKt9i.js";const e="_root_1px19_1",t="_price_1px19_8",i="_fullPrice_1px19_22",o={root:e,price:t,fullPrice:i},p=({price:r,fullPrice:s})=>c.jsxs("p",{className:o.root,children:[c.jsxs("span",{className:o.price,children:["$",r]}),s&&s!==r&&c.jsxs("s",{className:o.fullPrice,children:["$",s]})]});export{p as P};

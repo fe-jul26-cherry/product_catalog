@@ -1,0 +1,1 @@
+import{j as s,I as l,f as a}from"./index-DB_sf7um.js";const e="_link_flr97_1",r="_icon_flr97_22",n={link:e,icon:r},j=({className:o,children:t,...c})=>{const i=[n.link,o].filter(Boolean).join(" ");return s.jsxs("button",{type:"button",className:i,...c,children:[s.jsx(l,{src:a,alt:"",className:n.icon}),s.jsx("span",{children:t})]})};export{j as B};

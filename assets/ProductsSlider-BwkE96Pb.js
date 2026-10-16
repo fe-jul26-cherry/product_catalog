@@ -1,1 +1,0 @@
-import{j as s}from"./index-w9_DKt9i.js";import{P as a}from"./ProductCard-CjWIjNmW.js";const c="_root_jbbqu_1",o={root:c},m=({title:t,products:e})=>s.jsxs("section",{className:o.root,children:[s.jsx("h2",{className:o.title,children:t}),s.jsx("ul",{className:o.track,children:e.map(r=>s.jsx("li",{className:o.slide,children:s.jsx(a,{product:r})},r.id))})]});export{m as P};

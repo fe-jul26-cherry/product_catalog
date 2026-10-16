@@ -6,6 +6,44 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
+    <link
+      rel="icon"
+      type="image/png"
+      href="favicon/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link
+      rel="shortcut icon"
+      href="favicon/favicon.ico"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="manifest"
+      href="favicon/site.webmanifest"
+    />
+    <meta
+      name="theme-color"
+      content="#0f1121"
+    />
+    <script>
+      try {
+        var saved = JSON.parse(localStorage.getItem('theme'));
+        if (saved && saved.state && saved.state.theme) {
+          document.documentElement.dataset.theme = saved.state.theme;
+        }
+      } catch (error) {}
+      try {
+        var lang = JSON.parse(localStorage.getItem('language'));
+        if (lang && lang.state && lang.state.language) {
+          document.documentElement.lang =
+            lang.state.language === 'ua' ? 'uk' : 'en';
+        }
+      } catch (error) {}
+    </script>
     <title>Phone catalog</title>
     <style>
       html {
@@ -46,8 +84,8 @@
         }
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-w9_DKt9i.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-C6r0IkMn.css">
+    <script type="module" crossorigin src="./assets/index-DB_sf7um.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-cQ4C-pIn.css">
   </head>
   <body>
     <div id="root">

@@ -1,1 +1,0 @@
-import{j as o}from"./index-w9_DKt9i.js";import{P as r}from"./ProductCard-CjWIjNmW.js";const i="_root_msxd8_1",m={root:i},x=({products:t})=>o.jsx("ul",{className:m.root,children:t.map(s=>o.jsx("li",{children:o.jsx(r,{product:s})},s.id))});export{x as P};
