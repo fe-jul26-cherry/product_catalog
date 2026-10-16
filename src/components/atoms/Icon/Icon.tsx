@@ -1,3 +1,31 @@
+import chevronDownLightIcon from '@/assets/icons/chevron-down-light.svg';
+import chevronDownIcon from '@/assets/icons/chevron-down.svg';
+import chevronLeftLightIcon from '@/assets/icons/chevron-left-light.svg';
+import chevronLeftIcon from '@/assets/icons/chevron-left.svg';
+import chevronRightLightIcon from '@/assets/icons/chevron-right-light.svg';
+import chevronRightIcon from '@/assets/icons/chevron-right.svg';
+import chevronUpLightIcon from '@/assets/icons/chevron-up-light.svg';
+import chevronUpIcon from '@/assets/icons/chevron-up.svg';
+import closeLightIcon from '@/assets/icons/close-light.svg';
+import closeIcon from '@/assets/icons/close.svg';
+import favoriteFilledLightIcon from '@/assets/icons/favorite-filled-light.svg';
+import favoriteFilledIcon from '@/assets/icons/favorite-filled.svg';
+import favoriteOutlineLightIcon from '@/assets/icons/favorite-outline-light.svg';
+import favoriteOutlineIcon from '@/assets/icons/favorite-outline.svg';
+import homeLightIcon from '@/assets/icons/home-light.svg';
+import homeIcon from '@/assets/icons/home.svg';
+import menuLightIcon from '@/assets/icons/menu-light.svg';
+import menuIcon from '@/assets/icons/menu.svg';
+import minusLightIcon from '@/assets/icons/minus-light.svg';
+import minusIcon from '@/assets/icons/minus.svg';
+import plusLightIcon from '@/assets/icons/plus-light.svg';
+import plusIcon from '@/assets/icons/plus.svg';
+import searchLightIcon from '@/assets/icons/search-light.svg';
+import searchIcon from '@/assets/icons/search.svg';
+import shoppingBagLightIcon from '@/assets/icons/shopping-bag-light.svg';
+import shoppingBagIcon from '@/assets/icons/shopping-bag.svg';
+import { useThemeStore } from '@/store';
+
 import styles from './Icon.module.scss';
 
 type Size = 'sm' | 'lg';
@@ -9,15 +37,33 @@ interface IconProps {
   className?: string;
 }
 
+const LIGHT_THEME_ICONS: Record<string, string> = {
+  [chevronDownIcon]: chevronDownLightIcon,
+  [chevronLeftIcon]: chevronLeftLightIcon,
+  [chevronRightIcon]: chevronRightLightIcon,
+  [chevronUpIcon]: chevronUpLightIcon,
+  [closeIcon]: closeLightIcon,
+  [favoriteFilledIcon]: favoriteFilledLightIcon,
+  [favoriteOutlineIcon]: favoriteOutlineLightIcon,
+  [homeIcon]: homeLightIcon,
+  [menuIcon]: menuLightIcon,
+  [minusIcon]: minusLightIcon,
+  [plusIcon]: plusLightIcon,
+  [searchIcon]: searchLightIcon,
+  [shoppingBagIcon]: shoppingBagLightIcon,
+};
+
 export const Icon = ({ src, alt = '', size = 'sm', className }: IconProps) => {
+  const theme = useThemeStore((state) => state.theme);
   const classes = [styles.icon, styles[size], className]
     .filter(Boolean)
     .join(' ');
+  const iconSrc = theme === 'light' ? (LIGHT_THEME_ICONS[src] ?? src) : src;
 
   return (
     <img
       className={classes}
-      src={src}
+      src={iconSrc}
       alt={alt}
     />
   );

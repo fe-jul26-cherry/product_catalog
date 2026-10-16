@@ -4,15 +4,20 @@ import styles from './ErrorMessage.module.scss';
 
 interface ErrorMessageProps {
   message: string;
+  retryLabel?: string;
   onRetry?: () => void;
 }
 
-export const ErrorMessage = ({ message, onRetry }: ErrorMessageProps) => (
+export const ErrorMessage = ({
+  message,
+  retryLabel,
+  onRetry,
+}: ErrorMessageProps) => (
   <div
     className={styles.root}
     role="alert"
   >
     <p className={styles.text}>{message}</p>
-    {onRetry && <Button onClick={onRetry}>Try again</Button>}
+    {onRetry && retryLabel && <Button onClick={onRetry}>{retryLabel}</Button>}
   </div>
 );

@@ -3,15 +3,26 @@ import { Button } from '@/components/atoms/Button';
 import styles from './CartSummary.module.scss';
 
 interface CartSummaryProps {
-  total: number;
-  count: number;
+  totalLabel: string;
+  countLabel: string;
+  checkoutLabel: string;
   onCheckout: () => void;
 }
 
-export const CartSummary = ({ total, count, onCheckout }: CartSummaryProps) => (
+export const CartSummary = ({
+  totalLabel,
+  countLabel,
+  checkoutLabel,
+  onCheckout,
+}: CartSummaryProps) => (
   <aside className={styles.root}>
-    <p className={styles.total}>${total}</p>
-    <p className={styles.count}>Total for {count} items</p>
-    <Button onClick={onCheckout}>Checkout</Button>
+    <p className={styles.total}>{totalLabel}</p>
+    <p className={styles.count}>{countLabel}</p>
+    <Button
+      className={styles.button}
+      onClick={onCheckout}
+    >
+      {checkoutLabel}
+    </Button>
   </aside>
 );

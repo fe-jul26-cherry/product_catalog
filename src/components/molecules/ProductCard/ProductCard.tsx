@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import heartFilledIcon from '@/assets/icons/favorite-filled.svg';
@@ -14,24 +13,48 @@ import styles from './ProductCard.module.scss';
 
 import type { Product } from '@/types';
 
-interface ProductCardProps {
-  product: Product;
+export interface ProductCardLabels {
+  screen: string;
+  capacity: string;
+  ram: string;
+  addToCart: string;
+  added: string;
+  addToFavourites: string;
+  removeFromFavourites: string;
+  favourite: string;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
-  const path = getProductPath(product.itemId);
+interface ProductCardProps {
+  product: Product;
+  labels: ProductCardLabels;
+  formatValue: (value: string) => string;
+  formatPrice: (value: number) => string;
+  isInCart: boolean;
+  isFavourite: boolean;
+  onToggleCart: () => void;
+  onToggleFavourite: () => void;
+}
 
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
-  const [isFavourite, setIsFavourite] = useState(false);
+export const ProductCard = ({
+  product,
+  labels,
+  formatValue,
+  formatPrice,
+  isInCart,
+  isFavourite,
+  onToggleCart,
+  onToggleFavourite,
+}: ProductCardProps) => {
+  const path = getProductPath(product.itemId);
 
   const handleCartClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    setIsAddedToCart((prev) => !prev);
+    onToggleCart();
   };
 
   const handleFavouriteClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    setIsFavourite((prev) => !prev);
+    onToggleFavourite();
   };
 
   return (
@@ -60,6 +83,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <ProductPrice
           price={product.price}
           fullPrice={product.fullPrice}
+          format={formatPrice}
         />
       </div>
 
@@ -67,30 +91,43 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
       <ProductSpecs
         specs={[
-          { label: 'Screen', value: product.screen },
-          { label: 'Capacity', value: product.capacity },
-          { label: 'RAM', value: product.ram },
+          { label: labels.screen, value: product.screen },
+          { label: labels.capacity, value: formatValue(product.capacity) },
+          { label: labels.ram, value: formatValue(product.ram) },
         ]}
       />
 
       <div className={styles.actions}>
         <Button
-          variant={isAddedToCart ? 'selected' : 'primary'}
+          className={[styles.cartButton, isInCart && styles.cartButtonAdded]
+            .filter(Boolean)
+            .join(' ')}
+          variant={isInCart ? 'selected' : 'primary'}
           onClick={handleCartClick}
         >
-          {isAddedToCart ? 'Added' : 'Add to cart'}
+          {isInCart ?
+            <span className={styles.cartLabelAdded}>{labels.added}</span>
+          : labels.addToCart}
         </Button>
 
         <IconButton
           variant="favourite"
           added={isFavourite}
-          aria-label="Add to favourites"
+          aria-label={
+            isFavourite ? labels.removeFromFavourites : labels.addToFavourites
+          }
           onClick={handleFavouriteClick}
         >
-          <Icon
-            src={isFavourite ? heartFilledIcon : heartIcon}
-            alt="favourite"
-          />
+          <span
+            className={[styles.heart, isFavourite && styles.heartActive]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <Icon
+              src={isFavourite ? heartFilledIcon : heartIcon}
+              alt={labels.favourite}
+            />
+          </span>
         </IconButton>
       </div>
     </article>

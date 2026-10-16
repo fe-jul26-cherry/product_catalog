@@ -1,15 +1,17 @@
 import { client } from './fetchClient';
 
-import type { Category, Product, ProductDetails } from '@/types';
+import type { Category, Language, Product, ProductDetails } from '@/types';
 
 const SLIDER_SIZE = 10;
 
 export interface ProductWithDetails {
   category: Category;
+  product: Product;
   details: ProductDetails;
 }
 
 let productsRequest: Promise<Product[]> | null = null;
+const detailsRequests = new Map<string, Promise<ProductDetails[]>>();
 
 export const getProducts = (): Promise<Product[]> => {
   if (!productsRequest) {
@@ -20,6 +22,30 @@ export const getProducts = (): Promise<Product[]> => {
   }
 
   return productsRequest;
+};
+
+const getDetailsFile = (category: Category, language: Language) =>
+  language === 'ua' ? `/${category}.ua.json` : `/${category}.json`;
+
+const getDetailsList = (
+  category: Category,
+  language: Language,
+): Promise<ProductDetails[]> => {
+  const file = getDetailsFile(category, language);
+  const cached = detailsRequests.get(file);
+
+  if (cached) {
+    return cached;
+  }
+
+  const request = client.get<ProductDetails[]>(file).catch((error) => {
+    detailsRequests.delete(file);
+    throw error;
+  });
+
+  detailsRequests.set(file, request);
+
+  return request;
 };
 
 export const getProductsByCategory = async (
@@ -45,12 +71,12 @@ export const getHotPriceProducts = async (): Promise<Product[]> => {
 };
 
 export const getSuggestedProducts = async (
-  itemId: string,
+  namespaceId: string,
 ): Promise<Product[]> => {
   const products = await getProducts();
 
   return products
-    .filter((product) => product.itemId !== itemId)
+    .filter((product) => !product.itemId.startsWith(`${namespaceId}-`))
     .map((product) => ({ product, order: Math.random() }))
     .sort((a, b) => a.order - b.order)
     .slice(0, SLIDER_SIZE)
@@ -76,6 +102,7 @@ export const getCategoryCounts = async (): Promise<
 
 export const getProductDetails = async (
   itemId: string,
+  language: Language,
 ): Promise<ProductWithDetails | null> => {
   const products = await getProducts();
   const product = products.find((item) => item.itemId === itemId);
@@ -84,8 +111,8 @@ export const getProductDetails = async (
     return null;
   }
 
-  const list = await client.get<ProductDetails[]>(`/${product.category}.json`);
+  const list = await getDetailsList(product.category, language);
   const details = list.find((item) => item.id === itemId);
 
-  return details ? { category: product.category, details } : null;
+  return details ? { category: product.category, product, details } : null;
 };

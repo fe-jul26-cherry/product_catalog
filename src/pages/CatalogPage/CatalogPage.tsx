@@ -6,13 +6,8 @@ import { Breadcrumbs } from '@/components/molecules/Breadcrumbs';
 import { Pagination } from '@/components/molecules/Pagination';
 import { CatalogControls } from '@/components/organisms/CatalogControls';
 import { ProductsList } from '@/components/organisms/ProductsList';
-import {
-  CATEGORIES,
-  DEFAULT_PER_PAGE,
-  DEFAULT_SORT,
-  LOAD_MORE_STEP,
-} from '@/constants';
-import { useAsync, useLoadMore } from '@/hooks';
+import { DEFAULT_PER_PAGE, DEFAULT_SORT, LOAD_MORE_STEP } from '@/constants';
+import { useAsync, useLoadMore, useTranslation } from '@/hooks';
 import { getProductsByCategory } from '@/services';
 
 import styles from './CatalogPage.module.scss';
@@ -24,6 +19,7 @@ interface CatalogPageProps {
 }
 
 export const CatalogPage = ({ category }: CatalogPageProps) => {
+  const { t } = useTranslation();
   const [sortBy, setSortBy] = useState<SortBy>(DEFAULT_SORT);
   const [perPage, setPerPage] = useState<PerPage>(DEFAULT_PER_PAGE);
   const [page, setPage] = useState(1);
@@ -44,7 +40,7 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
   const load = useCallback(() => getProductsByCategory(category), [category]);
   const { data: products, error, isLoading, retry } = useAsync(load);
 
-  const info = CATEGORIES.find(({ id }) => id === category);
+  const title = t.categories[category];
 
   const filteredProducts = products ?? [];
 
@@ -80,10 +76,16 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
 
   return (
     <div className={styles.root}>
-      <Breadcrumbs items={[{ label: info?.title ?? category }]} />
+      <Breadcrumbs
+        items={[{ label: title }]}
+        label={t.header.breadcrumbs}
+        homeLabel={t.common.home}
+      />
 
-      <h1 className={styles.title}>{info?.title}</h1>
-      {products && <p className={styles.count}>{products.length} models</p>}
+      <h1 className={styles.title}>{title}</h1>
+      {products && (
+        <p className={styles.count}>{t.catalog.models(products.length)}</p>
+      )}
 
       <CatalogControls
         sortBy={sortBy}
@@ -96,11 +98,10 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
         isLoading={isLoading}
         error={error}
         onRetry={retry}
+        labels={t.status}
       >
         {visibleProducts.length === 0 ?
-          <p className={styles.empty}>
-            There are no models in this category yet.
-          </p>
+          <p className={styles.empty}>{t.catalog.empty}</p>
         : <>
             <ProductsList products={visibleProducts} />
 
@@ -113,6 +114,11 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
                 current={page}
                 total={totalPages}
                 onChange={setPage}
+                labels={{
+                  pagination: t.catalog.pagination,
+                  previous: t.catalog.previousPage,
+                  next: t.catalog.nextPage,
+                }}
               />
             )}
           </>

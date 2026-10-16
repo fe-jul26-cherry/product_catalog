@@ -3,7 +3,7 @@ import { AsyncContent } from '@/components/molecules/AsyncContent';
 import { Categories } from '@/components/organisms/Categories';
 import { PicturesSlider } from '@/components/organisms/PicturesSlider';
 import { ProductsSlider } from '@/components/organisms/ProductsSlider';
-import { useAsync } from '@/hooks';
+import { useAsync, useTranslation } from '@/hooks';
 import {
   getCategoryCounts,
   getHotPriceProducts,
@@ -13,13 +13,14 @@ import {
 import styles from './HomePage.module.scss';
 
 export const HomePage = () => {
+  const { t } = useTranslation();
   const newProducts = useAsync(getNewProducts);
   const counts = useAsync(getCategoryCounts);
   const hotProducts = useAsync(getHotPriceProducts);
 
   return (
     <div className={styles.root}>
-      <h1 className="visually-hidden">Product Catalog</h1>
+      <h1 className={styles.title}>{t.home.title}</h1>
       <Reveal>
         <PicturesSlider />
       </Reveal>
@@ -28,9 +29,10 @@ export const HomePage = () => {
         isLoading={newProducts.isLoading}
         error={newProducts.error}
         onRetry={newProducts.retry}
+        labels={t.status}
       >
         <ProductsSlider
-          title="Brand new models"
+          title={t.home.newModels}
           products={newProducts.data ?? []}
         />
       </AsyncContent>
@@ -39,6 +41,7 @@ export const HomePage = () => {
         isLoading={counts.isLoading}
         error={counts.error}
         onRetry={counts.retry}
+        labels={t.status}
       >
         {counts.data && <Categories counts={counts.data} />}
       </AsyncContent>
@@ -47,9 +50,10 @@ export const HomePage = () => {
         isLoading={hotProducts.isLoading}
         error={hotProducts.error}
         onRetry={hotProducts.retry}
+        labels={t.status}
       >
         <ProductsSlider
-          title="Hot prices"
+          title={t.home.hotPrices}
           products={hotProducts.data ?? []}
         />
       </AsyncContent>

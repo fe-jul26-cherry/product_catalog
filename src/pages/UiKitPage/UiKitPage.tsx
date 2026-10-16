@@ -235,7 +235,7 @@ export const UiKitPage = () => {
         figma="У Figma не знайдено"
       >
         <Case label="default">
-          <Loader />
+          <Loader label="Loading" />
         </Case>
       </Specimen>
 

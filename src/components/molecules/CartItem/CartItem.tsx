@@ -9,6 +9,10 @@ import type { CartItem as CartItemType } from '@/types';
 
 interface CartItemProps {
   item: CartItemType;
+  formatPrice: (value: number) => string;
+  removeLabel: string;
+  decreaseLabel: string;
+  increaseLabel: string;
   onDecrease: () => void;
   onIncrease: () => void;
   onRemove: () => void;
@@ -16,6 +20,10 @@ interface CartItemProps {
 
 export const CartItem = ({
   item,
+  formatPrice,
+  removeLabel,
+  decreaseLabel,
+  increaseLabel,
   onDecrease,
   onIncrease,
   onRemove,
@@ -24,12 +32,12 @@ export const CartItem = ({
     <button
       type="button"
       className={styles.remove}
-      aria-label="Remove from cart"
+      aria-label={removeLabel}
       onClick={onRemove}
     >
       <Icon
         src={closeIcon}
-        alt="Close"
+        alt=""
       />
     </button>
     <img
@@ -41,12 +49,17 @@ export const CartItem = ({
     <div className={styles.counter}>
       <QuantityCounter
         value={item.quantity}
+        decreaseLabel={decreaseLabel}
+        increaseLabel={increaseLabel}
         onDecrease={onDecrease}
         onIncrease={onIncrease}
       />
     </div>
     <div className={styles.price}>
-      <ProductPrice price={item.product.price * item.quantity} />
+      <ProductPrice
+        price={item.product.price * item.quantity}
+        format={formatPrice}
+      />
     </div>
   </article>
 );

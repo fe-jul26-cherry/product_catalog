@@ -1,0 +1,91 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/typography' as *;
+
+.summary {
+  padding-bottom: 16px;
+  border-bottom: 1px solid $color-elements;
+  text-align: center;
+}
+
+.total {
+  @include h2;
+}
+
+.count {
+  @include body;
+  color: $color-secondary;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.legend {
+  @include small;
+  padding: 0;
+  margin-bottom: 8px;
+  color: $color-secondary;
+}
+
+.delivery {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $color-elements;
+  background: $color-bg;
+  transition: border-color $transition;
+
+  &.optionActive {
+    border-color: $color-accent;
+  }
+}
+
+.optionHeader {
+  @include body;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 16px;
+  cursor: pointer;
+}
+
+.optionBody {
+  padding: 0 16px 16px 16px;
+}
+
+.radio {
+  margin: 0;
+  accent-color: $color-accent;
+}
+
+.submit {
+  width: 100%;
+  height: 48px;
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.successText {
+  @include h4;
+  text-align: center;
+}

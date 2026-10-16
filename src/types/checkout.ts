@@ -1,0 +1,14 @@
+export type DeliveryMethod = 'branch' | 'postomat' | 'courier';
+
+export interface CheckoutFormValues {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  address: string;
+  branch: string;
+  postomat: string;
+  delivery: DeliveryMethod;
+}
+
+export type CheckoutErrors = Partial<Record<keyof CheckoutFormValues, string>>;

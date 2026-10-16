@@ -1,3 +1,6 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
 .icon {
   display: inline-block;
   flex-shrink: 0;
@@ -8,6 +11,11 @@
 .sm {
   width: 16px;
   height: 16px;
+
+  @include tablet {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .lg {

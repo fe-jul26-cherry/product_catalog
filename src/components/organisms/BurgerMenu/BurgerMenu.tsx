@@ -4,9 +4,17 @@ import { NavLink } from 'react-router-dom';
 import close from '@/assets/icons/close.svg';
 import favoriteOutline from '@/assets/icons/favorite-outline.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
+import { Counter } from '@/components/atoms/Counter';
 import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
 import { CATEGORIES, ROUTES } from '@/constants';
+import { useTranslation } from '@/hooks';
+import {
+  selectCartCount,
+  selectFavoritesCount,
+  useCartStore,
+  useFavoritesStore,
+} from '@/store';
 
 import styles from './BurgerMenu.module.scss';
 
@@ -15,15 +23,22 @@ interface BurgerMenuProps {
   onClose: () => void;
 }
 
-const NAV_ITEMS = [
-  { to: ROUTES.HOME, label: 'Home' },
-  ...CATEGORIES.map((category) => ({ to: category.path, label: category.id })),
-];
-
 const getItemClassName = ({ isActive }: { isActive: boolean }) =>
   isActive ? `${styles.item} ${styles.itemActive}` : styles.item;
 
 export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
+  const { t } = useTranslation();
+  const cartCount = useCartStore(selectCartCount);
+  const favoritesCount = useFavoritesStore(selectFavoritesCount);
+
+  const navItems = [
+    { to: ROUTES.HOME, label: t.common.home },
+    ...CATEGORIES.map((category) => ({
+      to: category.path,
+      label: t.nav[category.id],
+    })),
+  ];
+
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -62,7 +77,7 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
   return (
     <aside
       className={styles.root}
-      aria-label="Menu"
+      aria-label={t.header.menu}
     >
       <div className={styles.top}>
         <div className={styles.logo}>
@@ -72,7 +87,7 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
         <button
           type="button"
           className={styles.close}
-          aria-label="Close menu"
+          aria-label={t.header.closeMenu}
           onClick={onClose}
         >
           <Icon
@@ -84,9 +99,9 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
 
       <nav
         className={styles.nav}
-        aria-label="Main"
+        aria-label={t.header.mainNav}
       >
-        {NAV_ITEMS.map((item) => (
+        {navItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
@@ -103,24 +118,34 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
         <NavLink
           to={ROUTES.FAVORITES}
           className={styles.cell}
-          aria-label="Favourites"
+          aria-label={t.header.favourites}
           onClick={onClose}
         >
           <Icon
             src={favoriteOutline}
             alt=""
           />
+          {favoritesCount > 0 && (
+            <span className={styles.counter}>
+              <Counter value={favoritesCount} />
+            </span>
+          )}
         </NavLink>
         <NavLink
           to={ROUTES.CART}
           className={styles.cell}
-          aria-label="Cart"
+          aria-label={t.header.cart}
           onClick={onClose}
         >
           <Icon
             src={shoppingBag}
             alt=""
           />
+          {cartCount > 0 && (
+            <span className={styles.counter}>
+              <Counter value={cartCount} />
+            </span>
+          )}
         </NavLink>
       </div>
     </aside>
