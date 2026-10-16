@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 import styles from './Dropdown.module.scss';
 
@@ -12,6 +12,10 @@ interface DropdownProps {
   value: string;
   onChange: (value: string) => void;
   description?: string;
+  placeholder?: string;
+  name?: string;
+  error?: string;
+  fullWidth?: boolean;
 }
 
 export const Dropdown = ({
@@ -19,31 +23,50 @@ export const Dropdown = ({
   value,
   onChange,
   description,
+  placeholder,
+  name,
+  error,
+  fullWidth,
 }: DropdownProps) => {
   const [open, setOpen] = useState(false);
+  const errorId = useId();
   const selected = options.find((o) => o.value === value);
 
+  const wrapperClasses = [styles.wrapper, fullWidth && styles.full]
+    .filter(Boolean)
+    .join(' ');
+
+  const controlClasses = [
+    styles.control,
+    open && styles.focus,
+    error && styles.invalid,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <div className={styles.wrapper}>
+    <div className={wrapperClasses}>
       {description && <span className={styles.description}>{description}</span>}
 
       <div className={styles.select}>
         <button
           type="button"
-          className={
-            open ? `${styles.control} ${styles.focus}` : styles.control
-          }
+          name={name}
+          className={controlClasses}
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
+          aria-describedby={error ? errorId : undefined}
         >
-          {selected?.label}
+          {selected ?
+            selected.label
+          : <span className={styles.placeholder}>{placeholder}</span>}
           <span
             className={open ? `${styles.arrow} ${styles.up}` : styles.arrow}
             aria-hidden
           />
         </button>
 
-        {open && (
+        {open && options.length > 0 && (
           <ul
             className={styles.menu}
             role="listbox"
@@ -71,6 +94,16 @@ export const Dropdown = ({
           </ul>
         )}
       </div>
+
+      {error && (
+        <span
+          id={errorId}
+          className={styles.error}
+          role="alert"
+        >
+          {error}
+        </span>
+      )}
     </div>
   );
 };
