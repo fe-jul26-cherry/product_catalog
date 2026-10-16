@@ -19,10 +19,7 @@ export const Modal = ({ title, onClose, children }: ModalProps) => {
 
   useEffect(() => {
     const dialog = dialogRef.current;
-
-    if (!dialog) {
-      return undefined;
-    }
+    if (!dialog) return;
 
     if (!dialog.open) {
       dialog.showModal();
