@@ -189,9 +189,7 @@ export const PicturesSlider = () => {
               aria-label={t.home.goToSlide(index + 1)}
               aria-current={index === activeIndex}
               onClick={() => swiper?.slideTo(index)}
-            >
-              <span className={styles.fill} />
-            </button>
+            />
           ))}
 
           <button
