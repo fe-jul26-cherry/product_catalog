@@ -6,7 +6,9 @@ export const CHECKOUT_INITIAL_VALUES: CheckoutFormValues = {
   email: '',
   city: '',
   address: '',
-  delivery: 'pickup',
+  branch: '',
+  postomat: '',
+  delivery: 'branch',
 };
 
 export const CHECKOUT_FIELDS = [
@@ -19,17 +21,12 @@ export const CHECKOUT_FIELDS = [
     type: 'text',
     autoComplete: 'address-level2',
   },
-  {
-    name: 'address',
-    label: 'Address',
-    type: 'text',
-    autoComplete: 'street-address',
-  },
 ] as const;
 
 export const DELIVERY_OPTIONS: { value: DeliveryMethod; label: string }[] = [
-  { value: 'pickup', label: 'Pickup' },
-  { value: 'courier', label: 'Courier' },
+  { value: 'branch', label: 'Nova Poshta branch' },
+  { value: 'postomat', label: 'Nova Poshta postomat' },
+  { value: 'courier', label: 'Nova Poshta courier' },
 ];
 
 export const CHECKOUT_RULES = {
@@ -43,4 +40,5 @@ export const CHECKOUT_MESSAGES = {
   name: 'Name is too short',
   phone: 'Enter a valid phone number',
   email: 'Enter a valid email address',
+  delivery: 'Please select a delivery point',
 };

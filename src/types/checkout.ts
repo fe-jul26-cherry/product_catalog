@@ -1,4 +1,4 @@
-export type DeliveryMethod = 'pickup' | 'courier';
+export type DeliveryMethod = 'branch' | 'postomat' | 'courier';
 
 export interface CheckoutFormValues {
   name: string;
@@ -6,6 +6,8 @@ export interface CheckoutFormValues {
   email: string;
   city: string;
   address: string;
+  branch: string;
+  postomat: string;
   delivery: DeliveryMethod;
 }
 

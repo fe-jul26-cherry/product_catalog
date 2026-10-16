@@ -35,7 +35,15 @@ export const validateCheckout = (
     errors.city = CHECKOUT_MESSAGES.required;
   }
 
-  if (!values.address.trim()) {
+  if (values.delivery === 'branch' && !values.branch.trim()) {
+    errors.branch = CHECKOUT_MESSAGES.delivery;
+  }
+
+  if (values.delivery === 'postomat' && !values.postomat.trim()) {
+    errors.postomat = CHECKOUT_MESSAGES.delivery;
+  }
+
+  if (values.delivery === 'courier' && !values.address.trim()) {
     errors.address = CHECKOUT_MESSAGES.required;
   }
 
