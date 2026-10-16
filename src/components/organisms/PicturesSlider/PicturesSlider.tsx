@@ -9,6 +9,7 @@ import chevronLeftIcon from '@/assets/icons/chevron-left.svg';
 import chevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { BANNERS, CATEGORIES, ROUTES } from '@/constants';
+import { useTranslation } from '@/hooks';
 import { useThemeStore } from '@/store';
 
 import styles from './PicturesSlider.module.scss';
@@ -31,6 +32,7 @@ const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const PicturesSlider = () => {
+  const { t } = useTranslation();
   const theme = useThemeStore((state) => state.theme);
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -77,7 +79,7 @@ export const PicturesSlider = () => {
       className={
         autoplayEnabled ? styles.root : `${styles.root} ${styles.paused}`
       }
-      aria-label="Promotions"
+      aria-label={t.home.promotions}
       onClick={handleSideClick}
     >
       <Swiper
@@ -104,6 +106,7 @@ export const PicturesSlider = () => {
         {BANNERS.map((slide, index) => {
           const image =
             theme === 'light' ? (slide.imageLight ?? slide.image) : slide.image;
+          const text = t.banners[slide.id];
           const isActive = index === activeIndex;
           const slideClasses = [
             styles.slide,
@@ -129,7 +132,7 @@ export const PicturesSlider = () => {
                 <img
                   className={styles.image}
                   src={image}
-                  alt={slide.alt}
+                  alt={text.alt}
                   loading={index === 0 ? 'eager' : 'lazy'}
                   draggable={false}
                   style={{
@@ -140,15 +143,15 @@ export const PicturesSlider = () => {
               </div>
 
               <div className={styles.panel}>
-                <p className={styles.eyebrow}>{slide.eyebrow}</p>
-                <h3 className={styles.title}>{slide.title}</h3>
-                <p className={styles.subtitle}>{slide.subtitle}</p>
+                <p className={styles.eyebrow}>{text.eyebrow}</p>
+                <h3 className={styles.title}>{text.title}</h3>
+                <p className={styles.subtitle}>{text.subtitle}</p>
                 <Link
                   to={getCategoryPath(slide.category)}
                   className={styles.cta}
                   tabIndex={isActive ? 0 : -1}
                 >
-                  {slide.cta}
+                  {text.cta}
                 </Link>
               </div>
             </SwiperSlide>
@@ -161,7 +164,7 @@ export const PicturesSlider = () => {
           <button
             type="button"
             className={styles.arrow}
-            aria-label="Previous slide"
+            aria-label={t.home.previousSlide}
             onClick={() => swiper?.slidePrev()}
           >
             <Icon
@@ -183,7 +186,7 @@ export const PicturesSlider = () => {
                   `${styles.dot} ${styles.dotActive}`
                 : styles.dot
               }
-              aria-label={`Go to slide ${index + 1}`}
+              aria-label={t.home.goToSlide(index + 1)}
               aria-current={index === activeIndex}
               onClick={() => swiper?.slideTo(index)}
             >
@@ -194,7 +197,7 @@ export const PicturesSlider = () => {
           <button
             type="button"
             className={styles.arrow}
-            aria-label="Next slide"
+            aria-label={t.home.nextSlide}
             onClick={() => swiper?.slideNext()}
           >
             <Icon

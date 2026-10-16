@@ -1,10 +1,14 @@
 import styles from './Loader.module.scss';
 
-export const Loader = () => (
+interface LoaderProps {
+  label: string;
+}
+
+export const Loader = ({ label }: LoaderProps) => (
   <div
     className={styles.root}
     role="status"
-    aria-label="Loading"
+    aria-label={label}
   >
     <div className={styles.spinner} />
   </div>

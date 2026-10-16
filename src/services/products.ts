@@ -1,6 +1,6 @@
 import { client } from './fetchClient';
 
-import type { Category, Product, ProductDetails } from '@/types';
+import type { Category, Language, Product, ProductDetails } from '@/types';
 
 const SLIDER_SIZE = 10;
 
@@ -11,7 +11,7 @@ export interface ProductWithDetails {
 }
 
 let productsRequest: Promise<Product[]> | null = null;
-const detailsRequests = new Map<Category, Promise<ProductDetails[]>>();
+const detailsRequests = new Map<string, Promise<ProductDetails[]>>();
 
 export const getProducts = (): Promise<Product[]> => {
   if (!productsRequest) {
@@ -24,21 +24,26 @@ export const getProducts = (): Promise<Product[]> => {
   return productsRequest;
 };
 
-const getDetailsList = (category: Category): Promise<ProductDetails[]> => {
-  const cached = detailsRequests.get(category);
+const getDetailsFile = (category: Category, language: Language) =>
+  language === 'ua' ? `/${category}.ua.json` : `/${category}.json`;
+
+const getDetailsList = (
+  category: Category,
+  language: Language,
+): Promise<ProductDetails[]> => {
+  const file = getDetailsFile(category, language);
+  const cached = detailsRequests.get(file);
 
   if (cached) {
     return cached;
   }
 
-  const request = client
-    .get<ProductDetails[]>(`/${category}.json`)
-    .catch((error) => {
-      detailsRequests.delete(category);
-      throw error;
-    });
+  const request = client.get<ProductDetails[]>(file).catch((error) => {
+    detailsRequests.delete(file);
+    throw error;
+  });
 
-  detailsRequests.set(category, request);
+  detailsRequests.set(file, request);
 
   return request;
 };
@@ -97,6 +102,7 @@ export const getCategoryCounts = async (): Promise<
 
 export const getProductDetails = async (
   itemId: string,
+  language: Language,
 ): Promise<ProductWithDetails | null> => {
   const products = await getProducts();
   const product = products.find((item) => item.itemId === itemId);
@@ -105,7 +111,7 @@ export const getProductDetails = async (
     return null;
   }
 
-  const list = await getDetailsList(product.category);
+  const list = await getDetailsList(product.category, language);
   const details = list.find((item) => item.id === itemId);
 
   return details ? { category: product.category, product, details } : null;

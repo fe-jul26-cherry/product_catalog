@@ -1,12 +1,20 @@
 const BASE_URL = `${import.meta.env.BASE_URL}api`;
 const TIMEOUT_MS = 15000;
 
+export type ApiErrorCode = 'network' | 'timeout' | 'server' | 'invalid';
+
 export class ApiError extends Error {
+  readonly code: ApiErrorCode;
   readonly status: number | null;
 
-  constructor(message: string, status: number | null = null) {
+  constructor(
+    code: ApiErrorCode,
+    message: string,
+    status: number | null = null,
+  ) {
     super(message);
     this.name = 'ApiError';
+    this.code = code;
     this.status = status;
   }
 }
@@ -20,23 +28,25 @@ async function request<T>(url: string): Promise<T> {
   try {
     response = await fetch(`${BASE_URL}${url}`, { signal: controller.signal });
   } catch {
-    throw new ApiError(
-      controller.signal.aborted ?
-        'The server is taking too long to respond.'
-      : 'Network error. Check your connection and try again.',
-    );
+    throw controller.signal.aborted ?
+        new ApiError('timeout', 'The server is taking too long to respond.')
+      : new ApiError('network', 'Network error.');
   } finally {
     clearTimeout(timer);
   }
 
   if (!response.ok) {
-    throw new ApiError(`Server error (${response.status}).`, response.status);
+    throw new ApiError(
+      'server',
+      `Server error (${response.status}).`,
+      response.status,
+    );
   }
 
   try {
     return (await response.json()) as T;
   } catch {
-    throw new ApiError('Received an invalid response from the server.');
+    throw new ApiError('invalid', 'Invalid response.');
   }
 }
 

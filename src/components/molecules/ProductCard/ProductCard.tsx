@@ -13,8 +13,22 @@ import styles from './ProductCard.module.scss';
 
 import type { Product } from '@/types';
 
+export interface ProductCardLabels {
+  screen: string;
+  capacity: string;
+  ram: string;
+  addToCart: string;
+  added: string;
+  addToFavourites: string;
+  removeFromFavourites: string;
+  favourite: string;
+}
+
 interface ProductCardProps {
   product: Product;
+  labels: ProductCardLabels;
+  formatValue: (value: string) => string;
+  formatPrice: (value: number) => string;
   isInCart: boolean;
   isFavourite: boolean;
   onToggleCart: () => void;
@@ -23,6 +37,9 @@ interface ProductCardProps {
 
 export const ProductCard = ({
   product,
+  labels,
+  formatValue,
+  formatPrice,
   isInCart,
   isFavourite,
   onToggleCart,
@@ -66,6 +83,7 @@ export const ProductCard = ({
         <ProductPrice
           price={product.price}
           fullPrice={product.fullPrice}
+          format={formatPrice}
         />
       </div>
 
@@ -73,9 +91,9 @@ export const ProductCard = ({
 
       <ProductSpecs
         specs={[
-          { label: 'Screen', value: product.screen },
-          { label: 'Capacity', value: product.capacity },
-          { label: 'RAM', value: product.ram },
+          { label: labels.screen, value: product.screen },
+          { label: labels.capacity, value: formatValue(product.capacity) },
+          { label: labels.ram, value: formatValue(product.ram) },
         ]}
       />
 
@@ -88,15 +106,15 @@ export const ProductCard = ({
           onClick={handleCartClick}
         >
           {isInCart ?
-            <span className={styles.cartLabelAdded}>Added</span>
-          : 'Add to cart'}
+            <span className={styles.cartLabelAdded}>{labels.added}</span>
+          : labels.addToCart}
         </Button>
 
         <IconButton
           variant="favourite"
           added={isFavourite}
           aria-label={
-            isFavourite ? 'Remove from favourites' : 'Add to favourites'
+            isFavourite ? labels.removeFromFavourites : labels.addToFavourites
           }
           onClick={handleFavouriteClick}
         >
@@ -107,7 +125,7 @@ export const ProductCard = ({
           >
             <Icon
               src={isFavourite ? heartFilledIcon : heartIcon}
-              alt="favourite"
+              alt={labels.favourite}
             />
           </span>
         </IconButton>

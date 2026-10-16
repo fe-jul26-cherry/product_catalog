@@ -8,6 +8,7 @@ import { IconButton } from '@/components/atoms/IconButton';
 import { ProductPrice } from '@/components/molecules/ProductPrice';
 import { ProductSpecs } from '@/components/molecules/ProductSpecs';
 import { getColorHex } from '@/constants';
+import { useTranslation } from '@/hooks';
 
 import styles from './ProductVariants.module.scss';
 
@@ -28,24 +29,26 @@ export const ProductVariants = ({
   onToggleCart,
   onToggleFavourite,
 }: ProductVariantsProps) => {
+  const { t, formatColor, formatValue, formatPrice } = useTranslation();
+
   const handleCartClick = () => {
     onToggleCart();
   };
   return (
     <div className={styles.root}>
-      <p className={styles.label}>Available colors</p>
+      <p className={styles.label}>{t.product.availableColors}</p>
       <div className={styles.options}>
         {product.colorsAvailable.map((color) => (
           <ColorSwatch
             key={color}
             color={getColorHex(color)}
-            label={color}
+            label={formatColor(color)}
             selected={color === product.color}
             onClick={() => onVariantChange(color, product.capacity)}
           />
         ))}
       </div>
-      <p className={styles.label}>Select capacity</p>
+      <p className={styles.label}>{t.product.selectCapacity}</p>
       <div className={styles.options}>
         {product.capacityAvailable.map((capacity) => (
           <CapacityButton
@@ -53,13 +56,14 @@ export const ProductVariants = ({
             selected={capacity === product.capacity}
             onClick={() => onVariantChange(product.color, capacity)}
           >
-            {capacity}
+            {formatValue(capacity)}
           </CapacityButton>
         ))}
       </div>
       <ProductPrice
         price={product.priceDiscount}
         fullPrice={product.priceRegular}
+        format={formatPrice}
       />
       <div className={styles.actions}>
         <Button
@@ -67,29 +71,29 @@ export const ProductVariants = ({
           className={styles.addToCart}
           onClick={handleCartClick}
         >
-          {isInCart ? 'Added' : 'Add to cart'}
+          {isInCart ? t.card.added : t.card.addToCart}
         </Button>
         <IconButton
           variant="favourite"
           added={isFavourite}
           className={styles.favourite}
           aria-label={
-            isFavourite ? 'Remove from favourites' : 'Add to favourites'
+            isFavourite ? t.card.removeFromFavourites : t.card.addToFavourites
           }
           onClick={onToggleFavourite}
         >
           <Icon
             src={isFavourite ? favoriteFilledIcon : favoriteOutlineIcon}
-            alt="favourite"
+            alt={t.card.favourite}
           />
         </IconButton>
       </div>
       <ProductSpecs
         specs={[
-          { label: 'Screen', value: product.screen },
-          { label: 'Resolution', value: product.resolution },
-          { label: 'Processor', value: product.processor },
-          { label: 'RAM', value: product.ram },
+          { label: t.specs.screen, value: product.screen },
+          { label: t.specs.resolution, value: product.resolution },
+          { label: t.specs.processor, value: product.processor },
+          { label: t.specs.ram, value: formatValue(product.ram) },
         ]}
       />
     </div>

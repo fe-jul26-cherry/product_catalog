@@ -13,9 +13,15 @@ interface PaginationProps {
   current: number;
   total: number;
   onChange: (page: number) => void;
+  labels: { pagination: string; previous: string; next: string };
 }
 
-export const Pagination = ({ current, total, onChange }: PaginationProps) => {
+export const Pagination = ({
+  current,
+  total,
+  onChange,
+  labels,
+}: PaginationProps) => {
   const isTablet = useMediaQuery('(min-width: 640px)');
   const maxVisible = isTablet ? MAX_PAGES_DESKTOP : MAX_PAGES_MOBILE;
 
@@ -41,13 +47,13 @@ export const Pagination = ({ current, total, onChange }: PaginationProps) => {
   return (
     <nav
       className={styles.pagination}
-      aria-label="Пагінація"
+      aria-label={labels.pagination}
     >
       <IconButton
         variant="slider"
         onClick={handlePrev}
         disabled={current === 1}
-        aria-label="Попередня сторінка"
+        aria-label={labels.previous}
       >
         <Icon
           src={chevronLeftIcon}
@@ -76,7 +82,7 @@ export const Pagination = ({ current, total, onChange }: PaginationProps) => {
         variant="slider"
         onClick={handleNext}
         disabled={current === total}
-        aria-label="Наступна сторінка"
+        aria-label={labels.next}
       >
         <Icon
           src={chevronRightIcon}

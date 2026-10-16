@@ -1,6 +1,8 @@
 import { Component } from 'react';
 
 import { ErrorMessage } from '@/components/molecules/ErrorMessage';
+import { getTranslations } from '@/hooks';
+import { useLanguageStore } from '@/store';
 
 import type { ReactNode } from 'react';
 
@@ -24,9 +26,12 @@ export class ErrorBoundary extends Component<
 
   render() {
     if (this.state.hasError) {
+      const { t } = getTranslations(useLanguageStore.getState().language);
+
       return (
         <ErrorMessage
-          message="Something went wrong while showing this page."
+          message={t.errors.page}
+          retryLabel={t.status.retry}
           onRetry={() => window.location.reload()}
         />
       );
