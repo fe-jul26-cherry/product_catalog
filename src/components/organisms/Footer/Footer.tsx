@@ -1,6 +1,7 @@
 import scrollToTopIcon from '@/assets/icons/chevron-up.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
+import { useTranslation } from '@/hooks';
 
 import styles from './Footer.module.scss';
 
@@ -8,46 +9,50 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-export const Footer = () => (
-  <footer className={styles.root}>
-    <div className={styles.content}>
-      <div className={styles.logo}>
-        <Logo />
-      </div>
+export const Footer = () => {
+  const { t } = useTranslation();
 
-      <nav
-        className={styles.links}
-        aria-label="Footer"
-      >
-        <a
-          href="https://github.com/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Github
-        </a>
-        <a href="#contacts">Contacts</a>
-        <a href="#rights">Rights</a>
-      </nav>
+  return (
+    <footer className={styles.root}>
+      <div className={styles.content}>
+        <div className={styles.logo}>
+          <Logo />
+        </div>
 
-      <div className={styles.action}>
-        <button
-          type="button"
-          className={styles.backToTop}
-          onClick={scrollToTop}
+        <nav
+          className={styles.links}
+          aria-label={t.footer.nav}
         >
-          Back to top
-          <span
-            className={styles.arrow}
-            aria-hidden="true"
+          <a
+            href="https://github.com/"
+            target="_blank"
+            rel="noreferrer"
           >
-            <Icon
-              src={scrollToTopIcon}
-              alt=""
-            />
-          </span>
-        </button>
+            Github
+          </a>
+          <a href="#contacts">{t.footer.contacts}</a>
+          <a href="#rights">{t.footer.rights}</a>
+        </nav>
+
+        <div className={styles.action}>
+          <button
+            type="button"
+            className={styles.backToTop}
+            onClick={scrollToTop}
+          >
+            {t.footer.backToTop}
+            <span
+              className={styles.arrow}
+              aria-hidden="true"
+            >
+              <Icon
+                src={scrollToTopIcon}
+                alt=""
+              />
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
-  </footer>
-);
+    </footer>
+  );
+};

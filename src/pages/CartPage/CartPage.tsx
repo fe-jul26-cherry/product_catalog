@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { BackLink } from '@/components/atoms/BackLink';
 import { CartItem } from '@/components/molecules/CartItem';
 import { CartSummary } from '@/components/organisms/CartSummary';
+import { useTranslation } from '@/hooks';
 import { selectCartCount, selectCartTotal, useCartStore } from '@/store';
 
 import styles from './CartPage.module.scss';
 
 export const CartPage = () => {
+  const { t, formatPrice } = useTranslation();
   const navigate = useNavigate();
 
   const items = useCartStore((state) => state.items);
@@ -16,28 +18,28 @@ export const CartPage = () => {
   const { remove, increment, decrement, clear } = useCartStore.getState();
 
   const handleCheckout = () => {
-    if (
-      window.confirm(
-        'Checkout is not implemented yet. Do you want to clear the cart?',
-      )
-    ) {
+    if (window.confirm(t.cart.checkoutConfirm)) {
       clear();
     }
   };
 
   return (
     <div className={styles.root}>
-      <BackLink onClick={() => navigate(-1)}>Back</BackLink>
-      <h1 className={styles.title}>Cart</h1>
+      <BackLink onClick={() => navigate(-1)}>{t.common.back}</BackLink>
+      <h1 className={styles.title}>{t.cart.title}</h1>
 
       {items.length === 0 ?
-        <p className={styles.empty}>Your cart is empty</p>
+        <p className={styles.empty}>{t.cart.empty}</p>
       : <div className={styles.content}>
           <ul className={styles.list}>
             {items.map((item) => (
               <li key={item.id}>
                 <CartItem
                   item={item}
+                  formatPrice={formatPrice}
+                  removeLabel={t.cart.remove}
+                  decreaseLabel={t.cart.decrease}
+                  increaseLabel={t.cart.increase}
                   onDecrease={() => decrement(item.id)}
                   onIncrease={() => increment(item.id)}
                   onRemove={() => remove(item.id)}
@@ -47,8 +49,9 @@ export const CartPage = () => {
           </ul>
 
           <CartSummary
-            total={total}
-            count={count}
+            totalLabel={formatPrice(total)}
+            countLabel={t.cart.total(count)}
+            checkoutLabel={t.cart.checkout}
             onCheckout={handleCheckout}
           />
         </div>

@@ -2,12 +2,16 @@ import styles from './QuantityCounter.module.scss';
 
 interface QuantityCounterProps {
   value: number;
+  decreaseLabel: string;
+  increaseLabel: string;
   onDecrease: () => void;
   onIncrease: () => void;
 }
 
 export const QuantityCounter = ({
   value,
+  decreaseLabel,
+  increaseLabel,
   onDecrease,
   onIncrease,
 }: QuantityCounterProps) => (
@@ -17,7 +21,7 @@ export const QuantityCounter = ({
       className={styles.button}
       onClick={onDecrease}
       disabled={value <= 1}
-      aria-label="Decrease quantity"
+      aria-label={decreaseLabel}
     >
       -
     </button>
@@ -26,7 +30,7 @@ export const QuantityCounter = ({
       type="button"
       className={styles.button}
       onClick={onIncrease}
-      aria-label="Increase quantity"
+      aria-label={increaseLabel}
     >
       +
     </button>

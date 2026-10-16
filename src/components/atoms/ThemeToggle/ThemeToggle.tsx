@@ -5,9 +5,10 @@ import styles from './ThemeToggle.module.scss';
 interface ThemeToggleProps {
   isDark: boolean;
   onToggle: () => void;
+  label: string;
 }
 
-export const ThemeToggle = ({ isDark, onToggle }: ThemeToggleProps) => {
+export const ThemeToggle = ({ isDark, onToggle, label }: ThemeToggleProps) => {
   const id = useId();
 
   return (
@@ -24,7 +25,7 @@ export const ThemeToggle = ({ isDark, onToggle }: ThemeToggleProps) => {
         className={styles.label}
         htmlFor={id}
       >
-        <span className="visually-hidden">Dark theme</span>
+        <span className="visually-hidden">{label}</span>
       </label>
     </div>
   );

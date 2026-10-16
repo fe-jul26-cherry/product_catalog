@@ -6,7 +6,8 @@ interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   onEscape?: () => void;
-  placeholder?: string;
+  placeholder: string;
+  label: string;
   focusOnMount?: boolean;
 }
 
@@ -14,7 +15,8 @@ export const SearchInput = ({
   value,
   onChange,
   onEscape,
-  placeholder = 'Search',
+  placeholder,
+  label,
   focusOnMount = false,
 }: SearchInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,7 +36,7 @@ export const SearchInput = ({
         name="search"
         value={value}
         placeholder={placeholder}
-        aria-label="Search products"
+        aria-label={label}
         autoComplete="off"
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={(event) => {

@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { TRANSLATIONS } from '@/i18n';
+
 import type { Language } from '@/types';
 
 interface LanguageState {
@@ -16,6 +18,7 @@ const HTML_LANG: Record<Language, string> = {
 const applyLanguage = (language: Language) => {
   if (typeof window !== 'undefined') {
     document.documentElement.lang = HTML_LANG[language];
+    document.title = TRANSLATIONS[language].meta.title;
   }
 };
 

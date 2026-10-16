@@ -6,7 +6,7 @@ import chevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { IconButton } from '@/components/atoms/IconButton';
 import { ProductCard } from '@/components/molecules/ProductCard';
-import { useProductActions } from '@/hooks';
+import { useTranslation, useProductActions } from '@/hooks';
 
 import styles from './ProductsSlider.module.scss';
 
@@ -21,6 +21,7 @@ interface ProductsSliderProps {
 }
 
 export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
+  const { t, formatValue, formatPrice } = useTranslation();
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
@@ -40,7 +41,7 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
         <div className={styles.controls}>
           <IconButton
             variant="slider"
-            aria-label="Previous products"
+            aria-label={t.product.previousProducts}
             disabled={isBeginning}
             onClick={() => swiper?.slidePrev()}
           >
@@ -52,7 +53,7 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
           </IconButton>
           <IconButton
             variant="slider"
-            aria-label="Next products"
+            aria-label={t.product.nextProducts}
             disabled={isEnd}
             onClick={() => swiper?.slideNext()}
           >
@@ -87,6 +88,9 @@ export const ProductsSlider = ({ title, products }: ProductsSliderProps) => {
           >
             <ProductCard
               product={product}
+              labels={{ ...t.card, ...t.specs }}
+              formatValue={formatValue}
+              formatPrice={formatPrice}
               isInCart={isInCart(product.itemId)}
               isFavourite={isFavourite(product.itemId)}
               onToggleCart={() => toggleCart(product)}

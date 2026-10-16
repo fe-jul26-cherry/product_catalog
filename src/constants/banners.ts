@@ -5,11 +5,6 @@ export interface BannerSlide {
   category: Category;
   image: string;
   imageLight?: string;
-  alt: string;
-  eyebrow: string;
-  title: string;
-  subtitle: string;
-  cta: string;
   fit?: 'cover' | 'contain';
   position?: string;
   fullBleed?: boolean;
@@ -21,11 +16,6 @@ export const BANNERS: BannerSlide[] = [
     category: 'phones',
     image: 'img/slider/banner_phone.jpg',
     imageLight: 'img/slider/banner_phone-light.jpg',
-    alt: 'Three smartphones showing planets above a mountain landscape',
-    eyebrow: 'Next level',
-    title: 'See beyond the screen',
-    subtitle: 'Immersive displays that bring every pixel to life.',
-    cta: 'Shop phones',
     position: 'center',
   },
   {
@@ -33,11 +23,6 @@ export const BANNERS: BannerSlide[] = [
     category: 'tablets',
     image: 'img/slider/banner_tablet.jpg',
     imageLight: 'img/slider/banner_tablet-light.jpg',
-    alt: 'Three tablets on a rock ledge in front of a moonlit mountain range',
-    eyebrow: 'Tablets',
-    title: 'Big canvas, bigger ideas',
-    subtitle: 'Create, watch and play on a display that has room for it all.',
-    cta: 'Shop tablets',
     position: '100% center',
     fullBleed: true,
   },
@@ -46,11 +31,6 @@ export const BANNERS: BannerSlide[] = [
     category: 'accessories',
     image: 'img/slider/banner_watch.jpg',
     imageLight: 'img/slider/banner_watch-light.jpg',
-    alt: 'Three smartwatches with green straps against a green mountain night sky',
-    eyebrow: 'Accessories',
-    title: 'Style that keeps time',
-    subtitle: 'Smartwatches and straps to match your mood and your day.',
-    cta: 'Shop accessories',
     position: '100% center',
     fullBleed: true,
   },
