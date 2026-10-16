@@ -14,12 +14,14 @@ export interface BreadcrumbItem {
 
 interface BreadcrumbsProps {
   items: BreadcrumbItem[];
+  label: string;
+  homeLabel: string;
 }
 
-export const Breadcrumbs = ({ items }: BreadcrumbsProps) => (
+export const Breadcrumbs = ({ items, label, homeLabel }: BreadcrumbsProps) => (
   <nav
     className={styles.root}
-    aria-label="Breadcrumbs"
+    aria-label={label}
   >
     <ol className={styles.list}>
       <li>
@@ -29,7 +31,7 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => (
         >
           <Icon
             src={homeIcon}
-            alt="Home"
+            alt={homeLabel}
           />
         </Link>
       </li>

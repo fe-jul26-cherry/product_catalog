@@ -11,18 +11,19 @@ import { ProductsSlider } from '@/components/organisms/ProductsSlider';
 import { ProductTechSpecs } from '@/components/organisms/ProductTechSpecs';
 import { ProductVariants } from '@/components/organisms/ProductVariants';
 import { CATEGORIES, getProductPath } from '@/constants';
-import { useAsync, useProductActions } from '@/hooks';
+import { useAsync, useProductActions, useTranslation } from '@/hooks';
 import { getProductDetails, getSuggestedProducts } from '@/services';
 
 import styles from './ProductDetailsPage.module.scss';
 
 export const ProductDetailsPage = () => {
+  const { t, language } = useTranslation();
   const navigate = useNavigate();
   const { productId = '' } = useParams();
 
   const loadProduct = useCallback(
-    () => getProductDetails(productId),
-    [productId],
+    () => getProductDetails(productId, language),
+    [productId, language],
   );
 
   const product = useAsync(loadProduct, { keepPrevious: true });
@@ -36,6 +37,7 @@ export const ProductDetailsPage = () => {
   const suggested = useAsync(loadSuggested);
 
   const category = CATEGORIES.find(({ id }) => id === product.data?.category);
+  const categoryTitle = category ? t.categories[category.id] : '';
 
   const handleVariantChange = (color: string, capacity: string) => {
     if (!product.data) {
@@ -73,17 +75,20 @@ export const ProductDetailsPage = () => {
         isLoading={product.isLoading && !product.data}
         error={product.error}
         onRetry={product.retry}
+        labels={t.status}
       >
         {product.data ?
           <div className={styles.content}>
             <Breadcrumbs
               items={[
-                { label: category?.title ?? '', path: category?.path },
+                { label: categoryTitle, path: category?.path },
                 { label: product.data.details.name },
               ]}
+              label={t.header.breadcrumbs}
+              homeLabel={t.common.home}
             />
             <header className={styles.header}>
-              <BackLink onClick={() => navigate(-1)}>Back</BackLink>
+              <BackLink onClick={() => navigate(-1)}>{t.common.back}</BackLink>
               <h1 className={styles.title}>{product.data.details.name}</h1>
             </header>
 
@@ -108,7 +113,7 @@ export const ProductDetailsPage = () => {
               <ProductTechSpecs product={product.data.details} />
             </div>
           </div>
-        : <ErrorMessage message="Product was not found." />}
+        : <ErrorMessage message={t.errors.productNotFound} />}
       </AsyncContent>
 
       {namespaceId && (
@@ -117,9 +122,10 @@ export const ProductDetailsPage = () => {
             isLoading={suggested.isLoading}
             error={suggested.error}
             onRetry={suggested.retry}
+            labels={t.status}
           >
             <ProductsSlider
-              title="You may also like"
+              title={t.product.suggested}
               products={suggested.data ?? []}
             />
           </AsyncContent>

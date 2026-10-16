@@ -5,9 +5,14 @@ import styles from './LanguageToggle.module.scss';
 interface LanguageToggleProps {
   isUa: boolean;
   onToggle: () => void;
+  label: string;
 }
 
-export const LanguageToggle = ({ isUa, onToggle }: LanguageToggleProps) => {
+export const LanguageToggle = ({
+  isUa,
+  onToggle,
+  label,
+}: LanguageToggleProps) => {
   const id = useId();
 
   return (
@@ -26,7 +31,7 @@ export const LanguageToggle = ({ isUa, onToggle }: LanguageToggleProps) => {
         data-on="UA"
         data-off="EN"
       >
-        <span className="visually-hidden">Ukrainian language</span>
+        <span className="visually-hidden">{label}</span>
       </label>
     </div>
   );

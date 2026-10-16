@@ -21,6 +21,7 @@
   --color-card-border: transparent;
   --shadow-card: 0 2px 16px rgb(0 0 0 / 40%);
   --filter-slider-arrow: brightness(0) invert(1);
+  --color-slider-progress: #f1f2f9;
 }
 
 [data-theme='light'] {
@@ -44,4 +45,5 @@
   --color-card-border: var(--color-elements);
   --shadow-card: 0 2px 16px rgb(0 0 0 / 10%);
   --filter-slider-arrow: brightness(0);
+  --color-slider-progress: #555555;
 }

@@ -1,5 +1,5 @@
 import { ProductCard } from '@/components/molecules/ProductCard';
-import { useProductActions } from '@/hooks';
+import { useTranslation, useProductActions } from '@/hooks';
 
 import styles from './ProductsList.module.scss';
 
@@ -10,6 +10,7 @@ interface ProductsListProps {
 }
 
 export const ProductsList = ({ products }: ProductsListProps) => {
+  const { t, formatValue, formatPrice } = useTranslation();
   const { isInCart, isFavourite, toggleCart, toggleFavourite } =
     useProductActions();
 
@@ -19,6 +20,9 @@ export const ProductsList = ({ products }: ProductsListProps) => {
         <li key={product.id}>
           <ProductCard
             product={product}
+            labels={{ ...t.card, ...t.specs }}
+            formatValue={formatValue}
+            formatPrice={formatPrice}
             isInCart={isInCart(product.itemId)}
             isFavourite={isFavourite(product.itemId)}
             onToggleCart={() => toggleCart(product)}

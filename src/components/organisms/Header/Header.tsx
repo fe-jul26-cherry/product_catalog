@@ -14,6 +14,7 @@ import { IconLink } from '@/components/molecules/IconLink';
 import { NavItem } from '@/components/molecules/NavItem';
 import { BurgerMenu } from '@/components/organisms/BurgerMenu';
 import { CATEGORIES, ROUTES } from '@/constants';
+import { useMediaQuery, useTranslation } from '@/hooks';
 import {
   selectCartCount,
   selectFavoritesCount,
@@ -27,7 +28,10 @@ import styles from './Header.module.scss';
 
 import type { FormEvent } from 'react';
 
+const CROWDED_QUERY = '(min-width: 640px) and (max-width: 719px)';
+
 export const Header = () => {
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -37,6 +41,8 @@ export const Header = () => {
   const toggleLanguage = useLanguageStore((state) => state.toggleLanguage);
   const cartCount = useCartStore(selectCartCount);
   const favoritesCount = useFavoritesStore(selectFavoritesCount);
+
+  const isCrowded = useMediaQuery(CROWDED_QUERY) && language === 'ua';
 
   const closeSearch = () => setIsSearchOpen(false);
 
@@ -53,15 +59,15 @@ export const Header = () => {
 
           <nav
             className={styles.nav}
-            aria-label="Main"
+            aria-label={t.header.mainNav}
           >
-            <NavItem to={ROUTES.HOME}>Home</NavItem>
+            {!isCrowded && <NavItem to={ROUTES.HOME}>{t.common.home}</NavItem>}
             {CATEGORIES.map((category) => (
               <NavItem
                 key={category.id}
                 to={category.path}
               >
-                {category.id}
+                {t.nav[category.id]}
               </NavItem>
             ))}
           </nav>
@@ -75,6 +81,8 @@ export const Header = () => {
           <SearchInput
             value={query}
             onChange={setQuery}
+            placeholder={t.header.search}
+            label={t.header.searchProducts}
           />
         </form>
 
@@ -82,7 +90,7 @@ export const Header = () => {
           <button
             type="button"
             className={styles.searchButton}
-            aria-label="Open search"
+            aria-label={t.header.openSearch}
             aria-expanded={isSearchOpen}
             onClick={() => setIsSearchOpen(true)}
           >
@@ -95,17 +103,19 @@ export const Header = () => {
           <LanguageToggle
             isUa={language === 'ua'}
             onToggle={toggleLanguage}
+            label={t.header.ukrainianLanguage}
           />
           <ThemeToggle
             isDark={theme === 'dark'}
             onToggle={toggleTheme}
+            label={t.header.darkTheme}
           />
         </div>
 
         <div className={styles.actions}>
           <IconLink
             to={ROUTES.FAVORITES}
-            label="Favourites"
+            label={t.header.favourites}
             count={favoritesCount}
           >
             <Icon
@@ -116,7 +126,7 @@ export const Header = () => {
           </IconLink>
           <IconLink
             to={ROUTES.CART}
-            label="Cart"
+            label={t.header.cart}
             count={cartCount}
           >
             <Icon
@@ -129,7 +139,7 @@ export const Header = () => {
           <button
             type="button"
             className={styles.burger}
-            aria-label="Open menu"
+            aria-label={t.header.openMenu}
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen(true)}
           >
@@ -153,13 +163,15 @@ export const Header = () => {
               value={query}
               onChange={setQuery}
               onEscape={closeSearch}
+              placeholder={t.header.search}
+              label={t.header.searchProducts}
               focusOnMount
             />
           </div>
           <button
             type="button"
             className={styles.searchClose}
-            aria-label="Close search"
+            aria-label={t.header.closeSearch}
             onClick={closeSearch}
           >
             <Icon

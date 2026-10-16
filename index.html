@@ -36,6 +36,13 @@
           document.documentElement.dataset.theme = saved.state.theme;
         }
       } catch (error) {}
+      try {
+        var lang = JSON.parse(localStorage.getItem('language'));
+        if (lang && lang.state && lang.state.language) {
+          document.documentElement.lang =
+            lang.state.language === 'ua' ? 'uk' : 'en';
+        }
+      } catch (error) {}
     </script>
     <title>Phone catalog</title>
     <style>
