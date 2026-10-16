@@ -19,7 +19,8 @@
       z-index: 2;
 
       .preview {
-        box-shadow: $shadow-card;
+        box-shadow: 0 8px 32px
+          color-mix(in srgb, $color-accent 40%, transparent);
       }
 
       .preview::before {
