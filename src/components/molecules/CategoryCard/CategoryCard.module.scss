@@ -3,11 +3,35 @@
 @use '../../../styles/typography' as *;
 
 .root {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 24px;
   color: $color-primary;
   text-decoration: none;
+  transition:
+    transform $transition,
+    opacity $transition;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.04);
+      z-index: 2;
+
+      .preview {
+        box-shadow: 0 8px 32px
+          color-mix(in srgb, $color-accent 40%, transparent);
+      }
+
+      .preview::before {
+        opacity: 0.25;
+      }
+
+      .title {
+        color: $color-accent-hover;
+      }
+    }
+  }
 }
 
 .preview {
@@ -15,6 +39,17 @@
   width: 100%;
   aspect-ratio: 1;
   overflow: hidden;
+  transition: box-shadow $transition;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: $color-accent;
+    opacity: 0;
+    transition: opacity $transition;
+    pointer-events: none;
+  }
 }
 
 .image {
@@ -33,6 +68,7 @@
 .title {
   @include h4;
   color: $color-primary;
+  transition: color $transition;
 }
 
 .count {
@@ -73,5 +109,18 @@
     top: 12%;
     left: 12%;
     width: 200%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .preview,
+  .preview::before,
+  .title {
+    transition: none;
+  }
+
+  .root:hover {
+    transform: none;
   }
 }
