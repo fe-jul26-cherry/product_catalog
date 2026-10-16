@@ -8,3 +8,5 @@ export interface CheckoutFormValues {
   address: string;
   delivery: DeliveryMethod;
 }
+
+export type CheckoutErrors = Partial<Record<keyof CheckoutFormValues, string>>;

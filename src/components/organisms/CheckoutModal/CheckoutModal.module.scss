@@ -49,6 +49,15 @@
     border-color: $color-accent;
     outline: none;
   }
+
+  &[aria-invalid='true'] {
+    border-color: $color-red;
+  }
+}
+
+.error {
+  @include small;
+  color: $color-red;
 }
 
 .delivery {

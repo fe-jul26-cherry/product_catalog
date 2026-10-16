@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 import { Button } from '@/components/atoms/Button';
 import { Modal } from '@/components/molecules/Modal';
@@ -7,10 +7,11 @@ import {
   CHECKOUT_INITIAL_VALUES,
   DELIVERY_OPTIONS,
 } from '@/constants';
+import { validateCheckout } from '@/utils/checkout';
 
 import styles from './CheckoutModal.module.scss';
 
-import type { CheckoutFormValues } from '@/types';
+import type { CheckoutErrors, CheckoutFormValues } from '@/types';
 import type { ChangeEvent, FormEvent } from 'react';
 
 interface CheckoutModalProps {
@@ -24,18 +25,35 @@ export const CheckoutModal = ({
   count,
   onClose,
 }: CheckoutModalProps) => {
+  const formId = useId();
   const [values, setValues] = useState<CheckoutFormValues>(
     CHECKOUT_INITIAL_VALUES,
   );
+  const [errors, setErrors] = useState<CheckoutErrors>({});
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
     setValues((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const nextErrors = validateCheckout(values);
+
+    setErrors(nextErrors);
+
+    const firstInvalid = CHECKOUT_FIELDS.find(({ name }) => nextErrors[name]);
+
+    if (firstInvalid) {
+      const element = event.currentTarget.elements.namedItem(firstInvalid.name);
+
+      if (element instanceof HTMLElement) {
+        element.focus();
+      }
+    }
   };
 
   return (
@@ -53,22 +71,38 @@ export const CheckoutModal = ({
         noValidate
         onSubmit={handleSubmit}
       >
-        {CHECKOUT_FIELDS.map(({ name, label, type, autoComplete }) => (
-          <label
-            key={name}
-            className={styles.field}
-          >
-            <span className={styles.label}>{label}</span>
-            <input
-              className={styles.input}
-              name={name}
-              type={type}
-              autoComplete={autoComplete}
-              value={values[name]}
-              onChange={handleChange}
-            />
-          </label>
-        ))}
+        {CHECKOUT_FIELDS.map(({ name, label, type, autoComplete }) => {
+          const error = errors[name];
+          const errorId = `${formId}-${name}`;
+
+          return (
+            <label
+              key={name}
+              className={styles.field}
+            >
+              <span className={styles.label}>{label}</span>
+              <input
+                className={styles.input}
+                name={name}
+                type={type}
+                autoComplete={autoComplete}
+                value={values[name]}
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? errorId : undefined}
+                onChange={handleChange}
+              />
+              {error && (
+                <span
+                  id={errorId}
+                  className={styles.error}
+                  role="alert"
+                >
+                  {error}
+                </span>
+              )}
+            </label>
+          );
+        })}
 
         <fieldset className={styles.delivery}>
           <legend className={styles.label}>Delivery</legend>

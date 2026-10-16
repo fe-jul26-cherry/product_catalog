@@ -31,3 +31,16 @@ export const DELIVERY_OPTIONS: { value: DeliveryMethod; label: string }[] = [
   { value: 'pickup', label: 'Pickup' },
   { value: 'courier', label: 'Courier' },
 ];
+
+export const CHECKOUT_RULES = {
+  nameMinLength: 2,
+  phonePattern: /^\+?\d{10,12}$/,
+  emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+};
+
+export const CHECKOUT_MESSAGES = {
+  required: 'This field is required',
+  name: 'Name is too short',
+  phone: 'Enter a valid phone number',
+  email: 'Enter a valid email address',
+};
