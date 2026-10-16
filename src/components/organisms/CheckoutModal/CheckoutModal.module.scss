@@ -1,4 +1,5 @@
 @use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
 .summary {
@@ -14,4 +15,87 @@
 .count {
   @include body;
   color: $color-secondary;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  @include small;
+  color: $color-secondary;
+}
+
+.input {
+  @include body;
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid $color-elements;
+  color: $color-primary;
+  background: $color-bg;
+  transition: border-color $transition;
+
+  &:focus {
+    border-color: $color-accent;
+    outline: none;
+  }
+}
+
+.delivery {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    padding: 0;
+    margin-bottom: 8px;
+  }
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @include tablet {
+    flex-direction: row;
+  }
+}
+
+.option {
+  @include body;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid $color-elements;
+  cursor: pointer;
+  transition: border-color $transition;
+
+  &:has(.radio:checked) {
+    border-color: $color-accent;
+  }
+}
+
+.radio {
+  margin: 0;
+  accent-color: $color-accent;
+}
+
+.submit {
+  width: 100%;
+  height: 48px;
 }
