@@ -7,7 +7,7 @@ import {
   CHECKOUT_INITIAL_VALUES,
   DELIVERY_OPTIONS,
 } from '@/constants';
-import { validateCheckout } from '@/utils/checkout';
+import { validateCheckout } from '@/utils';
 
 import styles from './CheckoutModal.module.scss';
 
