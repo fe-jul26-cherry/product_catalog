@@ -1,0 +1,53 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/typography' as *;
+
+.root {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  @include body;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 8px;
+  border: 0;
+  border-bottom: 1px solid $color-elements;
+  border-radius: 0;
+  background: transparent;
+  color: $color-primary;
+  appearance: none;
+  transition: background $transition;
+
+  &::placeholder {
+    color: $color-secondary;
+  }
+
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration {
+    appearance: none;
+  }
+
+  &:hover {
+    background: $color-surface-1;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: $color-accent;
+  transition: width $transition;
+}
+
+.input:focus ~ .border {
+  width: 100%;
+}
