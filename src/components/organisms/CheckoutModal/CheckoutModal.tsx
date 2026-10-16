@@ -32,7 +32,7 @@ export const CheckoutModal = ({
     CHECKOUT_INITIAL_VALUES,
   );
   const [errors, setErrors] = useState<CheckoutErrors>({});
-  const [submittedName, setSubmittedName] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -61,10 +61,10 @@ export const CheckoutModal = ({
     }
 
     onSubmit(values);
-    setSubmittedName(values.name.trim());
+    setIsSubmitted(true);
   };
 
-  if (submittedName !== null) {
+  if (isSubmitted) {
     return (
       <Modal
         title="Order placed"
@@ -72,7 +72,7 @@ export const CheckoutModal = ({
       >
         <div className={styles.success}>
           <p className={styles.successText}>
-            Thank you, {submittedName}! Your order has been placed.
+            Thank you, {values.name.trim()}! Your order has been placed.
           </p>
           <Button
             className={styles.submit}
