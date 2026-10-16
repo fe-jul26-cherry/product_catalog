@@ -17,12 +17,14 @@ import type { ChangeEvent, FormEvent } from 'react';
 interface CheckoutModalProps {
   total: number;
   count: number;
+  onSubmit: (values: CheckoutFormValues) => void;
   onClose: () => void;
 }
 
 export const CheckoutModal = ({
   total,
   count,
+  onSubmit,
   onClose,
 }: CheckoutModalProps) => {
   const formId = useId();
@@ -30,6 +32,7 @@ export const CheckoutModal = ({
     CHECKOUT_INITIAL_VALUES,
   );
   const [errors, setErrors] = useState<CheckoutErrors>({});
+  const [submittedName, setSubmittedName] = useState<string | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -53,8 +56,34 @@ export const CheckoutModal = ({
       if (element instanceof HTMLElement) {
         element.focus();
       }
+
+      return;
     }
+
+    onSubmit(values);
+    setSubmittedName(values.name.trim());
   };
+
+  if (submittedName !== null) {
+    return (
+      <Modal
+        title="Order placed"
+        onClose={onClose}
+      >
+        <div className={styles.success}>
+          <p className={styles.successText}>
+            Thank you, {submittedName}! Your order has been placed.
+          </p>
+          <Button
+            className={styles.submit}
+            onClick={onClose}
+          >
+            Close
+          </Button>
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <Modal

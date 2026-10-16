@@ -16,11 +16,13 @@ export const CartPage = () => {
   const items = useCartStore((state) => state.items);
   const total = useCartStore(selectCartTotal);
   const count = useCartStore(selectCartCount);
-  const { remove, increment, decrement } = useCartStore.getState();
+  const { remove, increment, decrement, clear } = useCartStore.getState();
 
   const handleCheckout = () => setIsCheckoutOpen(true);
 
   const handleCloseCheckout = () => setIsCheckoutOpen(false);
+
+  const handleSubmitOrder = () => clear();
 
   return (
     <div className={styles.root}>
@@ -55,6 +57,7 @@ export const CartPage = () => {
         <CheckoutModal
           total={total}
           count={count}
+          onSubmit={handleSubmitOrder}
           onClose={handleCloseCheckout}
         />
       )}
