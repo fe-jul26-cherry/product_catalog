@@ -1,0 +1,17 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/typography' as *;
+
+.summary {
+  padding-bottom: 16px;
+  border-bottom: 1px solid $color-elements;
+  text-align: center;
+}
+
+.total {
+  @include h2;
+}
+
+.count {
+  @include body;
+  color: $color-secondary;
+}
