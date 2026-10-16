@@ -379,30 +379,24 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
 .dotActive {
   width: 32px;
 
+  // The fill is a hard-stop gradient on the rounded track itself, so the
+  // left end stays round from the very first frame (no scaleX squashing).
   &::before,
   &:hover::before {
-    background: $color-surface-2;
+    background: linear-gradient(
+      90deg,
+      $color-slider-progress calc(var(--progress) * 100%),
+      $color-surface-2 0
+    );
+    transition: none;
   }
 }
 
-.fill {
-  position: absolute;
-  inset: 50% 4px auto;
-  height: 8px;
-  border-radius: 999px;
-  background: $color-primary;
-  transform: translateY(-50%) scaleX(0);
-  transform-origin: left center;
-  opacity: 0;
-}
-
-.dotActive .fill {
-  opacity: 1;
-  transform: translateY(-50%) scaleX(var(--progress));
-}
-
-.paused .dotActive .fill {
-  transform: translateY(-50%) scaleX(1);
+.paused .dotActive {
+  &::before,
+  &:hover::before {
+    background: $color-slider-progress;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

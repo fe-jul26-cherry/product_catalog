@@ -186,9 +186,7 @@ export const PicturesSlider = () => {
               aria-label={`Go to slide ${index + 1}`}
               aria-current={index === activeIndex}
               onClick={() => swiper?.slideTo(index)}
-            >
-              <span className={styles.fill} />
-            </button>
+            />
           ))}
 
           <button
