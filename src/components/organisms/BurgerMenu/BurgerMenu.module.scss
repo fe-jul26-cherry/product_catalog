@@ -8,11 +8,16 @@
   z-index: 100;
   display: flex;
   flex-direction: column;
-  background: $color-bg;
+  background: $color-header-footer-bg;
 
   @include tablet {
     display: none;
   }
+}
+
+.close img,
+.cell img {
+  filter: $filter-header-footer-icon;
 }
 
 .top {
@@ -62,13 +67,17 @@
   transition: color $transition;
 
   &:hover {
-    color: $color-primary;
+    color: $color-header-footer-hover;
   }
 }
 
 .itemActive {
   border-bottom-color: $color-primary;
   color: $color-primary;
+
+  &:hover {
+    color: $color-primary;
+  }
 }
 
 .actions {

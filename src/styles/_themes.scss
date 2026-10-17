@@ -3,6 +3,12 @@
   --color-bg: #0f1121;
   --color-surface-1: #161827;
   --color-surface-2: #323542;
+  --color-header-footer-bg: var(--color-bg);
+  --color-header-footer-secondary: var(--color-secondary);
+  --color-header-footer-hover: var(--color-primary);
+  --color-header-footer-accent: var(--color-accent);
+  --color-header-footer-accent-hover: var(--color-accent-hover);
+  --filter-header-footer-icon: none;
   --color-banner-bg: #0f1121;
   --color-elements: #3b3e4a;
   --color-icons: #4a4d58;
@@ -28,6 +34,12 @@
   --color-bg: #ffffff;
   --color-surface-1: #fafbfc;
   --color-surface-2: #e2e6e9;
+  --color-header-footer-bg: var(--color-accent);
+  --color-header-footer-secondary: #1c1837;
+  --color-header-footer-hover: #ffffff;
+  --color-header-footer-accent: #ffffff;
+  --color-header-footer-accent-hover: #ffffff;
+  --filter-header-footer-icon: brightness(0);
   --color-banner-bg: #ffffff;
   --color-elements: #e2e6e9;
   --color-icons: #b4bdc3;

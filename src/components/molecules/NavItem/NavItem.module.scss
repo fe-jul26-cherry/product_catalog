@@ -11,13 +11,17 @@
   transition: color $transition;
 
   &:hover {
-    color: $color-primary;
+    color: $color-header-footer-hover;
   }
 }
 
 .active {
   position: relative;
   color: $color-primary;
+
+  &:hover {
+    color: $color-primary;
+  }
 }
 
 .active::after {

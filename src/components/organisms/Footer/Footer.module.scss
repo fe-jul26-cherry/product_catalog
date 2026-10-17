@@ -4,7 +4,12 @@
 
 .root {
   padding: 32px 0;
+  background: $color-header-footer-bg;
   border-top: 1px solid $color-surface-2;
+
+  --color-secondary: #{$color-header-footer-secondary};
+  --color-accent: #{$color-header-footer-accent};
+  --color-accent-hover: #{$color-header-footer-accent-hover};
 }
 
 .content {
@@ -84,7 +89,7 @@
   transition: color $transition;
 
   &:hover {
-    color: $color-primary;
+    color: $color-header-footer-hover;
   }
 }
 
