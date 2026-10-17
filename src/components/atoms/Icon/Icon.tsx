@@ -24,6 +24,8 @@ import searchLightIcon from '@/assets/icons/search-light.svg';
 import searchIcon from '@/assets/icons/search.svg';
 import shoppingBagLightIcon from '@/assets/icons/shopping-bag-light.svg';
 import shoppingBagIcon from '@/assets/icons/shopping-bag.svg';
+import userLightIcon from '@/assets/icons/user-light.svg';
+import userIcon from '@/assets/icons/user.svg';
 import { useThemeStore } from '@/store';
 
 import styles from './Icon.module.scss';
@@ -51,6 +53,7 @@ const LIGHT_THEME_ICONS: Record<string, string> = {
   [plusIcon]: plusLightIcon,
   [searchIcon]: searchLightIcon,
   [shoppingBagIcon]: shoppingBagLightIcon,
+  [userIcon]: userLightIcon,
 };
 
 export const Icon = ({ src, alt = '', size = 'sm', className }: IconProps) => {

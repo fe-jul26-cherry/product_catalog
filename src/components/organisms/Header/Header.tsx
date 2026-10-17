@@ -5,6 +5,7 @@ import favoriteOutline from '@/assets/icons/favorite-outline.svg';
 import menu from '@/assets/icons/menu.svg';
 import search from '@/assets/icons/search.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
+import user from '@/assets/icons/user.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { LanguageToggle } from '@/components/atoms/LanguageToggle';
 import { Logo } from '@/components/atoms/Logo';
@@ -12,12 +13,15 @@ import { SearchInput } from '@/components/atoms/SearchInput';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { IconLink } from '@/components/molecules/IconLink';
 import { NavItem } from '@/components/molecules/NavItem';
+import { AuthModal } from '@/components/organisms/AuthModal';
 import { BurgerMenu } from '@/components/organisms/BurgerMenu';
 import { CATEGORIES, ROUTES } from '@/constants';
 import { useMediaQuery, useTranslation } from '@/hooks';
+import { isSupabaseConfigured } from '@/services';
 import {
   selectCartCount,
   selectFavoritesCount,
+  useAuthStore,
   useCartStore,
   useFavoritesStore,
   useLanguageStore,
@@ -29,11 +33,13 @@ import styles from './Header.module.scss';
 import type { FormEvent } from 'react';
 
 const CROWDED_QUERY = '(min-width: 640px) and (max-width: 719px)';
+const CROWDED_ACCOUNT_QUERY = '(min-width: 640px) and (max-width: 799px)';
 
 export const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [query, setQuery] = useState('');
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
@@ -41,10 +47,17 @@ export const Header = () => {
   const toggleLanguage = useLanguageStore((state) => state.toggleLanguage);
   const cartCount = useCartStore(selectCartCount);
   const favoritesCount = useFavoritesStore(selectFavoritesCount);
+  const isSignedIn = useAuthStore((state) => state.user !== null);
 
-  const isCrowded = useMediaQuery(CROWDED_QUERY) && language === 'ua';
+  const isCrowdedRange = useMediaQuery(
+    isSupabaseConfigured ? CROWDED_ACCOUNT_QUERY : CROWDED_QUERY,
+  );
+  const isCrowded =
+    isCrowdedRange && (isSupabaseConfigured || language === 'ua');
 
   const closeSearch = () => setIsSearchOpen(false);
+  const openAuth = () => setIsAuthOpen(true);
+  const closeAuth = () => setIsAuthOpen(false);
 
   const handleSearchSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -53,7 +66,9 @@ export const Header = () => {
 
   return (
     <header className={styles.root}>
-      <div className={`${styles.bar} ${language === 'ua' ? styles.barUa : ''}`}>
+      <div
+        className={`${styles.bar} ${language === 'ua' ? styles.barUa : ''} ${isSupabaseConfigured ? styles.barAccount : ''}`}
+      >
         <div className={styles.left}>
           <Logo />
 
@@ -136,6 +151,22 @@ export const Header = () => {
             />
           </IconLink>
 
+          {isSupabaseConfigured && (
+            <button
+              type="button"
+              className={`${styles.accountCell} ${isSignedIn ? styles.accountActive : ''}`}
+              aria-label={isSignedIn ? t.auth.account : t.auth.signIn}
+              aria-haspopup="dialog"
+              onClick={openAuth}
+            >
+              <Icon
+                src={user}
+                alt=""
+                size="sm"
+              />
+            </button>
+          )}
+
           <button
             type="button"
             className={styles.burger}
@@ -186,7 +217,10 @@ export const Header = () => {
       <BurgerMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
+        onAccount={openAuth}
       />
+
+      {isAuthOpen && <AuthModal onClose={closeAuth} />}
     </header>
   );
 };

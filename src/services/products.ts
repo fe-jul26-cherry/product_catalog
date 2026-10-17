@@ -18,10 +18,10 @@ export interface ProductWithDetails {
   details: ProductDetails;
 }
 
-const PRODUCT_COLUMNS =
+export const PRODUCT_COLUMNS =
   'id,item_id,category,name,full_price,price,screen,capacity,color,ram,year,image';
 
-const toProduct = (row: ProductRow): Product => ({
+export const toProduct = (row: ProductRow): Product => ({
   id: row.id,
   category: row.category,
   itemId: row.item_id,

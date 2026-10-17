@@ -2,6 +2,8 @@
 @use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
+$action-width: clamp(44px, calc(44px + (100vw - 640px) * 0.2), 64px);
+
 .root {
   position: sticky;
   top: 0;
@@ -25,7 +27,7 @@
   &.barUa {
     @include desktop {
       .search {
-        flex-basis: 660px;
+        flex-basis: 550px;
       }
     }
   }
@@ -51,7 +53,7 @@
   @include desktop {
     display: block;
     padding-left: 18px;
-    flex: 0 1 710px;
+    flex: 0 1 650px;
     align-self: center;
     min-width: 180px;
     margin-left: 32px;
@@ -145,7 +147,13 @@
 
   @include tablet {
     gap: 6px;
-    margin-right: calc(#{$header-height * 2} - 8px);
+    margin-right: calc(#{$action-width} * 2 - 8px);
+  }
+
+  .barAccount & {
+    @include tablet {
+      margin-right: calc(#{$action-width} * 3 - 8px);
+    }
   }
 }
 
@@ -166,7 +174,7 @@
 
   @include tablet {
     display: flex;
-    width: $header-height;
+    width: $action-width;
   }
 }
 
@@ -180,6 +188,34 @@
   @include tablet {
     display: none;
   }
+}
+
+.actions > .accountCell {
+  position: relative;
+  display: none;
+  padding: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+
+  @include tablet {
+    display: flex;
+    width: $action-width;
+  }
+}
+
+.accountActive::after {
+  content: '';
+  position: absolute;
+  top: 22px;
+  left: calc(50% + 5px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $color-green;
 }
 
 .burger {

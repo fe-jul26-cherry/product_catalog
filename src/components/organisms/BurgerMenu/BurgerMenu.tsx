@@ -4,14 +4,17 @@ import { NavLink } from 'react-router-dom';
 import close from '@/assets/icons/close.svg';
 import favoriteOutline from '@/assets/icons/favorite-outline.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
+import user from '@/assets/icons/user.svg';
 import { Counter } from '@/components/atoms/Counter';
 import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
 import { CATEGORIES, ROUTES } from '@/constants';
 import { useTranslation } from '@/hooks';
+import { isSupabaseConfigured } from '@/services';
 import {
   selectCartCount,
   selectFavoritesCount,
+  useAuthStore,
   useCartStore,
   useFavoritesStore,
 } from '@/store';
@@ -21,15 +24,17 @@ import styles from './BurgerMenu.module.scss';
 interface BurgerMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onAccount: () => void;
 }
 
 const getItemClassName = ({ isActive }: { isActive: boolean }) =>
   isActive ? `${styles.item} ${styles.itemActive}` : styles.item;
 
-export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
+export const BurgerMenu = ({ isOpen, onClose, onAccount }: BurgerMenuProps) => {
   const { t } = useTranslation();
   const cartCount = useCartStore(selectCartCount);
   const favoritesCount = useFavoritesStore(selectFavoritesCount);
+  const isSignedIn = useAuthStore((state) => state.user !== null);
 
   const navItems = [
     { to: ROUTES.HOME, label: t.common.home },
@@ -73,6 +78,11 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
   if (!isOpen) {
     return null;
   }
+
+  const handleAccount = () => {
+    onClose();
+    onAccount();
+  };
 
   return (
     <aside
@@ -147,6 +157,19 @@ export const BurgerMenu = ({ isOpen, onClose }: BurgerMenuProps) => {
             </span>
           )}
         </NavLink>
+        {isSupabaseConfigured && (
+          <button
+            type="button"
+            className={`${styles.cell} ${styles.cellButton} ${isSignedIn ? styles.cellActive : ''}`}
+            aria-label={isSignedIn ? t.auth.account : t.auth.signIn}
+            onClick={handleAccount}
+          >
+            <Icon
+              src={user}
+              alt=""
+            />
+          </button>
+        )}
       </div>
     </aside>
   );
