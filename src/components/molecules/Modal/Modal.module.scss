@@ -63,3 +63,22 @@
     opacity: 0.6;
   }
 }
+
+.compact {
+  max-width: 384px;
+  border-radius: 12px;
+
+  .header {
+    position: relative;
+    justify-content: center;
+  }
+
+  .title {
+    text-align: center;
+  }
+
+  .close {
+    position: absolute;
+    right: 0;
+  }
+}

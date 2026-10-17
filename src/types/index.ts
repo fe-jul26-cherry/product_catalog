@@ -5,3 +5,4 @@ export * from './theme';
 export * from './language';
 export * from './checkout';
 export * from './supabase';
+export * from './auth';

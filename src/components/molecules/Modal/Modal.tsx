@@ -9,11 +9,19 @@ import type { ReactNode, SyntheticEvent } from 'react';
 
 interface ModalProps {
   title: string;
+  closeLabel?: string;
+  compact?: boolean;
   onClose: () => void;
   children: ReactNode;
 }
 
-export const Modal = ({ title, onClose, children }: ModalProps) => {
+export const Modal = ({
+  title,
+  closeLabel = 'Close',
+  compact = false,
+  onClose,
+  children,
+}: ModalProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -46,7 +54,7 @@ export const Modal = ({ title, onClose, children }: ModalProps) => {
   return (
     <dialog
       ref={dialogRef}
-      className={styles.root}
+      className={`${styles.root} ${compact ? styles.compact : ''}`}
       aria-labelledby={titleId}
       onCancel={handleCancel}
     >
@@ -61,7 +69,7 @@ export const Modal = ({ title, onClose, children }: ModalProps) => {
           <button
             type="button"
             className={styles.close}
-            aria-label="Close"
+            aria-label={closeLabel}
             onClick={onClose}
           >
             <Icon
