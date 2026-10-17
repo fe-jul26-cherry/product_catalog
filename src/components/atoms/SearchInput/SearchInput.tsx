@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react';
 
+import search from '@/assets/icons/search.svg';
+import { Icon } from '@/components/atoms/Icon';
+
 import styles from './SearchInput.module.scss';
 
 interface SearchInputProps {
@@ -29,6 +32,12 @@ export const SearchInput = ({
 
   return (
     <div className={styles.root}>
+      <Icon
+        src={search}
+        alt=""
+        size="sm"
+        className={styles.icon}
+      />
       <input
         ref={inputRef}
         className={styles.input}
@@ -44,10 +53,6 @@ export const SearchInput = ({
             onEscape?.();
           }
         }}
-      />
-      <span
-        className={styles.border}
-        aria-hidden="true"
       />
     </div>
   );
