@@ -37,7 +37,9 @@ const UiKitPage = lazy(() =>
 
 export const App = () => (
   <AnimationProvider>
-    <HashRouter>
+    <HashRouter
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
       <Routes>
         <Route element={<MainLayout />}>
           <Route

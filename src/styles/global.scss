@@ -50,6 +50,10 @@ body {
     color $transition;
 }
 
+body:has([data-loader]) footer {
+  visibility: hidden;
+}
+
 #root {
   display: flex;
   flex-direction: column;
