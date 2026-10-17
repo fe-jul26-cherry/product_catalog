@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import close from '@/assets/icons/close.svg';
 import favoriteOutline from '@/assets/icons/favorite-outline.svg';
@@ -13,7 +14,7 @@ import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { IconLink } from '@/components/molecules/IconLink';
 import { NavItem } from '@/components/molecules/NavItem';
 import { BurgerMenu } from '@/components/organisms/BurgerMenu';
-import { CATEGORIES, ROUTES } from '@/constants';
+import { CATEGORIES, getSearchPath, ROUTES } from '@/constants';
 import { useMediaQuery, useTranslation } from '@/hooks';
 import {
   selectCartCount,
@@ -34,7 +35,15 @@ export const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const urlQuery = searchParams.get('query') ?? '';
+  const [searchDraft, setSearchDraft] = useState({
+    urlQuery,
+    value: urlQuery,
+  });
+  const query =
+    searchDraft.urlQuery === urlQuery ? searchDraft.value : urlQuery;
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const language = useLanguageStore((state) => state.language);
@@ -46,8 +55,18 @@ export const Header = () => {
 
   const closeSearch = () => setIsSearchOpen(false);
 
-  const handleSearchSubmit = (event: FormEvent) => {
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const normalizedQuery = query.trim();
+
+    if (!normalizedQuery) {
+      closeSearch();
+      return;
+    }
+
+    setSearchDraft({ urlQuery, value: urlQuery });
+    navigate(getSearchPath(normalizedQuery));
     closeSearch();
   };
 
@@ -78,12 +97,25 @@ export const Header = () => {
           role="search"
           onSubmit={handleSearchSubmit}
         >
-          <SearchInput
-            value={query}
-            onChange={setQuery}
-            placeholder={t.header.search}
-            label={t.header.searchProducts}
-          />
+          <div className={styles.searchField}>
+            <SearchInput
+              value={query}
+              onChange={(value) => setSearchDraft({ urlQuery, value })}
+              placeholder={t.header.search}
+              label={t.header.searchProducts}
+            />
+            <button
+              type="submit"
+              className={styles.searchSubmit}
+              aria-label={t.header.search}
+            >
+              <Icon
+                src={search}
+                alt=""
+                size="sm"
+              />
+            </button>
+          </div>
         </form>
 
         <div className={styles.controls}>
@@ -161,12 +193,23 @@ export const Header = () => {
           <div className={styles.searchField}>
             <SearchInput
               value={query}
-              onChange={setQuery}
+              onChange={(value) => setSearchDraft({ urlQuery, value })}
               onEscape={closeSearch}
               placeholder={t.header.search}
               label={t.header.searchProducts}
               focusOnMount
             />
+            <button
+              type="submit"
+              className={styles.searchSubmit}
+              aria-label={t.header.search}
+            >
+              <Icon
+                src={search}
+                alt=""
+                size="sm"
+              />
+            </button>
           </div>
           <button
             type="button"

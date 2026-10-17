@@ -181,4 +181,10 @@ export const ua: Translations = {
     mm: 'мм',
     Mp: 'Мп',
   },
+  search: {
+    title: 'Результати пошуку',
+    results: (count) =>
+      `${count} ${pluralUa(count, { one: 'результат', few: 'результати', many: 'результатів' })}`,
+    empty: (query) => `За запитом «${query}» нічого не знайдено.`,
+  },
 };

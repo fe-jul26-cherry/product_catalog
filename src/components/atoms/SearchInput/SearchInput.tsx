@@ -45,10 +45,6 @@ export const SearchInput = ({
           }
         }}
       />
-      <span
-        className={styles.border}
-        aria-hidden="true"
-      />
     </div>
   );
 };
