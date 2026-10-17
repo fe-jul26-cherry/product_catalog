@@ -3,6 +3,7 @@
   --color-bg: #0f1121;
   --color-surface-1: #161827;
   --color-surface-2: #323542;
+  --color-on-accent: var(--color-primary);
   --color-header-footer-bg: var(--color-bg);
   --color-header-footer-secondary: var(--color-secondary);
   --color-header-footer-hover: var(--color-primary);
@@ -34,6 +35,7 @@
   --color-bg: #ffffff;
   --color-surface-1: #fafbfc;
   --color-surface-2: #e2e6e9;
+  --color-on-accent: #ffffff;
   --color-header-footer-bg: var(--color-accent);
   --color-header-footer-secondary: #1c1837;
   --color-header-footer-hover: #ffffff;

@@ -17,6 +17,7 @@
 
 .primary {
   background: $color-accent;
+  color: $color-on-accent;
 
   &:hover {
     background: $color-accent-hover;
