@@ -190,6 +190,12 @@ export const en = {
   },
   colors: {} as Record<string, string>,
   units: {} as Record<string, string>,
+  search: {
+    title: 'Search results',
+    results: (count: number) =>
+      `${count} ${count === 1 ? 'result' : 'results'}`,
+    empty: (query: string) => `No results found for "${query}".`,
+  },
 };
 
 export type Translations = typeof en;

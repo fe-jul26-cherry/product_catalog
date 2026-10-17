@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import astronautActive from '@/assets/icons/astronaut-active.svg';
 import astronaut from '@/assets/icons/astronaut.svg';
@@ -16,7 +17,7 @@ import { IconLink } from '@/components/molecules/IconLink';
 import { NavItem } from '@/components/molecules/NavItem';
 import { AuthModal } from '@/components/organisms/AuthModal';
 import { BurgerMenu } from '@/components/organisms/BurgerMenu';
-import { CATEGORIES, ROUTES } from '@/constants';
+import { CATEGORIES, getSearchPath, ROUTES } from '@/constants';
 import { useMediaQuery, useTranslation } from '@/hooks';
 import { isSupabaseConfigured } from '@/services';
 import {
@@ -41,7 +42,15 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const urlQuery = searchParams.get('query') ?? '';
+  const [searchDraft, setSearchDraft] = useState({
+    urlQuery,
+    value: urlQuery,
+  });
+  const query =
+    searchDraft.urlQuery === urlQuery ? searchDraft.value : urlQuery;
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const language = useLanguageStore((state) => state.language);
@@ -60,8 +69,18 @@ export const Header = () => {
   const openAuth = () => setIsAuthOpen(true);
   const closeAuth = () => setIsAuthOpen(false);
 
-  const handleSearchSubmit = (event: FormEvent) => {
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const normalizedQuery = query.trim();
+
+    if (!normalizedQuery) {
+      closeSearch();
+      return;
+    }
+
+    setSearchDraft({ urlQuery, value: urlQuery });
+    navigate(getSearchPath(normalizedQuery));
     closeSearch();
   };
 
@@ -94,12 +113,25 @@ export const Header = () => {
           role="search"
           onSubmit={handleSearchSubmit}
         >
-          <SearchInput
-            value={query}
-            onChange={setQuery}
-            placeholder={t.header.search}
-            label={t.header.searchProducts}
-          />
+          <div className={styles.searchField}>
+            <SearchInput
+              value={query}
+              onChange={(value) => setSearchDraft({ urlQuery, value })}
+              placeholder={t.header.search}
+              label={t.header.searchProducts}
+            />
+            <button
+              type="submit"
+              className={styles.searchSubmit}
+              aria-label={t.header.search}
+            >
+              <Icon
+                src={search}
+                alt=""
+                size="sm"
+              />
+            </button>
+          </div>
         </form>
 
         <div className={styles.controls}>
@@ -193,12 +225,23 @@ export const Header = () => {
           <div className={styles.searchField}>
             <SearchInput
               value={query}
-              onChange={setQuery}
+              onChange={(value) => setSearchDraft({ urlQuery, value })}
               onEscape={closeSearch}
               placeholder={t.header.search}
               label={t.header.searchProducts}
               focusOnMount
             />
+            <button
+              type="submit"
+              className={styles.searchSubmit}
+              aria-label={t.header.search}
+            >
+              <Icon
+                src={search}
+                alt=""
+                size="sm"
+              />
+            </button>
           </div>
           <button
             type="button"
