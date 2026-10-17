@@ -19,14 +19,17 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(url: string): Promise<T> {
+export async function request<T>(
+  url: string,
+  headers?: Record<string, string>,
+): Promise<T> {
   let response: Response;
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    response = await fetch(`${BASE_URL}${url}`, { signal: controller.signal });
+    response = await fetch(url, { signal: controller.signal, headers });
   } catch {
     throw controller.signal.aborted ?
         new ApiError('timeout', 'The server is taking too long to respond.')
@@ -51,5 +54,5 @@ async function request<T>(url: string): Promise<T> {
 }
 
 export const client = {
-  get: <T>(url: string) => request<T>(url),
+  get: <T>(path: string) => request<T>(`${BASE_URL}${path}`),
 };
