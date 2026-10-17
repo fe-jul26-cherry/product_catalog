@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import astronautActive from '@/assets/icons/astronaut-active.svg';
+import astronaut from '@/assets/icons/astronaut.svg';
 import close from '@/assets/icons/close.svg';
 import favoriteOutline from '@/assets/icons/favorite-outline.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
-import user from '@/assets/icons/user.svg';
 import { Counter } from '@/components/atoms/Counter';
 import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
@@ -165,7 +166,7 @@ export const BurgerMenu = ({ isOpen, onClose, onAccount }: BurgerMenuProps) => {
             onClick={handleAccount}
           >
             <Icon
-              src={user}
+              src={isSignedIn ? astronautActive : astronaut}
               alt=""
             />
           </button>

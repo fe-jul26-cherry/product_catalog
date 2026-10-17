@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
+import astronautActive from '@/assets/icons/astronaut-active.svg';
+import astronaut from '@/assets/icons/astronaut.svg';
 import close from '@/assets/icons/close.svg';
 import favoriteOutline from '@/assets/icons/favorite-outline.svg';
 import menu from '@/assets/icons/menu.svg';
 import search from '@/assets/icons/search.svg';
 import shoppingBag from '@/assets/icons/shopping-bag.svg';
-import user from '@/assets/icons/user.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { LanguageToggle } from '@/components/atoms/LanguageToggle';
 import { Logo } from '@/components/atoms/Logo';
@@ -160,7 +161,7 @@ export const Header = () => {
               onClick={openAuth}
             >
               <Icon
-                src={user}
+                src={isSignedIn ? astronautActive : astronaut}
                 alt=""
                 size="sm"
               />

@@ -1,3 +1,7 @@
+import astronautActiveLightIcon from '@/assets/icons/astronaut-active-light.svg';
+import astronautActiveIcon from '@/assets/icons/astronaut-active.svg';
+import astronautLightIcon from '@/assets/icons/astronaut-light.svg';
+import astronautIcon from '@/assets/icons/astronaut.svg';
 import chevronDownLightIcon from '@/assets/icons/chevron-down-light.svg';
 import chevronDownIcon from '@/assets/icons/chevron-down.svg';
 import chevronLeftLightIcon from '@/assets/icons/chevron-left-light.svg';
@@ -40,6 +44,8 @@ interface IconProps {
 }
 
 const LIGHT_THEME_ICONS: Record<string, string> = {
+  [astronautActiveIcon]: astronautActiveLightIcon,
+  [astronautIcon]: astronautLightIcon,
   [chevronDownIcon]: chevronDownLightIcon,
   [chevronLeftIcon]: chevronLeftLightIcon,
   [chevronRightIcon]: chevronRightLightIcon,
