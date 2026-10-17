@@ -10,7 +10,8 @@
   height: 40px;
   padding: 0;
   border: 0;
-  color: $color-primary;
+  border-radius: 4px;
+  color: $color-btn;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
