@@ -73,137 +73,139 @@ export const PicturesSlider = () => {
   };
 
   return (
-    // Keyboard users switch slides via the arrow buttons and dots.
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-    <section
-      className={
-        autoplayEnabled ? styles.root : `${styles.root} ${styles.paused}`
-      }
-      aria-label={t.home.promotions}
-      onClick={handleSideClick}
-    >
-      <Swiper
-        className={styles.swiper}
-        modules={[A11y, Autoplay, EffectFade, Keyboard]}
-        effect="fade"
-        fadeEffect={{ crossFade: true }}
-        speed={FADE_SPEED}
-        slidesPerView={1}
-        rewind
-        keyboard={{ enabled: true }}
-        breakpoints={{
-          [TABLET_BREAKPOINT]: { allowTouchMove: false },
-        }}
-        autoplay={{
-          enabled: autoplayEnabled,
-          delay: AUTOPLAY_DELAY,
-          disableOnInteraction: false,
-        }}
-        onSwiper={setSwiper}
-        onSlideChange={handleSlideChange}
-        onAutoplayTimeLeft={handleTimeLeft}
+    <section aria-label={t.home.promotions}>
+      <div
+        className={
+          autoplayEnabled ? styles.root : `${styles.root} ${styles.paused}`
+        }
+        role="presentation"
+        onClick={handleSideClick}
       >
-        {BANNERS.map((slide, index) => {
-          const image =
-            theme === 'light' ? (slide.imageLight ?? slide.image) : slide.image;
-          const text = t.banners[slide.id];
-          const isActive = index === activeIndex;
-          const slideClasses = [
-            styles.slide,
-            slide.fullBleed && styles.slideFull,
-            isActive && styles.slideActive,
-          ]
-            .filter(Boolean)
-            .join(' ');
-          const visualClasses = [
-            styles.visual,
-            slide.fit === 'contain' && styles.visualContain,
-            slide.fullBleed && styles.visualFull,
-          ]
-            .filter(Boolean)
-            .join(' ');
+        <Swiper
+          className={styles.swiper}
+          modules={[A11y, Autoplay, EffectFade, Keyboard]}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
+          speed={FADE_SPEED}
+          slidesPerView={1}
+          rewind
+          keyboard={{ enabled: true }}
+          breakpoints={{
+            [TABLET_BREAKPOINT]: { allowTouchMove: false },
+          }}
+          autoplay={{
+            enabled: autoplayEnabled,
+            delay: AUTOPLAY_DELAY,
+            disableOnInteraction: false,
+          }}
+          onSwiper={setSwiper}
+          onSlideChange={handleSlideChange}
+          onAutoplayTimeLeft={handleTimeLeft}
+        >
+          {BANNERS.map((slide, index) => {
+            const image =
+              theme === 'light' ?
+                (slide.imageLight ?? slide.image)
+              : slide.image;
+            const text = t.banners[slide.id];
+            const isActive = index === activeIndex;
+            const slideClasses = [
+              styles.slide,
+              slide.fullBleed && styles.slideFull,
+              isActive && styles.slideActive,
+            ]
+              .filter(Boolean)
+              .join(' ');
+            const visualClasses = [
+              styles.visual,
+              slide.fit === 'contain' && styles.visualContain,
+              slide.fullBleed && styles.visualFull,
+            ]
+              .filter(Boolean)
+              .join(' ');
 
-          return (
-            <SwiperSlide
-              key={slide.id}
-              className={slideClasses}
-            >
-              <div className={visualClasses}>
-                <img
-                  className={styles.image}
-                  src={image}
-                  alt={text.alt}
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  draggable={false}
-                  style={{
-                    objectFit: slide.fit,
-                    objectPosition: slide.position,
-                  }}
-                />
-              </div>
+            return (
+              <SwiperSlide
+                key={slide.id}
+                className={slideClasses}
+              >
+                <div className={visualClasses}>
+                  <img
+                    className={styles.image}
+                    src={image}
+                    alt={text.alt}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    draggable={false}
+                    style={{
+                      objectFit: slide.fit,
+                      objectPosition: slide.position,
+                    }}
+                  />
+                </div>
 
-              <div className={styles.panel}>
-                <p className={styles.eyebrow}>{text.eyebrow}</p>
-                <h3 className={styles.title}>{text.title}</h3>
-                <p className={styles.subtitle}>{text.subtitle}</p>
-                <Link
-                  to={getCategoryPath(slide.category)}
-                  className={styles.cta}
-                  tabIndex={isActive ? 0 : -1}
-                >
-                  {text.cta}
-                </Link>
-              </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+                <div className={styles.panel}>
+                  <p className={styles.eyebrow}>{text.eyebrow}</p>
+                  <h3 className={styles.title}>{text.title}</h3>
+                  <p className={styles.subtitle}>{text.subtitle}</p>
+                  <Link
+                    to={getCategoryPath(slide.category)}
+                    className={styles.cta}
+                    tabIndex={isActive ? 0 : -1}
+                  >
+                    {text.cta}
+                  </Link>
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
 
-      <div className={styles.controls}>
-        <div className={styles.dots}>
-          <button
-            type="button"
-            className={styles.arrow}
-            aria-label={t.home.previousSlide}
-            onClick={() => swiper?.slidePrev()}
-          >
-            <Icon
-              src={chevronLeftIcon}
-              alt=""
-              className={styles.arrowIcon}
-            />
-          </button>
-
-          {BANNERS.map((slide, index) => (
+        <div className={styles.controls}>
+          <div className={styles.dots}>
             <button
-              key={slide.id}
-              ref={(element) => {
-                dotRefs.current[index] = element;
-              }}
               type="button"
-              className={
-                index === activeIndex ?
-                  `${styles.dot} ${styles.dotActive}`
-                : styles.dot
-              }
-              aria-label={t.home.goToSlide(index + 1)}
-              aria-current={index === activeIndex}
-              onClick={() => swiper?.slideTo(index)}
-            />
-          ))}
+              className={styles.arrow}
+              aria-label={t.home.previousSlide}
+              onClick={() => swiper?.slidePrev()}
+            >
+              <Icon
+                src={chevronLeftIcon}
+                alt=""
+                className={styles.arrowIcon}
+              />
+            </button>
 
-          <button
-            type="button"
-            className={styles.arrow}
-            aria-label={t.home.nextSlide}
-            onClick={() => swiper?.slideNext()}
-          >
-            <Icon
-              src={chevronRightIcon}
-              alt=""
-              className={styles.arrowIcon}
-            />
-          </button>
+            {BANNERS.map((slide, index) => (
+              <button
+                key={slide.id}
+                ref={(element) => {
+                  dotRefs.current[index] = element;
+                }}
+                type="button"
+                className={
+                  index === activeIndex ?
+                    `${styles.dot} ${styles.dotActive}`
+                  : styles.dot
+                }
+                aria-label={t.home.goToSlide(index + 1)}
+                aria-current={index === activeIndex}
+                onClick={() => swiper?.slideTo(index)}
+              />
+            ))}
+
+            <button
+              type="button"
+              className={styles.arrow}
+              aria-label={t.home.nextSlide}
+              onClick={() => swiper?.slideNext()}
+            >
+              <Icon
+                src={chevronRightIcon}
+                alt=""
+                className={styles.arrowIcon}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </section>

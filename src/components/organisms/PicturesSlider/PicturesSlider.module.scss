@@ -379,8 +379,6 @@ $slider-ease: cubic-bezier(0.22, 1, 0.36, 1);
 .dotActive {
   width: 32px;
 
-  // The fill is a hard-stop gradient on the rounded track itself, so the
-  // left end stays round from the very first frame (no scaleX squashing).
   &::before,
   &:hover::before {
     background: linear-gradient(
