@@ -72,7 +72,7 @@ export const Header = () => {
 
   return (
     <header className={styles.root}>
-      <div className={styles.bar}>
+      <div className={`${styles.bar} ${language === 'ua' ? styles.barUa : ''}`}>
         <div className={styles.left}>
           <Logo />
 

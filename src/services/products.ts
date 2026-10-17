@@ -1,4 +1,5 @@
 import { client } from './fetchClient';
+import { isSupabaseConfigured, supabase } from './supabase';
 
 import type {
   Category,
@@ -6,6 +7,8 @@ import type {
   Product,
   ProductDetails,
   SortBy,
+  ProductRow,
+  ProductWithTranslationsRow,
 } from '@/types';
 
 const SLIDER_SIZE = 10;
@@ -21,13 +24,86 @@ interface SearchProductsOptions {
   perPage: number;
   sort: SortBy;
 }
+const PRODUCT_COLUMNS =
+  'id,item_id,category,name,full_price,price,screen,capacity,color,ram,year,image';
+
+const toProduct = (row: ProductRow): Product => ({
+  id: row.id,
+  category: row.category,
+  itemId: row.item_id,
+  name: row.name,
+  fullPrice: row.full_price,
+  price: row.price,
+  screen: row.screen ?? '',
+  capacity: row.capacity,
+  color: row.color,
+  ram: row.ram ?? '',
+  year: row.year,
+  image: row.image,
+});
+
+const toProductWithDetails = (
+  row: ProductWithTranslationsRow,
+): ProductWithDetails => {
+  const translation = row.product_translations[0];
+
+  return {
+    category: row.category,
+    product: toProduct(row),
+    details: {
+      id: row.item_id,
+      namespaceId: row.namespace_id,
+      name: row.name,
+      capacityAvailable: row.capacity_available,
+      capacity: row.capacity,
+      priceRegular: row.full_price,
+      priceDiscount: row.price,
+      colorsAvailable: row.colors_available,
+      color: row.color,
+      images: row.images,
+      description: translation?.description ?? [],
+      screen: row.screen ?? '',
+      resolution: row.resolution ?? '',
+      processor: row.processor ?? '',
+      ram: row.ram ?? '',
+      camera: row.camera ?? undefined,
+      zoom: translation?.zoom ?? undefined,
+      cell: translation?.cell ?? [],
+    },
+  };
+};
+
+const withFallback = async <T>(
+  primary: () => Promise<T>,
+  fallback: () => Promise<T>,
+): Promise<T> => {
+  if (!isSupabaseConfigured) {
+    return fallback();
+  }
+
+  try {
+    return await primary();
+  } catch {
+    return fallback();
+  }
+};
 
 let productsRequest: Promise<Product[]> | null = null;
 const detailsRequests = new Map<string, Promise<ProductDetails[]>>();
 
 export const getProducts = (): Promise<Product[]> => {
   if (!productsRequest) {
-    productsRequest = client.get<Product[]>('/products.json').catch((error) => {
+    productsRequest = withFallback(
+      async () => {
+        const rows = await supabase.select<ProductRow[]>(
+          'products',
+          `select=${PRODUCT_COLUMNS}&order=id`,
+        );
+
+        return rows.map(toProduct);
+      },
+      () => client.get<Product[]>('/products.json'),
+    ).catch((error) => {
       productsRequest = null;
       throw error;
     });
@@ -149,7 +225,7 @@ export const getCategoryCounts = async (): Promise<
   return counts;
 };
 
-export const getProductDetails = async (
+const getProductDetailsFromJson = async (
   itemId: string,
   language: Language,
 ): Promise<ProductWithDetails | null> => {
@@ -165,3 +241,24 @@ export const getProductDetails = async (
 
   return details ? { category: product.category, product, details } : null;
 };
+
+const getProductDetailsFromSupabase = async (
+  itemId: string,
+  language: Language,
+): Promise<ProductWithDetails | null> => {
+  const rows = await supabase.select<ProductWithTranslationsRow[]>(
+    'products',
+    `select=*,product_translations(language,zoom,cell,description)&item_id=eq.${encodeURIComponent(itemId)}&product_translations.language=eq.${language}`,
+  );
+
+  return rows[0] ? toProductWithDetails(rows[0]) : null;
+};
+
+export const getProductDetails = (
+  itemId: string,
+  language: Language,
+): Promise<ProductWithDetails | null> =>
+  withFallback(
+    () => getProductDetailsFromSupabase(itemId, language),
+    () => getProductDetailsFromJson(itemId, language),
+  );

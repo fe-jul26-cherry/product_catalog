@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { BackLink } from '@/components/atoms/BackLink';
 import { CartItem } from '@/components/molecules/CartItem';
 import { CartSummary } from '@/components/organisms/CartSummary';
+import { CheckoutModal } from '@/components/organisms/CheckoutModal';
 import { useTranslation } from '@/hooks';
 import { selectCartCount, selectCartTotal, useCartStore } from '@/store';
 
@@ -11,17 +13,12 @@ import styles from './CartPage.module.scss';
 export const CartPage = () => {
   const { t, formatPrice } = useTranslation();
   const navigate = useNavigate();
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const items = useCartStore((state) => state.items);
   const total = useCartStore(selectCartTotal);
   const count = useCartStore(selectCartCount);
   const { remove, increment, decrement, clear } = useCartStore.getState();
-
-  const handleCheckout = () => {
-    if (window.confirm(t.cart.checkoutConfirm)) {
-      clear();
-    }
-  };
 
   return (
     <div className={styles.root}>
@@ -52,10 +49,19 @@ export const CartPage = () => {
             totalLabel={formatPrice(total)}
             countLabel={t.cart.total(count)}
             checkoutLabel={t.cart.checkout}
-            onCheckout={handleCheckout}
+            onCheckout={() => setIsCheckoutOpen(true)}
           />
         </div>
       }
+
+      {isCheckoutOpen && (
+        <CheckoutModal
+          total={total}
+          count={count}
+          onSubmit={clear}
+          onClose={() => setIsCheckoutOpen(false)}
+        />
+      )}
     </div>
   );
 };
