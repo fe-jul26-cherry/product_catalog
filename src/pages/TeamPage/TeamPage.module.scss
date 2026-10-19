@@ -6,24 +6,20 @@
   display: flex;
   flex-direction: column;
   padding-top: 24px;
-  padding-bottom: 56px;
-  gap: 24px;
+  padding-bottom: 32px;
+  gap: 16px;
 
   @include tablet {
-    padding-bottom: 64px;
-    gap: 40px;
-  }
-
-  @include desktop {
-    padding-bottom: 80px;
+    gap: 24px;
   }
 }
 
 .title {
-  @include h1;
+  @include h2;
   color: $color-primary;
   margin: 0;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .list {
@@ -33,14 +29,18 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  width: 100%;
+  max-width: 896px;
+  margin-inline: auto;
 
   @include tablet {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px;
+    row-gap: 32px;
+    column-gap: 48px;
   }
 
   @include desktop {
-    gap: 48px;
+    column-gap: 96px;
   }
 }
 
@@ -49,8 +49,8 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
-  gap: 8px;
-  padding: 24px 16px;
+  gap: 4px;
+  padding: 20px 16px;
   border: 1px solid $color-elements;
   border-radius: 32px;
   background: $color-team;
@@ -61,10 +61,6 @@
   transition:
     transform $transition,
     box-shadow $transition;
-
-  @include tablet {
-    padding: 32px 24px;
-  }
 
   &:hover,
   &:focus-visible {
@@ -79,17 +75,12 @@
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 8px;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 4px;
   overflow: hidden;
   border-radius: 50%;
   background: $color-secondary;
-
-  @include tablet {
-    width: 96px;
-    height: 96px;
-  }
 }
 
 .photo {
@@ -100,7 +91,7 @@
 }
 
 .role {
-  @include h3;
+  font: 600 20px/26px $font-family;
   color: $color-primary;
   margin: 0;
 }
@@ -109,11 +100,6 @@
   font: 700 20px/26px $font-family;
   color: $color-secondary;
   margin: 0;
-
-  @include tablet {
-    font-size: 24px;
-    line-height: 31px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -124,5 +110,27 @@
   .card:hover,
   .card:focus-visible {
     transform: none;
+  }
+}
+
+@media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) and (min-height: 900px) {
+  .list {
+    row-gap: 40px;
+  }
+
+  .card {
+    gap: 8px;
+    padding: 40px 24px;
+  }
+
+  .avatar {
+    width: 112px;
+    height: 112px;
+  }
+
+  .role,
+  .name {
+    font-size: 24px;
+    line-height: 31px;
   }
 }

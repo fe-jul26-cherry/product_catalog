@@ -1,4 +1,3 @@
-import { Breadcrumbs } from '@/components/molecules/Breadcrumbs';
 import { TEAM_MEMBERS } from '@/constants';
 import { useTranslation } from '@/hooks';
 
@@ -9,11 +8,6 @@ export const TeamPage = () => {
 
   return (
     <div className={styles.root}>
-      <Breadcrumbs
-        items={[{ label: t.team.title }]}
-        label={t.header.breadcrumbs}
-        homeLabel={t.common.home}
-      />
       <h1 className={styles.title}>{t.team.title}</h1>
       <ul className={styles.list}>
         {TEAM_MEMBERS.map((member) => (
