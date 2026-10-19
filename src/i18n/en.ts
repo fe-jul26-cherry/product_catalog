@@ -233,6 +233,10 @@ export const en = {
       `${count} ${count === 1 ? 'result' : 'results'}`,
     empty: (query: string) => `No results found for "${query}".`,
   },
+  assistant: {
+    open: 'Open AI assistant',
+    hide: 'Hide AI assistant button',
+  },
 };
 
 export type Translations = typeof en;
