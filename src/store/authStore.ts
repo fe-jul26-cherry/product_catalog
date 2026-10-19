@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { isSupabaseConfigured, onAuthChange } from '@/services';
 
+import { syncProfile } from './profileStore';
 import { startUserSync, syncUser } from './userSync';
 
 import type { AuthUser } from '@/types';
@@ -27,6 +28,9 @@ export const initAuth = () => {
 
   onAuthChange((user) => {
     useAuthStore.setState({ user, isReady: true });
-    setTimeout(() => void syncUser(user), 0);
+    setTimeout(() => {
+      void syncUser(user);
+      void syncProfile(user);
+    }, 0);
   });
 };
