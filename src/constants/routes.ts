@@ -7,6 +7,7 @@ export const ROUTES = {
   PRODUCT: '/product/:productId',
   CART: '/cart',
   FAVORITES: '/favorites',
+  TEAM: '/team',
   UI_KIT: '/ui-kit',
   NOT_FOUND: '*',
 } as const;

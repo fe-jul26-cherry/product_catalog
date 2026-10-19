@@ -36,6 +36,9 @@ const SearchPage = lazy(() =>
     default: module.SearchPage,
   })),
 );
+const TeamPage = lazy(() =>
+  import('@/pages/TeamPage').then((module) => ({ default: module.TeamPage })),
+);
 const UiKitPage = lazy(() =>
   import('@/pages/UiKitPage').then((module) => ({ default: module.UiKitPage })),
 );
@@ -78,6 +81,10 @@ export const App = () => (
           <Route
             path={ROUTES.FAVORITES}
             element={<FavoritesPage />}
+          />
+          <Route
+            path={ROUTES.TEAM}
+            element={<TeamPage />}
           />
           {import.meta.env.DEV && (
             <Route
