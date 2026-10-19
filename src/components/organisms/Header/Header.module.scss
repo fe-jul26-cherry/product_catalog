@@ -2,6 +2,8 @@
 @use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
+$action-width: clamp(44px, calc(44px + (100vw - 640px) * 0.2), 64px);
+
 .root {
   position: sticky;
   top: 0;
@@ -20,6 +22,14 @@
 
   @include tablet {
     min-height: $header-height;
+  }
+
+  &.barUa {
+    @include desktop {
+      .search {
+        flex-basis: 600px;
+      }
+    }
   }
 }
 
@@ -41,12 +51,14 @@
   display: none;
 
   @include desktop {
-    display: block;
+    display: flex;
+    align-items: center;
     padding-left: 18px;
-    flex: 0 1 700px;
+    flex: 0 1 650px;
     align-self: center;
-    min-width: 0;
+    min-width: 180px;
     margin-left: 32px;
+    transition: flex-basis 0.3s ease;
   }
 }
 
@@ -85,18 +97,82 @@
 }
 
 .searchField {
+  position: relative;
   display: flex;
   flex: 1;
+  align-self: center;
   align-items: center;
-  padding-inline: 16px;
+  box-sizing: border-box;
+  height: 42px;
+  min-width: 0;
+  border: 1px solid transparent;
+  border-bottom-color: $color-elements;
 
-  @include tablet {
-    padding-inline: 24px;
+  &::after {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: $color-accent;
+    content: '';
+    pointer-events: none;
+  }
+
+  &:focus-within::after {
+    animation: search-underline 600ms ease forwards;
+  }
+}
+
+.searchField > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+:global([data-theme='light']) .searchField {
+  border-color: $color-elements;
+}
+
+.searchSubmit {
+  display: flex;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: background $transition;
+
+  &:hover {
+    background: $color-surface-1;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: -2px;
+  }
+}
+
+@keyframes search-underline {
+  0% {
+    width: 0;
+  }
+
+  50% {
+    width: calc(100% - 40px);
+  }
+
+  100% {
+    width: 100%;
   }
 }
 
 .searchClose {
   display: flex;
+  flex: 0 0 $header-height-mobile;
   align-items: center;
   justify-content: center;
   width: $header-height-mobile;
@@ -107,6 +183,7 @@
   cursor: pointer;
 
   @include tablet {
+    flex-basis: $header-height;
     width: $header-height;
   }
 }
@@ -136,7 +213,13 @@
 
   @include tablet {
     gap: 6px;
-    margin-right: calc(#{$header-height * 2} - 8px);
+    margin-right: calc(#{$action-width} * 2 - 8px);
+  }
+
+  .barAccount & {
+    @include tablet {
+      margin-right: calc(#{$action-width} * 3 - 8px);
+    }
   }
 }
 
@@ -157,7 +240,7 @@
 
   @include tablet {
     display: flex;
-    width: $header-height;
+    width: $action-width;
   }
 }
 
@@ -171,6 +254,34 @@
   @include tablet {
     display: none;
   }
+}
+
+.actions > .accountCell {
+  position: relative;
+  display: none;
+  padding: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+
+  @include tablet {
+    display: flex;
+    width: $action-width;
+  }
+}
+
+.accountActive::after {
+  content: '';
+  position: absolute;
+  top: 19px;
+  left: calc(50% + 8px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $color-green;
 }
 
 .burger {

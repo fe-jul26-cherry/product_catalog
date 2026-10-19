@@ -3,7 +3,7 @@ dist/
 .vite/
 *.local
 .env
-.env.*
+.env.local
 .DS_Store
 .vscode/*
 !.vscode/extensions.json

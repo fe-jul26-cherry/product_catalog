@@ -1,3 +1,7 @@
+import astronautActiveLightIcon from '@/assets/icons/astronaut-active-light.svg';
+import astronautActiveIcon from '@/assets/icons/astronaut-active.svg';
+import astronautLightIcon from '@/assets/icons/astronaut-light.svg';
+import astronautIcon from '@/assets/icons/astronaut.svg';
 import chevronDownLightIcon from '@/assets/icons/chevron-down-light.svg';
 import chevronDownIcon from '@/assets/icons/chevron-down.svg';
 import chevronLeftLightIcon from '@/assets/icons/chevron-left-light.svg';
@@ -24,6 +28,8 @@ import searchLightIcon from '@/assets/icons/search-light.svg';
 import searchIcon from '@/assets/icons/search.svg';
 import shoppingBagLightIcon from '@/assets/icons/shopping-bag-light.svg';
 import shoppingBagIcon from '@/assets/icons/shopping-bag.svg';
+import userLightIcon from '@/assets/icons/user-light.svg';
+import userIcon from '@/assets/icons/user.svg';
 import { useThemeStore } from '@/store';
 
 import styles from './Icon.module.scss';
@@ -38,6 +44,8 @@ interface IconProps {
 }
 
 const LIGHT_THEME_ICONS: Record<string, string> = {
+  [astronautActiveIcon]: astronautActiveLightIcon,
+  [astronautIcon]: astronautLightIcon,
   [chevronDownIcon]: chevronDownLightIcon,
   [chevronLeftIcon]: chevronLeftLightIcon,
   [chevronRightIcon]: chevronRightLightIcon,
@@ -51,6 +59,7 @@ const LIGHT_THEME_ICONS: Record<string, string> = {
   [plusIcon]: plusLightIcon,
   [searchIcon]: searchLightIcon,
   [shoppingBagIcon]: shoppingBagLightIcon,
+  [userIcon]: userLightIcon,
 };
 
 export const Icon = ({ src, alt = '', size = 'sm', className }: IconProps) => {

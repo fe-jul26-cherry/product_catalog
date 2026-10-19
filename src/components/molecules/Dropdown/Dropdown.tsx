@@ -16,6 +16,7 @@ interface DropdownProps {
   name?: string;
   error?: string;
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 export const Dropdown = ({
@@ -27,6 +28,7 @@ export const Dropdown = ({
   name,
   error,
   fullWidth,
+  disabled,
 }: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const errorId = useId();
@@ -52,6 +54,7 @@ export const Dropdown = ({
         <button
           type="button"
           name={name}
+          disabled={disabled}
           className={controlClasses}
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}

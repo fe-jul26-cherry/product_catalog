@@ -7,9 +7,15 @@ import type { InputHTMLAttributes } from 'react';
 interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
+  soft?: boolean;
 }
 
-export const FormField = ({ label, error, ...rest }: FormFieldProps) => {
+export const FormField = ({
+  label,
+  error,
+  soft = false,
+  ...rest
+}: FormFieldProps) => {
   const errorId = useId();
 
   return (
@@ -17,7 +23,7 @@ export const FormField = ({ label, error, ...rest }: FormFieldProps) => {
       <span className={styles.label}>{label}</span>
       <input
         {...rest}
-        className={styles.input}
+        className={`${styles.input} ${soft ? styles.soft : ''}`}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
       />

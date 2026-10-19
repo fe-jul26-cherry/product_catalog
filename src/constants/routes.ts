@@ -3,6 +3,7 @@ export const ROUTES = {
   PHONES: '/phones',
   TABLETS: '/tablets',
   ACCESSORIES: '/accessories',
+  SEARCH: '/search',
   PRODUCT: '/product/:productId',
   CART: '/cart',
   FAVORITES: '/favorites',
@@ -11,3 +12,6 @@ export const ROUTES = {
 } as const;
 
 export const getProductPath = (productId: string) => `/product/${productId}`;
+
+export const getSearchPath = (query: string) =>
+  `${ROUTES.SEARCH}?query=${encodeURIComponent(query)}`;

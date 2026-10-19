@@ -5,10 +5,16 @@ export interface CheckoutFormValues {
   phone: string;
   email: string;
   city: string;
+  cityRef: string;
   address: string;
   branch: string;
   postomat: string;
   delivery: DeliveryMethod;
 }
 
-export type CheckoutErrors = Partial<Record<keyof CheckoutFormValues, string>>;
+export type CheckoutFieldError =
+  'required' | 'name' | 'phone' | 'email' | 'city' | 'delivery';
+
+export type CheckoutErrors = Partial<
+  Record<keyof CheckoutFormValues, CheckoutFieldError>
+>;

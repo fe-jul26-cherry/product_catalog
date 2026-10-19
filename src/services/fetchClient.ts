@@ -1,7 +1,8 @@
 const BASE_URL = `${import.meta.env.BASE_URL}api`;
 const TIMEOUT_MS = 15000;
 
-export type ApiErrorCode = 'network' | 'timeout' | 'server' | 'invalid';
+export type ApiErrorCode =
+  'network' | 'timeout' | 'server' | 'invalid' | 'config';
 
 export class ApiError extends Error {
   readonly code: ApiErrorCode;
@@ -19,14 +20,22 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(url: string): Promise<T> {
+export async function request<T>(
+  url: string,
+  headers?: Record<string, string>,
+  init: RequestInit = {},
+): Promise<T> {
   let response: Response;
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    response = await fetch(`${BASE_URL}${url}`, { signal: controller.signal });
+    response = await fetch(url, {
+      ...init,
+      signal: controller.signal,
+      headers,
+    });
   } catch {
     throw controller.signal.aborted ?
         new ApiError('timeout', 'The server is taking too long to respond.')
@@ -51,5 +60,11 @@ async function request<T>(url: string): Promise<T> {
 }
 
 export const client = {
-  get: <T>(url: string) => request<T>(url),
+  get: <T>(path: string) => request<T>(`${BASE_URL}${path}`),
+  post: <T>(url: string, body: unknown) =>
+    request<T>(
+      url,
+      { 'Content-Type': 'application/json' },
+      { method: 'POST', body: JSON.stringify(body) },
+    ),
 };
