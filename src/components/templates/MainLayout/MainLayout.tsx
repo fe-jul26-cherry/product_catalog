@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { PageTransition } from '@/animations';
 import { ErrorBoundary } from '@/app/ErrorBoundary';
 import { Loader } from '@/components/atoms/Loader';
+import { AiAssistant } from '@/components/organisms/AiAssistant';
 import { Footer } from '@/components/organisms/Footer';
 import { Header } from '@/components/organisms/Header';
 import { useTranslation } from '@/hooks';
@@ -16,15 +17,18 @@ export const MainLayout = () => {
   return (
     <>
       <Header />
-      <main className={styles.main}>
-        <PageTransition>
-          <ErrorBoundary>
-            <Suspense fallback={<Loader label={t.status.loading} />}>
-              <Outlet />
-            </Suspense>
-          </ErrorBoundary>
-        </PageTransition>
-      </main>
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <PageTransition>
+            <ErrorBoundary>
+              <Suspense fallback={<Loader label={t.status.loading} />}>
+                <Outlet />
+              </Suspense>
+            </ErrorBoundary>
+          </PageTransition>
+        </main>
+        <AiAssistant />
+      </div>
       <Footer />
     </>
   );

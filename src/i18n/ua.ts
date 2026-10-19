@@ -254,4 +254,8 @@ export const ua: Translations = {
       `${count} ${pluralUa(count, { one: 'результат', few: 'результати', many: 'результатів' })}`,
     empty: (query) => `За запитом «${query}» нічого не знайдено.`,
   },
+  assistant: {
+    open: 'Відкрити AI-помічника',
+    hide: 'Сховати кнопку AI-помічника',
+  },
 };
