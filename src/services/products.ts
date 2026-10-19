@@ -89,6 +89,12 @@ const withFallback = async <T>(
   }
 };
 
+const matchesSearchWords = (name: string, words: string[]) => {
+  const normalizedName = name.toLowerCase();
+
+  return words.every((word) => normalizedName.includes(word));
+};
+
 let productsRequest: Promise<Product[]> | null = null;
 const detailsRequests = new Map<string, Promise<ProductDetails[]>>();
 
@@ -125,11 +131,7 @@ export const searchProducts = async (
 
   const products = await getProducts();
   const matches = products
-    .filter(({ name }) => {
-      const normalizedName = name.toLowerCase();
-
-      return words.every((word) => normalizedName.includes(word));
-    })
+    .filter(({ name }) => matchesSearchWords(name, words))
     .sort((a, b) => {
       switch (sort) {
         case 'age':
@@ -148,6 +150,44 @@ export const searchProducts = async (
     items: matches.slice(startIndex, startIndex + perPage),
     total: matches.length,
   };
+};
+
+export const getSearchSuggestions = async (
+  query: string,
+): Promise<string[]> => {
+  const normalizedQuery = query.trim().toLowerCase();
+  const words = normalizedQuery.split(/\s+/).filter(Boolean);
+
+  if (words.length === 0) {
+    return [];
+  }
+
+  const products = await getProducts();
+  const suggestions = products
+    .filter(({ name }) => matchesSearchWords(name, words))
+    .map(({ name }) => ({
+      name,
+      normalizedName: name.toLowerCase(),
+    }))
+    .sort((a, b) => {
+      const aStartsWithQuery = a.normalizedName.startsWith(normalizedQuery);
+      const bStartsWithQuery = b.normalizedName.startsWith(normalizedQuery);
+
+      if (aStartsWithQuery !== bStartsWithQuery) {
+        return aStartsWithQuery ? -1 : 1;
+      }
+
+      const aPosition = Math.min(
+        ...words.map((word) => a.normalizedName.indexOf(word)),
+      );
+      const bPosition = Math.min(
+        ...words.map((word) => b.normalizedName.indexOf(word)),
+      );
+
+      return aPosition - bPosition || a.name.localeCompare(b.name);
+    });
+
+  return [...new Set(suggestions.map(({ name }) => name))].slice(0, 5);
 };
 
 const getDetailsFile = (category: Category, language: Language) =>
