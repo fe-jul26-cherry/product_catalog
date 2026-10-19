@@ -223,6 +223,15 @@ export const en = {
       unknown: 'Something went wrong. Try again.',
     },
   },
+  team: {
+    title: 'Team',
+    roles: {
+      teamLead: 'Team Lead',
+      developer1: 'Developer 1',
+      projectManager: 'Project Manager',
+      developer2: 'Developer 2',
+    },
+  },
   notFound: {
     title: 'Page not found',
   },

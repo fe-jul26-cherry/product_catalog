@@ -1,0 +1,136 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/typography' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+  padding-bottom: 32px;
+  gap: 16px;
+
+  @include tablet {
+    gap: 24px;
+  }
+}
+
+.title {
+  @include h2;
+  color: $color-primary;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  max-width: 896px;
+  margin-inline: auto;
+
+  @include tablet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 32px;
+    column-gap: 48px;
+  }
+
+  @include desktop {
+    column-gap: 96px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  gap: 4px;
+  padding: 20px 16px;
+  border: 1px solid $color-elements;
+  border-radius: 32px;
+  background: $color-team;
+  box-sizing: border-box;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    transform $transition,
+    box-shadow $transition;
+
+  &:hover,
+  &:focus-visible {
+    transform: scale(1.04);
+    box-shadow: $shadow-card;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 4px;
+  }
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: $color-secondary;
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.role {
+  font: 600 20px/26px $font-family;
+  color: $color-primary;
+  margin: 0;
+}
+
+.name {
+  font: 700 20px/26px $font-family;
+  color: $color-secondary;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: none;
+  }
+}
+
+@media (min-width: $bp-tablet) and (max-width: #{$bp-desktop - 1px}) and (min-height: 900px) {
+  .list {
+    row-gap: 40px;
+  }
+
+  .card {
+    gap: 8px;
+    padding: 40px 24px;
+  }
+
+  .avatar {
+    width: 112px;
+    height: 112px;
+  }
+
+  .role,
+  .name {
+    font-size: 24px;
+    line-height: 31px;
+  }
+}

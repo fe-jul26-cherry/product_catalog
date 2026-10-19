@@ -6,3 +6,4 @@ export * from './banners';
 export * from './checkout';
 export * from './novaPoshta';
 export * from './auth';
+export * from './team';
