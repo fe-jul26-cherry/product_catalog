@@ -2,15 +2,15 @@ import styles from './ChatMessage.module.scss';
 
 import type { ReactNode } from 'react';
 
-type ChatMessageRole = 'user' | 'assistant' | 'action';
+type ChatMessageVariant = 'user' | 'assistant' | 'action';
 
 interface ChatMessageProps {
-  role: ChatMessageRole;
+  variant: ChatMessageVariant;
   children: ReactNode;
 }
 
-export const ChatMessage = ({ role, children }: ChatMessageProps) => {
-  const classes = [styles.root, styles[role]].join(' ');
+export const ChatMessage = ({ variant, children }: ChatMessageProps) => {
+  const classes = [styles.root, styles[variant]].join(' ');
 
   return (
     <div className={classes}>
