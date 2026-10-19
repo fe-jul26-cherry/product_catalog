@@ -246,6 +246,25 @@ export const en = {
   assistant: {
     open: 'Open AI assistant',
     hide: 'Hide AI assistant button',
+    title: 'AI assistant',
+    close: 'Close AI assistant',
+    greeting: 'Hi! I can switch the language or find a product for you.',
+    messages: 'Chat messages',
+    inputLabel: 'Message',
+    placeholder: 'Ask the assistant',
+    send: 'Send',
+    thinking: 'Thinking...',
+    actions: {
+      set_language: 'Interface language changed',
+      search_products: 'Opened search results',
+    } as Record<string, string>,
+    errors: {
+      config: 'The assistant is not configured yet.',
+      network: 'Network error. Check your connection and try again.',
+      rate_limit: 'Too many requests. Try again in a minute.',
+      server: 'The assistant is temporarily unavailable.',
+      invalid: 'Received an invalid response. Try again.',
+    },
   },
 };
 
