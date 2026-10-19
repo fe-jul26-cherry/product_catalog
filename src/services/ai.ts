@@ -1,6 +1,6 @@
 import { runToolCall, TOOLS } from './aiTools';
 
-import type { ToolCall } from './aiTools';
+import type { ToolCall, Navigate } from './aiTools';
 
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY as string | undefined;
@@ -20,7 +20,10 @@ interface AiResponse {
   }[];
 }
 
-export const askAi = async (text: string): Promise<AiResult> => {
+export const askAi = async (
+  text: string,
+  navigate: Navigate,
+): Promise<AiResult> => {
   if (!API_KEY) {
     return { ok: false, reason: 'config' };
   }
@@ -40,7 +43,7 @@ export const askAi = async (text: string): Promise<AiResult> => {
           {
             role: 'system',
             content:
-              'You are an assistant of a gadget store website. Use tools to perform actions.',
+              'You are an assistant of a gadget store website. Use tools to perform actions. To find a product, call search_products with the model name only.',
           },
           { role: 'user', content: text },
         ],
@@ -77,7 +80,7 @@ export const askAi = async (text: string): Promise<AiResult> => {
 
   for (const call of message.tool_calls ?? []) {
     try {
-      if (runToolCall(call)) {
+      if (runToolCall(call, navigate)) {
         actions.push(call.function.name);
       }
     } catch {
