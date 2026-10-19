@@ -39,4 +39,3 @@ jobs:
           folder: dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_NOVA_POSHTA_API_KEY: ${{ secrets.VITE_NOVA_POSHTA_API_KEY }}

@@ -25,7 +25,7 @@ const call = async <T>(
   const apiKey = import.meta.env.VITE_NOVA_POSHTA_API_KEY;
 
   if (!apiKey) {
-    throw new ApiError('invalid', NOVA_POSHTA_MESSAGES.missingKey);
+    throw new ApiError('config', NOVA_POSHTA_MESSAGES.missingKey);
   }
 
   const response = await client.post<NovaPoshtaResponse<T>>(

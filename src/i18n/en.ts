@@ -18,6 +18,7 @@ export const en = {
     timeout: 'The server is taking too long to respond.',
     server: (status: number) => `Server error (${status}).`,
     invalid: 'Received an invalid response from the server.',
+    config: 'This feature is not configured yet.',
     unknown: 'Something went wrong.',
     page: 'Something went wrong while showing this page.',
     productNotFound: 'Product was not found.',

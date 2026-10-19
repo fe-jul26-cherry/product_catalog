@@ -1,7 +1,8 @@
 const BASE_URL = `${import.meta.env.BASE_URL}api`;
 const TIMEOUT_MS = 15000;
 
-export type ApiErrorCode = 'network' | 'timeout' | 'server' | 'invalid';
+export type ApiErrorCode =
+  'network' | 'timeout' | 'server' | 'invalid' | 'config';
 
 export class ApiError extends Error {
   readonly code: ApiErrorCode;
