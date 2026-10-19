@@ -1,4 +1,4 @@
-import { ROUTES } from '@/constants';
+import { getSearchPath } from '@/constants';
 import { useLanguageStore } from '@/store';
 
 import type { Language } from '@/types';
@@ -71,7 +71,7 @@ export const runToolCall = (call: ToolCall, navigate: Navigate) => {
     const query = typeof args.query === 'string' ? args.query.trim() : '';
 
     if (query) {
-      navigate(`${ROUTES.SEARCH}?query=${encodeURIComponent(query)}`);
+      navigate(getSearchPath(query));
 
       return true;
     }
