@@ -1,13 +1,19 @@
 import { Button } from '@/components/atoms/Button';
+import { CityAutocomplete } from '@/components/molecules/CityAutocomplete';
 import { Dropdown } from '@/components/molecules/Dropdown';
 import { FormField } from '@/components/molecules/FormField';
 import { Modal } from '@/components/molecules/Modal';
-import { CHECKOUT_FIELDS, DELIVERY_OPTIONS } from '@/constants';
-import { useCheckoutForm } from '@/hooks';
+import { CHECKOUT_FIELDS, DELIVERY_METHODS } from '@/constants';
+import {
+  useCheckoutForm,
+  useNovaPoshtaCities,
+  useNovaPoshtaWarehouses,
+  useTranslation,
+} from '@/hooks';
 
 import styles from './CheckoutModal.module.scss';
 
-import type { CheckoutFormValues } from '@/types';
+import type { CheckoutFormValues, NovaPoshtaPointKind } from '@/types';
 
 interface CheckoutModalProps {
   total: number;
@@ -22,24 +28,78 @@ export const CheckoutModal = ({
   onSubmit,
   onClose,
 }: CheckoutModalProps) => {
-  const { values, errors, isSubmitted, handleChange, handleSubmit } =
-    useCheckoutForm(onSubmit);
+  const { t, formatPrice } = useTranslation();
+  const c = t.checkout;
+  const {
+    values,
+    errors,
+    isSubmitted,
+    handleChange,
+    handleCityChange,
+    handleSelect,
+    handleSubmit,
+  } = useCheckoutForm(onSubmit);
+
+  const pointKind: NovaPoshtaPointKind | null =
+    values.delivery === 'courier' ? null : values.delivery;
+
+  const cities = useNovaPoshtaCities(values.cityRef ? '' : values.city);
+  const warehouses = useNovaPoshtaWarehouses(values.cityRef, pointKind);
+
+  const cityOptions = cities.cities.map((city) => ({
+    value: city.Ref,
+    label:
+      city.AreaDescription ?
+        `${city.Description}, ${city.AreaDescription}`
+      : city.Description,
+  }));
+
+  const pointOptions = warehouses.points.map((point) => ({
+    value: point.Ref,
+    label: point.Description,
+  }));
+
+  const cityMessage =
+    cities.isLoading ? c.novaPoshta.searching
+    : cities.error ? cities.error
+    : cities.isSearchable ? c.novaPoshta.noCities
+    : undefined;
+
+  const getPointPlaceholder = (idle: string) =>
+    !values.cityRef ? c.novaPoshta.selectCity
+    : warehouses.isLoading ? c.novaPoshta.loading
+    : warehouses.error ? warehouses.error
+    : pointOptions.length === 0 ? c.novaPoshta.noPoints
+    : idle;
+
+  const getError = (name: keyof CheckoutFormValues) => {
+    const code = errors[name];
+
+    return code ? c.validation[code] : undefined;
+  };
+
+  const handleCitySelect = (ref: string) => {
+    const city = cities.cities.find((item) => item.Ref === ref);
+
+    if (city) {
+      handleCityChange(city.Description, city.Ref);
+    }
+  };
 
   if (isSubmitted) {
     return (
       <Modal
-        title="Order placed"
+        title={c.orderPlaced}
+        closeLabel={t.common.close}
         onClose={onClose}
       >
         <div className={styles.success}>
-          <p className={styles.successText}>
-            Thank you, {values.name.trim()}! Your order has been placed.
-          </p>
+          <p className={styles.successText}>{c.thanks(values.name.trim())}</p>
           <Button
             className={styles.submit}
             onClick={onClose}
           >
-            Close
+            {t.common.close}
           </Button>
         </div>
       </Modal>
@@ -48,12 +108,13 @@ export const CheckoutModal = ({
 
   return (
     <Modal
-      title="Checkout"
+      title={c.title}
+      closeLabel={t.common.close}
       onClose={onClose}
     >
       <section className={styles.summary}>
-        <p className={styles.total}>${total}</p>
-        <p className={styles.count}>Total for {count} items</p>
+        <p className={styles.total}>{formatPrice(total)}</p>
+        <p className={styles.count}>{t.cart.total(count)}</p>
       </section>
 
       <form
@@ -61,20 +122,34 @@ export const CheckoutModal = ({
         noValidate
         onSubmit={handleSubmit}
       >
-        {CHECKOUT_FIELDS.map((field) => (
-          <FormField
-            key={field.name}
-            {...field}
-            value={values[field.name as keyof CheckoutFormValues]}
-            error={errors[field.name as keyof CheckoutFormValues]}
-            onChange={handleChange}
-          />
-        ))}
+        {CHECKOUT_FIELDS.map((field) =>
+          field.name === 'city' ?
+            <CityAutocomplete
+              key={field.name}
+              name={field.name}
+              label={c.fields[field.name]}
+              autoComplete="off"
+              value={values.city}
+              options={cityOptions}
+              message={cityMessage}
+              error={getError('city')}
+              onInputChange={(city) => handleCityChange(city)}
+              onSelect={({ value }) => handleCitySelect(value)}
+            />
+          : <FormField
+              key={field.name}
+              {...field}
+              label={c.fields[field.name]}
+              value={values[field.name]}
+              error={getError(field.name)}
+              onChange={handleChange}
+            />,
+        )}
 
         <fieldset className={styles.delivery}>
-          <legend className={styles.legend}>Delivery method</legend>
+          <legend className={styles.legend}>{c.delivery.legend}</legend>
           <div className={styles.options}>
-            {DELIVERY_OPTIONS.map(({ value, label }) => {
+            {DELIVERY_METHODS.map((value) => {
               const isChecked = values.delivery === value;
 
               return (
@@ -91,7 +166,7 @@ export const CheckoutModal = ({
                       checked={isChecked}
                       onChange={handleChange}
                     />
-                    {label}
+                    {c.delivery[value]}
                   </label>
 
                   {isChecked && (
@@ -100,14 +175,15 @@ export const CheckoutModal = ({
                         <Dropdown
                           fullWidth
                           name="branch"
-                          placeholder="Select branch"
-                          options={[]}
+                          disabled={!values.cityRef || warehouses.isLoading}
+                          placeholder={getPointPlaceholder(
+                            c.novaPoshta.selectBranch,
+                          )}
+                          options={pointOptions}
                           value={values.branch}
-                          error={errors.branch}
+                          error={getError('branch')}
                           onChange={(val: string) =>
-                            handleChange({
-                              target: { name: 'branch', value: val },
-                            } as unknown as React.ChangeEvent<HTMLInputElement>)
+                            handleSelect('branch', val)
                           }
                         />
                       )}
@@ -116,14 +192,15 @@ export const CheckoutModal = ({
                         <Dropdown
                           fullWidth
                           name="postomat"
-                          placeholder="Select postomat"
-                          options={[]}
+                          disabled={!values.cityRef || warehouses.isLoading}
+                          placeholder={getPointPlaceholder(
+                            c.novaPoshta.selectPostomat,
+                          )}
+                          options={pointOptions}
                           value={values.postomat}
-                          error={errors.postomat}
+                          error={getError('postomat')}
                           onChange={(val: string) =>
-                            handleChange({
-                              target: { name: 'postomat', value: val },
-                            } as unknown as React.ChangeEvent<HTMLInputElement>)
+                            handleSelect('postomat', val)
                           }
                         />
                       )}
@@ -131,11 +208,11 @@ export const CheckoutModal = ({
                       {value === 'courier' && (
                         <FormField
                           name="address"
-                          label="Delivery address"
+                          label={c.fields.address}
                           type="text"
                           autoComplete="street-address"
                           value={values.address}
-                          error={errors.address}
+                          error={getError('address')}
                           onChange={handleChange}
                         />
                       )}
@@ -151,7 +228,7 @@ export const CheckoutModal = ({
           className={styles.submit}
           type="submit"
         >
-          Place order
+          {c.placeOrder}
         </Button>
       </form>
     </Modal>

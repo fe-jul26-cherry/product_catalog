@@ -22,6 +22,21 @@ export const useCheckoutForm = (
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
+  const handleCityChange = (city: string, cityRef = '') => {
+    setValues((prev) => ({ ...prev, city, cityRef, branch: '', postomat: '' }));
+    setErrors((prev) => ({
+      ...prev,
+      city: undefined,
+      branch: undefined,
+      postomat: undefined,
+    }));
+  };
+
+  const handleSelect = (name: 'branch' | 'postomat', value: string) => {
+    setValues((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -45,5 +60,13 @@ export const useCheckoutForm = (
     setIsSubmitted(true);
   };
 
-  return { values, errors, isSubmitted, handleChange, handleSubmit };
+  return {
+    values,
+    errors,
+    isSubmitted,
+    handleChange,
+    handleCityChange,
+    handleSelect,
+    handleSubmit,
+  };
 };
