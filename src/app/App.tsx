@@ -31,13 +31,20 @@ const ProductDetailsPage = lazy(() =>
     default: module.ProductDetailsPage,
   })),
 );
+const SearchPage = lazy(() =>
+  import('@/pages/SearchPage').then((module) => ({
+    default: module.SearchPage,
+  })),
+);
 const UiKitPage = lazy(() =>
   import('@/pages/UiKitPage').then((module) => ({ default: module.UiKitPage })),
 );
 
 export const App = () => (
   <AnimationProvider>
-    <HashRouter>
+    <HashRouter
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
       <Routes>
         <Route element={<MainLayout />}>
           <Route
@@ -59,6 +66,10 @@ export const App = () => (
           <Route
             path={ROUTES.PRODUCT}
             element={<ProductDetailsPage />}
+          />
+          <Route
+            path={ROUTES.SEARCH}
+            element={<SearchPage />}
           />
           <Route
             path={ROUTES.CART}

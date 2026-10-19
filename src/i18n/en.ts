@@ -154,11 +154,48 @@ export const en = {
     count: (count: number) => `${count} ${count === 1 ? 'item' : 'items'}`,
     empty: 'Your favourites list is empty',
   },
+  auth: {
+    signIn: 'Sign in',
+    signUp: 'Sign up',
+    signOut: 'Sign out',
+    account: 'Account',
+    email: 'Email',
+    password: 'Password',
+    pending: 'Please wait',
+    noAccount: 'No account yet?',
+    haveAccount: 'Already have an account?',
+    signedInAs: 'Signed in as',
+    syncNote: 'Your cart and favourites are saved to your account.',
+    confirmTitle: 'Check your email',
+    confirmText: (email: string) =>
+      `We sent a confirmation link to ${email}. Confirm your email, then sign in.`,
+    validation: {
+      required: 'This field is required',
+      email: 'Enter a valid email address',
+      passwordShort: (min: number) =>
+        `Password must be at least ${min} characters`,
+    },
+    errors: {
+      invalidCredentials: 'Wrong email or password.',
+      userExists: 'An account with this email already exists.',
+      weakPassword: 'This password is too weak. Try a longer one.',
+      emailNotConfirmed: 'Confirm your email first, then sign in.',
+      rateLimit: 'Too many attempts. Try again in a few minutes.',
+      network: 'Network error. Check your connection and try again.',
+      unknown: 'Something went wrong. Try again.',
+    },
+  },
   notFound: {
     title: 'Page not found',
   },
   colors: {} as Record<string, string>,
   units: {} as Record<string, string>,
+  search: {
+    title: 'Search results',
+    results: (count: number) =>
+      `${count} ${count === 1 ? 'result' : 'results'}`,
+    empty: (query: string) => `No results found for "${query}".`,
+  },
 };
 
 export type Translations = typeof en;

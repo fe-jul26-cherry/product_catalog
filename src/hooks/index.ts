@@ -5,4 +5,5 @@ export * from './useProductActions';
 export * from './useCheckoutForm';
 export * from './useDebouncedValue';
 export * from './useNovaPoshta';
+export * from './useAuthForm';
 export * from './useTranslation';

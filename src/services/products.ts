@@ -6,6 +6,7 @@ import type {
   Language,
   Product,
   ProductDetails,
+  SortBy,
   ProductRow,
   ProductWithTranslationsRow,
 } from '@/types';
@@ -18,10 +19,16 @@ export interface ProductWithDetails {
   details: ProductDetails;
 }
 
-const PRODUCT_COLUMNS =
+interface SearchProductsOptions {
+  page: number;
+  perPage: number;
+  sort: SortBy;
+}
+
+export const PRODUCT_COLUMNS =
   'id,item_id,category,name,full_price,price,screen,capacity,color,ram,year,image';
 
-const toProduct = (row: ProductRow): Product => ({
+export const toProduct = (row: ProductRow): Product => ({
   id: row.id,
   category: row.category,
   itemId: row.item_id,
@@ -104,6 +111,43 @@ export const getProducts = (): Promise<Product[]> => {
   }
 
   return productsRequest;
+};
+
+export const searchProducts = async (
+  query: string,
+  { page, perPage, sort }: SearchProductsOptions,
+): Promise<{ items: Product[]; total: number }> => {
+  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+
+  if (words.length === 0) {
+    return { items: [], total: 0 };
+  }
+
+  const products = await getProducts();
+  const matches = products
+    .filter(({ name }) => {
+      const normalizedName = name.toLowerCase();
+
+      return words.every((word) => normalizedName.includes(word));
+    })
+    .sort((a, b) => {
+      switch (sort) {
+        case 'age':
+          return b.year - a.year;
+        case 'title':
+          return a.name.localeCompare(b.name);
+        case 'price':
+          return a.price - b.price;
+        default:
+          return 0;
+      }
+    });
+  const startIndex = (page - 1) * perPage;
+
+  return {
+    items: matches.slice(startIndex, startIndex + perPage),
+    total: matches.length,
+  };
 };
 
 const getDetailsFile = (category: Category, language: Language) =>

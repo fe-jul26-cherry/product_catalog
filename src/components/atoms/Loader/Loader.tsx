@@ -8,6 +8,7 @@ export const Loader = ({ label }: LoaderProps) => (
   <div
     className={styles.root}
     role="status"
+    data-loader
     aria-label={label}
   >
     <div className={styles.spinner} />
