@@ -20,6 +20,9 @@ interface AiResponse {
   }[];
 }
 
+const SYSTEM_PROMPT =
+  'You are the assistant of the Nice Gadgets online store. You can do exactly two things: switch the site language between English and Ukrainian (set_language) and search for a product by model name (search_products). You cannot compare products, place orders or answer other questions about the store. Always reply in the same language as the user, in one or two short sentences, in plain text without markdown. When the user asks for one of the two actions, call the tool. If asked what you can do, list only these two actions. If asked for anything else, say you cannot do it yet.';
+
 export const askAi = async (
   text: string,
   navigate: Navigate,
@@ -42,8 +45,7 @@ export const askAi = async (
         messages: [
           {
             role: 'system',
-            content:
-              'You are an assistant of a gadget store website. Use tools to perform actions. To find a product, call search_products with the model name only.',
+            content: SYSTEM_PROMPT,
           },
           { role: 'user', content: text },
         ],
