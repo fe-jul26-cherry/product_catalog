@@ -27,7 +27,7 @@ $action-width: clamp(44px, calc(44px + (100vw - 640px) * 0.2), 64px);
   &.barUa {
     @include desktop {
       .search {
-        flex-basis: 550px;
+        flex-basis: 600px;
       }
     }
   }
