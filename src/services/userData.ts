@@ -1,7 +1,13 @@
 import { PRODUCT_COLUMNS, toProduct } from './products';
 import { supabaseClient } from './supabaseClient';
 
-import type { CartItem, Product, ProductRow } from '@/types';
+import type {
+  CartItem,
+  Product,
+  ProductRow,
+  ProfileRow,
+  UserProfile,
+} from '@/types';
 
 interface CartRow {
   item_id: string;
@@ -15,6 +21,7 @@ interface FavoriteRow {
 
 const CART_TABLE = 'cart_items';
 const FAVORITES_TABLE = 'favorites';
+const PROFILES_TABLE = 'profiles';
 const CONFLICT_TARGET = 'user_id,item_id';
 
 const getClient = () => {
@@ -123,6 +130,47 @@ export const removeFavorites = async (itemIds: string[]): Promise<void> => {
     .from(FAVORITES_TABLE)
     .delete()
     .in('item_id', itemIds);
+
+  if (error) {
+    throw error;
+  }
+};
+
+export const fetchProfile = async (): Promise<UserProfile | null> => {
+  const { data, error } = await getClient()
+    .from(PROFILES_TABLE)
+    .select('full_name,phone,city,city_ref')
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  const row = data as ProfileRow | null;
+
+  return row ?
+      {
+        fullName: row.full_name ?? '',
+        phone: row.phone ?? '',
+        city: row.city ?? '',
+        cityRef: row.city_ref ?? '',
+      }
+    : null;
+};
+
+export const upsertProfile = async (profile: UserProfile): Promise<void> => {
+  const { error } = await getClient()
+    .from(PROFILES_TABLE)
+    .upsert(
+      {
+        full_name: profile.fullName || null,
+        phone: profile.phone || null,
+        city: profile.city || null,
+        city_ref: profile.cityRef || null,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id' },
+    );
 
   if (error) {
     throw error;

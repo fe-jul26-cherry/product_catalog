@@ -3,3 +3,4 @@ export * from './cartStore';
 export * from './favoritesStore';
 export * from './languageStore';
 export * from './authStore';
+export * from './profileStore';
