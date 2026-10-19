@@ -5,6 +5,7 @@ export const CHECKOUT_INITIAL_VALUES: CheckoutFormValues = {
   phone: '',
   email: '',
   city: '',
+  cityRef: '',
   address: '',
   branch: '',
   postomat: '',
@@ -40,5 +41,6 @@ export const CHECKOUT_MESSAGES = {
   name: 'Name is too short',
   phone: 'Enter a valid phone number',
   email: 'Enter a valid email address',
+  city: 'Select a city from the list',
   delivery: 'Please select a delivery point',
 };

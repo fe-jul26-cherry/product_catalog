@@ -4,4 +4,5 @@ export * from './catalog';
 export * from './theme';
 export * from './language';
 export * from './checkout';
+export * from './novaPoshta';
 export * from './supabase';

@@ -33,6 +33,8 @@ export const validateCheckout = (
 
   if (!values.city.trim()) {
     errors.city = CHECKOUT_MESSAGES.required;
+  } else if (!values.cityRef) {
+    errors.city = CHECKOUT_MESSAGES.city;
   }
 
   if (values.delivery === 'branch' && !values.branch.trim()) {

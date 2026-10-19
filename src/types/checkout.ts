@@ -5,6 +5,7 @@ export interface CheckoutFormValues {
   phone: string;
   email: string;
   city: string;
+  cityRef: string;
   address: string;
   branch: string;
   postomat: string;

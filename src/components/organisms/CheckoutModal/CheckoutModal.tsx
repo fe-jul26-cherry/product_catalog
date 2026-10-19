@@ -1,13 +1,22 @@
 import { Button } from '@/components/atoms/Button';
+import { CityAutocomplete } from '@/components/molecules/CityAutocomplete';
 import { Dropdown } from '@/components/molecules/Dropdown';
 import { FormField } from '@/components/molecules/FormField';
 import { Modal } from '@/components/molecules/Modal';
-import { CHECKOUT_FIELDS, DELIVERY_OPTIONS } from '@/constants';
-import { useCheckoutForm } from '@/hooks';
+import {
+  CHECKOUT_FIELDS,
+  DELIVERY_OPTIONS,
+  NOVA_POSHTA_MESSAGES,
+} from '@/constants';
+import {
+  useCheckoutForm,
+  useNovaPoshtaCities,
+  useNovaPoshtaWarehouses,
+} from '@/hooks';
 
 import styles from './CheckoutModal.module.scss';
 
-import type { CheckoutFormValues } from '@/types';
+import type { CheckoutFormValues, NovaPoshtaPointKind } from '@/types';
 
 interface CheckoutModalProps {
   total: number;
@@ -22,8 +31,55 @@ export const CheckoutModal = ({
   onSubmit,
   onClose,
 }: CheckoutModalProps) => {
-  const { values, errors, isSubmitted, handleChange, handleSubmit } =
-    useCheckoutForm(onSubmit);
+  const {
+    values,
+    errors,
+    isSubmitted,
+    handleChange,
+    handleCityChange,
+    handleSelect,
+    handleSubmit,
+  } = useCheckoutForm(onSubmit);
+
+  const pointKind: NovaPoshtaPointKind | null =
+    values.delivery === 'courier' ? null : values.delivery;
+
+  const cities = useNovaPoshtaCities(values.cityRef ? '' : values.city);
+  const warehouses = useNovaPoshtaWarehouses(values.cityRef, pointKind);
+
+  const cityOptions = cities.cities.map((city) => ({
+    value: city.Ref,
+    label:
+      city.AreaDescription ?
+        `${city.Description}, ${city.AreaDescription}`
+      : city.Description,
+  }));
+
+  const pointOptions = warehouses.points.map((point) => ({
+    value: point.Ref,
+    label: point.Description,
+  }));
+
+  const cityMessage =
+    cities.isLoading ? NOVA_POSHTA_MESSAGES.searching
+    : cities.error ? cities.error
+    : cities.isSearchable ? NOVA_POSHTA_MESSAGES.noCities
+    : undefined;
+
+  const getPointPlaceholder = (idle: string) =>
+    !values.cityRef ? NOVA_POSHTA_MESSAGES.selectCity
+    : warehouses.isLoading ? NOVA_POSHTA_MESSAGES.loading
+    : warehouses.error ? warehouses.error
+    : pointOptions.length === 0 ? NOVA_POSHTA_MESSAGES.noPoints
+    : idle;
+
+  const handleCitySelect = (ref: string) => {
+    const city = cities.cities.find((item) => item.Ref === ref);
+
+    if (city) {
+      handleCityChange(city.Description, city.Ref);
+    }
+  };
 
   if (isSubmitted) {
     return (
@@ -61,15 +117,28 @@ export const CheckoutModal = ({
         noValidate
         onSubmit={handleSubmit}
       >
-        {CHECKOUT_FIELDS.map((field) => (
-          <FormField
-            key={field.name}
-            {...field}
-            value={values[field.name as keyof CheckoutFormValues]}
-            error={errors[field.name as keyof CheckoutFormValues]}
-            onChange={handleChange}
-          />
-        ))}
+        {CHECKOUT_FIELDS.map((field) =>
+          field.name === 'city' ?
+            <CityAutocomplete
+              key={field.name}
+              name={field.name}
+              label={field.label}
+              autoComplete="off"
+              value={values.city}
+              options={cityOptions}
+              message={cityMessage}
+              error={errors.city}
+              onInputChange={(city) => handleCityChange(city)}
+              onSelect={({ value }) => handleCitySelect(value)}
+            />
+          : <FormField
+              key={field.name}
+              {...field}
+              value={values[field.name as keyof CheckoutFormValues]}
+              error={errors[field.name as keyof CheckoutFormValues]}
+              onChange={handleChange}
+            />,
+        )}
 
         <fieldset className={styles.delivery}>
           <legend className={styles.legend}>Delivery method</legend>
@@ -100,14 +169,15 @@ export const CheckoutModal = ({
                         <Dropdown
                           fullWidth
                           name="branch"
-                          placeholder="Select branch"
-                          options={[]}
+                          disabled={!values.cityRef || warehouses.isLoading}
+                          placeholder={getPointPlaceholder(
+                            NOVA_POSHTA_MESSAGES.selectBranch,
+                          )}
+                          options={pointOptions}
                           value={values.branch}
                           error={errors.branch}
                           onChange={(val: string) =>
-                            handleChange({
-                              target: { name: 'branch', value: val },
-                            } as unknown as React.ChangeEvent<HTMLInputElement>)
+                            handleSelect('branch', val)
                           }
                         />
                       )}
@@ -116,14 +186,15 @@ export const CheckoutModal = ({
                         <Dropdown
                           fullWidth
                           name="postomat"
-                          placeholder="Select postomat"
-                          options={[]}
+                          disabled={!values.cityRef || warehouses.isLoading}
+                          placeholder={getPointPlaceholder(
+                            NOVA_POSHTA_MESSAGES.selectPostomat,
+                          )}
+                          options={pointOptions}
                           value={values.postomat}
                           error={errors.postomat}
                           onChange={(val: string) =>
-                            handleChange({
-                              target: { name: 'postomat', value: val },
-                            } as unknown as React.ChangeEvent<HTMLInputElement>)
+                            handleSelect('postomat', val)
                           }
                         />
                       )}
