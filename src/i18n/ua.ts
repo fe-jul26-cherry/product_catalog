@@ -10,6 +10,7 @@ export const ua: Translations = {
     back: 'Назад',
     home: 'Головна',
     close: 'Закрити',
+    cancel: 'Скасувати',
   },
   status: {
     loading: 'Завантаження',

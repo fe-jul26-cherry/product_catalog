@@ -8,6 +8,7 @@ export const en = {
     back: 'Back',
     home: 'Home',
     close: 'Close',
+    cancel: 'Cancel',
   },
   status: {
     loading: 'Loading',

@@ -233,6 +233,14 @@ export const CheckoutModal = ({
         >
           {c.placeOrder}
         </Button>
+
+        <button
+          type="button"
+          className={styles.cancel}
+          onClick={onClose}
+        >
+          {t.common.cancel}
+        </button>
       </form>
     </Modal>
   );
