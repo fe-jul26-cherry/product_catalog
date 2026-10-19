@@ -108,43 +108,46 @@ export const CheckoutModal = ({
 
   return (
     <Modal
+      wide
       title={c.title}
       closeLabel={t.common.close}
       onClose={onClose}
     >
-      <section className={styles.summary}>
-        <p className={styles.total}>{formatPrice(total)}</p>
-        <p className={styles.count}>{t.cart.total(count)}</p>
-      </section>
-
       <form
         className={styles.form}
         noValidate
         onSubmit={handleSubmit}
       >
-        {CHECKOUT_FIELDS.map((field) =>
-          field.name === 'city' ?
-            <CityAutocomplete
-              key={field.name}
-              name={field.name}
-              label={c.fields[field.name]}
-              autoComplete="off"
-              value={values.city}
-              options={cityOptions}
-              message={cityMessage}
-              error={getError('city')}
-              onInputChange={(city) => handleCityChange(city)}
-              onSelect={({ value }) => handleCitySelect(value)}
-            />
-          : <FormField
-              key={field.name}
-              {...field}
-              label={c.fields[field.name]}
-              value={values[field.name]}
-              error={getError(field.name)}
-              onChange={handleChange}
-            />,
-        )}
+        <section className={styles.summary}>
+          <p className={styles.total}>{formatPrice(total)}</p>
+          <p className={styles.count}>{t.cart.total(count)}</p>
+        </section>
+
+        <div className={styles.fields}>
+          {CHECKOUT_FIELDS.map((field) =>
+            field.name === 'city' ?
+              <CityAutocomplete
+                key={field.name}
+                name={field.name}
+                label={c.fields[field.name]}
+                autoComplete="off"
+                value={values.city}
+                options={cityOptions}
+                message={cityMessage}
+                error={getError('city')}
+                onInputChange={(city) => handleCityChange(city)}
+                onSelect={({ value }) => handleCitySelect(value)}
+              />
+            : <FormField
+                key={field.name}
+                {...field}
+                label={c.fields[field.name]}
+                value={values[field.name]}
+                error={getError(field.name)}
+                onChange={handleChange}
+              />,
+          )}
+        </div>
 
         <fieldset className={styles.delivery}>
           <legend className={styles.legend}>{c.delivery.legend}</legend>

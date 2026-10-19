@@ -23,6 +23,21 @@
   }
 }
 
+.wide {
+  @include tablet {
+    max-width: 720px;
+  }
+
+  @include desktop {
+    width: calc(100% - 64px);
+    max-width: 1136px;
+
+    .panel {
+      padding: clamp(32px, 4vw, 56px);
+    }
+  }
+}
+
 .panel {
   display: flex;
   flex-direction: column;

@@ -3,6 +3,8 @@
 @use '../../../styles/typography' as *;
 
 .summary {
+  grid-area: summary;
+  margin-bottom: 8px;
   padding-bottom: 16px;
   border-bottom: 1px solid $color-elements;
   text-align: center;
@@ -21,6 +23,33 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  @include tablet {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      'fields delivery'
+      'fields summary'
+      'fields submit';
+    gap: 16px 24px;
+    align-items: start;
+  }
+
+  @include desktop {
+    gap: clamp(16px, 1.6vw, 28px) clamp(32px, 5vw, 80px);
+  }
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  grid-area: fields;
+  gap: 16px;
+
+  @include desktop {
+    gap: clamp(16px, 1.6vw, 28px);
+  }
 }
 
 .legend {
@@ -31,6 +60,7 @@
 }
 
 .delivery {
+  grid-area: delivery;
   min-width: 0;
   margin: 0;
   padding: 0;
@@ -60,8 +90,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 48px;
-  padding: 0 16px;
+  min-height: 48px;
+  padding: 12px 16px;
   cursor: pointer;
 }
 
@@ -70,11 +100,13 @@
 }
 
 .radio {
+  flex-shrink: 0;
   margin: 0;
   accent-color: $color-accent;
 }
 
 .submit {
+  grid-area: submit;
   width: 100%;
   height: 48px;
 }

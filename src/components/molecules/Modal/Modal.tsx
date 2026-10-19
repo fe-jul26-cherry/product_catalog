@@ -11,6 +11,7 @@ interface ModalProps {
   title: string;
   closeLabel?: string;
   compact?: boolean;
+  wide?: boolean;
   onClose: () => void;
   children: ReactNode;
 }
@@ -19,6 +20,7 @@ export const Modal = ({
   title,
   closeLabel = 'Close',
   compact = false,
+  wide = false,
   onClose,
   children,
 }: ModalProps) => {
@@ -51,10 +53,14 @@ export const Modal = ({
     onClose();
   };
 
+  const classes = [styles.root, compact && styles.compact, wide && styles.wide]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <dialog
       ref={dialogRef}
-      className={`${styles.root} ${compact ? styles.compact : ''}`}
+      className={classes}
       aria-labelledby={titleId}
       onCancel={handleCancel}
     >
