@@ -217,6 +217,15 @@ export const ua: Translations = {
       unknown: 'Щось пішло не так. Спробуйте ще раз.',
     },
   },
+  team: {
+    title: 'Команда',
+    roles: {
+      teamLead: 'Тімлід',
+      developer1: 'Розробник 1',
+      projectManager: 'Проєктний менеджер',
+      developer2: 'Розробник 2',
+    },
+  },
   notFound: {
     title: 'Сторінку не знайдено',
   },
