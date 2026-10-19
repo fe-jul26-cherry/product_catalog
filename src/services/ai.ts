@@ -1,31 +1,10 @@
-import { useLanguageStore } from '@/store';
+import { runToolCall, TOOLS } from './aiTools';
 
-import type { Language } from '@/types';
+import type { ToolCall } from './aiTools';
 
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY as string | undefined;
 const MODEL = 'xingchen-agi/xing4.0-29b-a4b:free';
-
-const TOOLS = [
-  {
-    type: 'function',
-    function: {
-      name: 'set_language',
-      description: 'Change the website interface language',
-      parameters: {
-        type: 'object',
-        properties: {
-          language: {
-            type: 'string',
-            enum: ['en', 'ua'],
-            description: 'en for English, ua for Ukrainian',
-          },
-        },
-        required: ['language'],
-      },
-    },
-  },
-];
 
 export type AiErrorReason =
   'config' | 'network' | 'rate_limit' | 'server' | 'invalid';
@@ -34,37 +13,12 @@ export type AiResult =
   | { ok: true; text: string; actions: string[] }
   | { ok: false; reason: AiErrorReason };
 
-interface ToolCall {
-  function: { name: string; arguments: string };
-}
-
 interface AiResponse {
   error?: unknown;
   choices?: {
     message?: { content?: string | null; tool_calls?: ToolCall[] };
   }[];
 }
-
-const runToolCall = (call: ToolCall) => {
-  if (call.function.name === 'set_language') {
-    const { language } = JSON.parse(call.function.arguments) as {
-      language: string;
-    };
-
-    const next: Language | null =
-      language === 'en' ? 'en'
-      : language === 'ua' || language === 'uk' ? 'ua'
-      : null;
-
-    if (next) {
-      useLanguageStore.setState({ language: next });
-
-      return true;
-    }
-  }
-
-  return false;
-};
 
 export const askAi = async (text: string): Promise<AiResult> => {
   if (!API_KEY) {
