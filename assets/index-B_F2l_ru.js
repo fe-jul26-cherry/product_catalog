@@ -1,0 +1,1 @@
+import{u as n,j as t}from"./index-eSirnjr-.js";const r="_root_jbbqu_1",o={root:r},a=()=>{const{t:s}=n();return t.jsx("div",{className:o.root,children:t.jsx("h1",{className:o.title,children:s.notFound.title})})};export{a as NotFoundPage};
