@@ -3,6 +3,7 @@ import { useLanguageStore } from '@/store';
 import type { Language } from '@/types';
 
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY as string | undefined;
 const MODEL = 'xingchen-agi/xing4.0-29b-a4b:free';
 
 const TOOLS = [
@@ -26,39 +27,109 @@ const TOOLS = [
   },
 ];
 
-export const askAi = async (text: string) => {
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are an assistant of a gadget store website. Use tools to perform actions.',
-        },
-        { role: 'user', content: text },
-      ],
-      tools: TOOLS,
-    }),
-  });
+export type AiErrorReason =
+  'config' | 'network' | 'rate_limit' | 'server' | 'invalid';
 
-  const data = await response.json();
-  const call = data.choices?.[0]?.message?.tool_calls?.[0];
+export type AiResult =
+  | { ok: true; text: string; actions: string[] }
+  | { ok: false; reason: AiErrorReason };
 
-  if (call?.function.name === 'set_language') {
+interface ToolCall {
+  function: { name: string; arguments: string };
+}
+
+interface AiResponse {
+  error?: unknown;
+  choices?: {
+    message?: { content?: string | null; tool_calls?: ToolCall[] };
+  }[];
+}
+
+const runToolCall = (call: ToolCall) => {
+  if (call.function.name === 'set_language') {
     const { language } = JSON.parse(call.function.arguments) as {
-      language: Language;
+      language: string;
     };
 
-    if (language === 'en' || language === 'ua') {
-      useLanguageStore.setState({ language });
+    const next: Language | null =
+      language === 'en' ? 'en'
+      : language === 'ua' || language === 'uk' ? 'ua'
+      : null;
+
+    if (next) {
+      useLanguageStore.setState({ language: next });
+
+      return true;
     }
   }
 
-  return data;
+  return false;
+};
+
+export const askAi = async (text: string): Promise<AiResult> => {
+  if (!API_KEY) {
+    return { ok: false, reason: 'config' };
+  }
+
+  let response: Response;
+
+  try {
+    response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are an assistant of a gadget store website. Use tools to perform actions.',
+          },
+          { role: 'user', content: text },
+        ],
+        tools: TOOLS,
+      }),
+    });
+  } catch {
+    return { ok: false, reason: 'network' };
+  }
+
+  if (response.status === 429) {
+    return { ok: false, reason: 'rate_limit' };
+  }
+
+  let data: AiResponse;
+
+  try {
+    data = (await response.json()) as AiResponse;
+  } catch {
+    return { ok: false, reason: 'invalid' };
+  }
+
+  if (!response.ok || data.error) {
+    return { ok: false, reason: 'server' };
+  }
+
+  const message = data.choices?.[0]?.message;
+
+  if (!message) {
+    return { ok: false, reason: 'invalid' };
+  }
+
+  const actions: string[] = [];
+
+  for (const call of message.tool_calls ?? []) {
+    try {
+      if (runToolCall(call)) {
+        actions.push(call.function.name);
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return { ok: true, text: message.content ?? '', actions };
 };
