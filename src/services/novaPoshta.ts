@@ -1,7 +1,6 @@
 import {
   NOVA_POSHTA_API_URL,
   NOVA_POSHTA_CITY_LIMIT,
-  NOVA_POSHTA_MESSAGES,
   NOVA_POSHTA_WAREHOUSE_TYPES,
 } from '@/constants';
 
@@ -25,7 +24,7 @@ const call = async <T>(
   const apiKey = import.meta.env.VITE_NOVA_POSHTA_API_KEY;
 
   if (!apiKey) {
-    throw new ApiError('config', NOVA_POSHTA_MESSAGES.missingKey);
+    throw new ApiError('config', 'Nova Poshta API key is missing.');
   }
 
   const response = await client.post<NovaPoshtaResponse<T>>(
@@ -36,7 +35,7 @@ const call = async <T>(
   if (!response.success) {
     throw new ApiError(
       'invalid',
-      response.errors.join(' ') || NOVA_POSHTA_MESSAGES.requestFailed,
+      response.errors.join(' ') || 'Nova Poshta request failed.',
     );
   }
 

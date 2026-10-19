@@ -12,4 +12,9 @@ export interface CheckoutFormValues {
   delivery: DeliveryMethod;
 }
 
-export type CheckoutErrors = Partial<Record<keyof CheckoutFormValues, string>>;
+export type CheckoutFieldError =
+  'required' | 'name' | 'phone' | 'email' | 'city' | 'delivery';
+
+export type CheckoutErrors = Partial<
+  Record<keyof CheckoutFormValues, CheckoutFieldError>
+>;

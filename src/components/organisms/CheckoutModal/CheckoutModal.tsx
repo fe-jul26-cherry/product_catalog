@@ -3,15 +3,12 @@ import { CityAutocomplete } from '@/components/molecules/CityAutocomplete';
 import { Dropdown } from '@/components/molecules/Dropdown';
 import { FormField } from '@/components/molecules/FormField';
 import { Modal } from '@/components/molecules/Modal';
-import {
-  CHECKOUT_FIELDS,
-  DELIVERY_OPTIONS,
-  NOVA_POSHTA_MESSAGES,
-} from '@/constants';
+import { CHECKOUT_FIELDS, DELIVERY_METHODS } from '@/constants';
 import {
   useCheckoutForm,
   useNovaPoshtaCities,
   useNovaPoshtaWarehouses,
+  useTranslation,
 } from '@/hooks';
 
 import styles from './CheckoutModal.module.scss';
@@ -31,6 +28,8 @@ export const CheckoutModal = ({
   onSubmit,
   onClose,
 }: CheckoutModalProps) => {
+  const { t, formatPrice } = useTranslation();
+  const c = t.checkout;
   const {
     values,
     errors,
@@ -61,17 +60,23 @@ export const CheckoutModal = ({
   }));
 
   const cityMessage =
-    cities.isLoading ? NOVA_POSHTA_MESSAGES.searching
+    cities.isLoading ? c.novaPoshta.searching
     : cities.error ? cities.error
-    : cities.isSearchable ? NOVA_POSHTA_MESSAGES.noCities
+    : cities.isSearchable ? c.novaPoshta.noCities
     : undefined;
 
   const getPointPlaceholder = (idle: string) =>
-    !values.cityRef ? NOVA_POSHTA_MESSAGES.selectCity
-    : warehouses.isLoading ? NOVA_POSHTA_MESSAGES.loading
+    !values.cityRef ? c.novaPoshta.selectCity
+    : warehouses.isLoading ? c.novaPoshta.loading
     : warehouses.error ? warehouses.error
-    : pointOptions.length === 0 ? NOVA_POSHTA_MESSAGES.noPoints
+    : pointOptions.length === 0 ? c.novaPoshta.noPoints
     : idle;
+
+  const getError = (name: keyof CheckoutFormValues) => {
+    const code = errors[name];
+
+    return code ? c.validation[code] : undefined;
+  };
 
   const handleCitySelect = (ref: string) => {
     const city = cities.cities.find((item) => item.Ref === ref);
@@ -84,18 +89,17 @@ export const CheckoutModal = ({
   if (isSubmitted) {
     return (
       <Modal
-        title="Order placed"
+        title={c.orderPlaced}
+        closeLabel={t.common.close}
         onClose={onClose}
       >
         <div className={styles.success}>
-          <p className={styles.successText}>
-            Thank you, {values.name.trim()}! Your order has been placed.
-          </p>
+          <p className={styles.successText}>{c.thanks(values.name.trim())}</p>
           <Button
             className={styles.submit}
             onClick={onClose}
           >
-            Close
+            {t.common.close}
           </Button>
         </div>
       </Modal>
@@ -104,12 +108,13 @@ export const CheckoutModal = ({
 
   return (
     <Modal
-      title="Checkout"
+      title={c.title}
+      closeLabel={t.common.close}
       onClose={onClose}
     >
       <section className={styles.summary}>
-        <p className={styles.total}>${total}</p>
-        <p className={styles.count}>Total for {count} items</p>
+        <p className={styles.total}>{formatPrice(total)}</p>
+        <p className={styles.count}>{t.cart.total(count)}</p>
       </section>
 
       <form
@@ -122,28 +127,29 @@ export const CheckoutModal = ({
             <CityAutocomplete
               key={field.name}
               name={field.name}
-              label={field.label}
+              label={c.fields[field.name]}
               autoComplete="off"
               value={values.city}
               options={cityOptions}
               message={cityMessage}
-              error={errors.city}
+              error={getError('city')}
               onInputChange={(city) => handleCityChange(city)}
               onSelect={({ value }) => handleCitySelect(value)}
             />
           : <FormField
               key={field.name}
               {...field}
-              value={values[field.name as keyof CheckoutFormValues]}
-              error={errors[field.name as keyof CheckoutFormValues]}
+              label={c.fields[field.name]}
+              value={values[field.name]}
+              error={getError(field.name)}
               onChange={handleChange}
             />,
         )}
 
         <fieldset className={styles.delivery}>
-          <legend className={styles.legend}>Delivery method</legend>
+          <legend className={styles.legend}>{c.delivery.legend}</legend>
           <div className={styles.options}>
-            {DELIVERY_OPTIONS.map(({ value, label }) => {
+            {DELIVERY_METHODS.map((value) => {
               const isChecked = values.delivery === value;
 
               return (
@@ -160,7 +166,7 @@ export const CheckoutModal = ({
                       checked={isChecked}
                       onChange={handleChange}
                     />
-                    {label}
+                    {c.delivery[value]}
                   </label>
 
                   {isChecked && (
@@ -171,11 +177,11 @@ export const CheckoutModal = ({
                           name="branch"
                           disabled={!values.cityRef || warehouses.isLoading}
                           placeholder={getPointPlaceholder(
-                            NOVA_POSHTA_MESSAGES.selectBranch,
+                            c.novaPoshta.selectBranch,
                           )}
                           options={pointOptions}
                           value={values.branch}
-                          error={errors.branch}
+                          error={getError('branch')}
                           onChange={(val: string) =>
                             handleSelect('branch', val)
                           }
@@ -188,11 +194,11 @@ export const CheckoutModal = ({
                           name="postomat"
                           disabled={!values.cityRef || warehouses.isLoading}
                           placeholder={getPointPlaceholder(
-                            NOVA_POSHTA_MESSAGES.selectPostomat,
+                            c.novaPoshta.selectPostomat,
                           )}
                           options={pointOptions}
                           value={values.postomat}
-                          error={errors.postomat}
+                          error={getError('postomat')}
                           onChange={(val: string) =>
                             handleSelect('postomat', val)
                           }
@@ -202,11 +208,11 @@ export const CheckoutModal = ({
                       {value === 'courier' && (
                         <FormField
                           name="address"
-                          label="Delivery address"
+                          label={c.fields.address}
                           type="text"
                           autoComplete="street-address"
                           value={values.address}
-                          error={errors.address}
+                          error={getError('address')}
                           onChange={handleChange}
                         />
                       )}
@@ -222,7 +228,7 @@ export const CheckoutModal = ({
           className={styles.submit}
           type="submit"
         >
-          Place order
+          {c.placeOrder}
         </Button>
       </form>
     </Modal>

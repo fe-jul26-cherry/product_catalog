@@ -1,4 +1,4 @@
-import { CHECKOUT_MESSAGES, CHECKOUT_RULES } from '@/constants';
+import { CHECKOUT_RULES } from '@/constants';
 
 import type { CheckoutErrors, CheckoutFormValues } from '@/types';
 
@@ -14,39 +14,39 @@ export const validateCheckout = (
   const email = values.email.trim();
 
   if (!name) {
-    errors.name = CHECKOUT_MESSAGES.required;
+    errors.name = 'required';
   } else if (name.length < CHECKOUT_RULES.nameMinLength) {
-    errors.name = CHECKOUT_MESSAGES.name;
+    errors.name = 'name';
   }
 
   if (!phone) {
-    errors.phone = CHECKOUT_MESSAGES.required;
+    errors.phone = 'required';
   } else if (!CHECKOUT_RULES.phonePattern.test(phone)) {
-    errors.phone = CHECKOUT_MESSAGES.phone;
+    errors.phone = 'phone';
   }
 
   if (!email) {
-    errors.email = CHECKOUT_MESSAGES.required;
+    errors.email = 'required';
   } else if (!CHECKOUT_RULES.emailPattern.test(email)) {
-    errors.email = CHECKOUT_MESSAGES.email;
+    errors.email = 'email';
   }
 
   if (!values.city.trim()) {
-    errors.city = CHECKOUT_MESSAGES.required;
+    errors.city = 'required';
   } else if (!values.cityRef) {
-    errors.city = CHECKOUT_MESSAGES.city;
+    errors.city = 'city';
   }
 
   if (values.delivery === 'branch' && !values.branch.trim()) {
-    errors.branch = CHECKOUT_MESSAGES.delivery;
+    errors.branch = 'delivery';
   }
 
   if (values.delivery === 'postomat' && !values.postomat.trim()) {
-    errors.postomat = CHECKOUT_MESSAGES.delivery;
+    errors.postomat = 'delivery';
   }
 
   if (values.delivery === 'courier' && !values.address.trim()) {
-    errors.address = CHECKOUT_MESSAGES.required;
+    errors.address = 'required';
   }
 
   return errors;

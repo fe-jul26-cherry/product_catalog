@@ -11,16 +11,3 @@ export const NOVA_POSHTA_WAREHOUSE_TYPES: Record<NovaPoshtaPointKind, string> =
 export const NOVA_POSHTA_CITY_MIN_LENGTH = 2;
 export const NOVA_POSHTA_CITY_LIMIT = 20;
 export const NOVA_POSHTA_DEBOUNCE_MS = 300;
-
-export const NOVA_POSHTA_MESSAGES = {
-  missingKey: 'Nova Poshta API key is missing.',
-  requestFailed: 'Nova Poshta request failed.',
-  searching: 'Searching...',
-  loading: 'Loading...',
-  noCities: 'No cities found',
-  noPoints: 'Nothing found in this city',
-  selectCity: 'Select a city first',
-  selectBranch: 'Select branch',
-  selectPostomat: 'Select postomat',
-  retry: 'Try again',
-};
