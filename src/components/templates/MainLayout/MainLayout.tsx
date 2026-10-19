@@ -1,10 +1,11 @@
-import { Suspense } from 'react';
+import { Suspense, useCallback, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { PageTransition } from '@/animations';
 import { ErrorBoundary } from '@/app/ErrorBoundary';
 import { Loader } from '@/components/atoms/Loader';
 import { AiAssistant } from '@/components/organisms/AiAssistant';
+import { AiChat } from '@/components/organisms/AiChat';
 import { Footer } from '@/components/organisms/Footer';
 import { Header } from '@/components/organisms/Header';
 import { useTranslation } from '@/hooks';
@@ -13,6 +14,9 @@ import styles from './MainLayout.module.scss';
 
 export const MainLayout = () => {
   const { t } = useTranslation();
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const closeChat = useCallback(() => setIsChatOpen(false), []);
 
   return (
     <>
@@ -27,9 +31,10 @@ export const MainLayout = () => {
             </ErrorBoundary>
           </PageTransition>
         </main>
-        <AiAssistant />
+        <AiAssistant onOpen={() => setIsChatOpen(true)} />
       </div>
       <Footer />
+      {isChatOpen && <AiChat onClose={closeChat} />}
     </>
   );
 };
