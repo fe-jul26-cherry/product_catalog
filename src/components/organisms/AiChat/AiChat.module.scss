@@ -109,6 +109,34 @@
   margin: 0;
 }
 
+.suggestions {
+  flex-shrink: 0;
+  border-top: 1px solid $color-elements;
+}
+
+.toggle {
+  @include small;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 16px;
+  border: 0;
+  color: $color-secondary;
+  background: transparent;
+  cursor: pointer;
+  transition: color $transition;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-accent-hover;
+  }
+}
+
+.chips {
+  padding: 0 16px 12px;
+}
+
 .retry {
   width: auto;
   height: 32px;
@@ -142,6 +170,11 @@
   &:focus-visible {
     border-color: $color-accent;
     outline: none;
+  }
+
+  &::selection {
+    color: $color-btn;
+    background: $color-accent;
   }
 }
 

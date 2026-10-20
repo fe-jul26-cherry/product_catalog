@@ -1,18 +1,23 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import chevronDownIcon from '@/assets/icons/chevron-down.svg';
+import chevronUpIcon from '@/assets/icons/chevron-up.svg';
 import closeIcon from '@/assets/icons/close.svg';
 import { Button } from '@/components/atoms/Button';
 import { Icon } from '@/components/atoms/Icon';
+import { ChatChips } from '@/components/molecules/ChatChips';
 import { ChatCompare } from '@/components/molecules/ChatCompare';
 import { ChatMessage } from '@/components/molecules/ChatMessage';
 import { useTranslation } from '@/hooks';
 import { askAi } from '@/services/ai';
+import { runToolCall } from '@/services/aiTools';
 import { useAiChatStore } from '@/store';
 
 import styles from './AiChat.module.scss';
 import { buildCompareTable } from './buildCompareTable';
 
+import type { ChatChip } from '@/components/molecules/ChatChips';
 import type { AiErrorReason } from '@/services/ai';
 import type { AiComparison } from '@/services/aiCompare';
 import type { AiChatMessage } from '@/store';
@@ -28,7 +33,7 @@ interface ChatError {
 }
 
 export const AiChat = ({ onClose }: AiChatProps) => {
-  const { t, formatValue, formatPrice } = useTranslation();
+  const { t, language, formatValue, formatPrice } = useTranslation();
   const navigate = useNavigate();
   const messages = useAiChatStore((state) => state.messages);
   const add = useAiChatStore((state) => state.add);
@@ -36,8 +41,16 @@ export const AiChat = ({ onClose }: AiChatProps) => {
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ChatError | null>(null);
+  const [areChipsOpen, setAreChipsOpen] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const chipsText = t.assistant.chips;
+
+  const chips: ChatChip[] = [
+    { id: 'language', label: chipsText.switchLanguage },
+    { id: 'find', label: chipsText.find },
+    { id: 'compare', label: chipsText.compare },
+  ];
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -118,6 +131,58 @@ export const AiChat = ({ onClose }: AiChatProps) => {
   const handleClear = () => {
     clear();
     setError(null);
+  };
+
+  const switchLanguage = async () => {
+    const next = language === 'en' ? 'ua' : 'en';
+
+    add({ role: 'user', text: chipsText.switchLanguage });
+    setError(null);
+
+    const outcome = await runToolCall(
+      {
+        function: {
+          name: 'set_language',
+          arguments: JSON.stringify({ language: next }),
+        },
+      },
+      navigate,
+    );
+
+    if (outcome) {
+      add({ role: 'action', action: outcome.name });
+    }
+  };
+
+  const fillInput = (prefix: string, example: string) => {
+    const text = `${prefix}${example}`;
+
+    setValue(text);
+
+    requestAnimationFrame(() => {
+      const input = inputRef.current;
+
+      if (!input) {
+        return;
+      }
+
+      input.focus();
+      input.setSelectionRange(prefix.length, text.length);
+    });
+  };
+
+  const handleChipSelect = (id: string) => {
+    if (id === 'language') {
+      void switchLanguage();
+    }
+
+    if (id === 'find') {
+      fillInput(chipsText.findPrefix, chipsText.findExample);
+    }
+
+    if (id === 'compare') {
+      fillInput(chipsText.comparePrefix, chipsText.compareExample);
+    }
   };
 
   const renderComparison = (
@@ -227,7 +292,17 @@ export const AiChat = ({ onClose }: AiChatProps) => {
         aria-label={t.assistant.messages}
       >
         {messages.length === 0 && (
-          <ChatMessage variant="assistant">{t.assistant.greeting}</ChatMessage>
+          <>
+            <ChatMessage variant="assistant">
+              {t.assistant.greeting}
+            </ChatMessage>
+            <ChatChips
+              chips={chips}
+              label={chipsText.label}
+              disabled={isLoading}
+              onSelect={handleChipSelect}
+            />
+          </>
         )}
 
         {messages.map(renderMessage)}
@@ -255,6 +330,35 @@ export const AiChat = ({ onClose }: AiChatProps) => {
           </div>
         )}
       </div>
+
+      {messages.length > 0 && (
+        <div className={styles.suggestions}>
+          <button
+            type="button"
+            className={styles.toggle}
+            aria-expanded={areChipsOpen}
+            aria-label={areChipsOpen ? chipsText.hide : chipsText.show}
+            onClick={() => setAreChipsOpen((isOpen) => !isOpen)}
+          >
+            <span>{chipsText.label}</span>
+            <Icon
+              src={areChipsOpen ? chevronDownIcon : chevronUpIcon}
+              alt=""
+            />
+          </button>
+
+          {areChipsOpen && (
+            <div className={styles.chips}>
+              <ChatChips
+                chips={chips}
+                label={chipsText.label}
+                disabled={isLoading}
+                onSelect={handleChipSelect}
+              />
+            </div>
+          )}
+        </div>
+      )}
 
       <form
         className={styles.form}
