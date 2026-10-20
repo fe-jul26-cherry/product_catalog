@@ -2,6 +2,7 @@
 @use '../../../styles/typography' as *;
 
 .root {
+  flex-shrink: 0;
   align-self: stretch;
   max-width: 100%;
   overflow-x: auto;
