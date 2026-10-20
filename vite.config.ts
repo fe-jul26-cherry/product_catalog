@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 
 import type { OutputBundle, OutputChunk } from 'rollup';
 import type { Plugin } from 'vite';
@@ -99,8 +99,42 @@ const preloadPageChunks = (): Plugin => ({
   },
 });
 
+// Serves api/ai.ts at /api/ai in `vite dev`, the same function Vercel runs.
+const aiDevApi = (): Plugin => ({
+  name: 'ai-dev-api',
+  configureServer(server) {
+    const env = loadEnv(server.config.mode, process.cwd(), '');
+
+    if (!process.env.OPENROUTER_API_KEY && env.OPENROUTER_API_KEY) {
+      process.env.OPENROUTER_API_KEY = env.OPENROUTER_API_KEY;
+    }
+
+    server.middlewares.use('/api/ai', (req, res) => {
+      const chunks: Buffer[] = [];
+
+      req.on('data', (chunk: Buffer) => chunks.push(chunk));
+      req.on('end', () => {
+        void (async () => {
+          const request = req as typeof req & { body?: string };
+
+          request.body = Buffer.concat(chunks).toString('utf8');
+
+          const module = await server.ssrLoadModule('/api/ai.ts');
+
+          await (
+            module.default as (
+              request: typeof req,
+              response: typeof res,
+            ) => Promise<void>
+          )(request, res);
+        })();
+      });
+    });
+  },
+});
+
 export default defineConfig({
-  plugins: [react(), preloadPageChunks()],
+  plugins: [react(), preloadPageChunks(), aiDevApi()],
   base: './',
   server: {
     open: true,

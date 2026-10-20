@@ -18,7 +18,7 @@ import styles from './AiChat.module.scss';
 import { buildCompareTable } from './buildCompareTable';
 
 import type { ChatChip } from '@/components/molecules/ChatChips';
-import type { AiErrorReason } from '@/services/ai';
+import type { AiErrorReason, AiHistoryMessage } from '@/services/ai';
 import type { AiComparison } from '@/services/aiCompare';
 import type { AiChatMessage } from '@/store';
 import type { FormEvent } from 'react';
@@ -26,6 +26,25 @@ import type { FormEvent } from 'react';
 interface AiChatProps {
   onClose: () => void;
 }
+
+const HISTORY_LIMIT = 6;
+
+// The last few text turns give the model context for follow-up questions.
+const buildHistory = (text: string): AiHistoryMessage[] => {
+  const history = useAiChatStore
+    .getState()
+    .messages.flatMap<AiHistoryMessage>((message) =>
+      message.role === 'user' || message.role === 'assistant' ?
+        [{ role: message.role, content: message.text }]
+      : [],
+    )
+    .slice(-HISTORY_LIMIT);
+  const last = history[history.length - 1];
+
+  return last?.role === 'user' && last.content === text ?
+      history
+    : [...history.slice(-(HISTORY_LIMIT - 1)), { role: 'user', content: text }];
+};
 
 interface ChatError {
   reason: AiErrorReason;
@@ -82,7 +101,7 @@ export const AiChat = ({ onClose }: AiChatProps) => {
     setIsLoading(true);
     setError(null);
 
-    const result = await askAi(text, navigate);
+    const result = await askAi(buildHistory(text), navigate);
 
     setIsLoading(false);
 

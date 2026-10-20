@@ -1,21 +1,21 @@
-import { runToolCall, TOOLS } from './aiTools';
+import { runToolCall } from './aiTools';
 
 import type { AiComparison } from './aiCompare';
-import type { ToolCall, Navigate } from './aiTools';
+import type { Navigate } from './aiTools';
 
-const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY as string | undefined;
-const MODELS = [
-  'xingchen-agi/xing4.0-29b-a4b:free',
-  'nvidia/nemotron-3.5-super-vl:free',
-];
+// The OpenRouter key never reaches the browser: requests go to our own proxy
+// (`api/ai.ts`), whose address comes from VITE_AI_API_URL.
+const API_URL = import.meta.env.VITE_AI_API_URL as string | undefined;
+const REQUEST_TIMEOUT_MS = 25_000;
 const RETRY_DELAY_MS = 3000;
 
-const SYSTEM_PROMPT =
-  'You are the assistant of the Nice Gadgets online store. You can do exactly three things: switch the site language between English and Ukrainian (set_language), search for a product by model name (search_products) and compare two or three products of the same category (compare_products). You cannot place orders or answer other questions about the store. When asked to compare, only call compare_products with the model names: the website shows the comparison table itself, so never describe the comparison yourself. Always reply in the same language as the user, in one or two short sentences, in plain text without markdown. When the user asks for one of the three actions, call the tool. If asked what you can do, list only these three actions. If asked for anything else, say you cannot do it yet.';
-
 export type AiErrorReason =
-  'config' | 'network' | 'rate_limit' | 'server' | 'invalid';
+  'config' | 'network' | 'timeout' | 'rate_limit' | 'server' | 'invalid';
+
+export interface AiHistoryMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
 
 export type AiResult =
   | {
@@ -29,7 +29,10 @@ export type AiResult =
 interface AiResponse {
   error?: unknown;
   choices?: {
-    message?: { content?: string | null; tool_calls?: ToolCall[] };
+    message?: {
+      content?: string | null;
+      tool_calls?: { function: { name: string; arguments: string } }[];
+    };
   }[];
 }
 
@@ -39,30 +42,21 @@ const wait = (ms: number) =>
   });
 
 export const askAi = async (
-  text: string,
+  messages: AiHistoryMessage[],
   navigate: Navigate,
 ): Promise<AiResult> => {
-  if (!API_KEY) {
+  if (!API_URL) {
     return { ok: false, reason: 'config' };
   }
 
-  const body = JSON.stringify({
-    models: MODELS,
-    messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: text },
-    ],
-    tools: TOOLS,
-  });
+  const body = JSON.stringify({ messages });
 
   const send = () =>
     fetch(API_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`,
-      },
+      headers: { 'Content-Type': 'application/json' },
       body,
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
 
   let response: Response;
@@ -74,12 +68,22 @@ export const askAi = async (
       await wait(RETRY_DELAY_MS);
       response = await send();
     }
-  } catch {
-    return { ok: false, reason: 'network' };
+  } catch (error) {
+    const isTimeout = error instanceof Error && error.name === 'TimeoutError';
+
+    return { ok: false, reason: isTimeout ? 'timeout' : 'network' };
   }
 
   if (response.status === 429) {
     return { ok: false, reason: 'rate_limit' };
+  }
+
+  if (response.status === 504) {
+    return { ok: false, reason: 'timeout' };
+  }
+
+  if (response.status === 503) {
+    return { ok: false, reason: 'config' };
   }
 
   let data: AiResponse;

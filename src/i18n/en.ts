@@ -263,6 +263,7 @@ export const en = {
     errors: {
       config: 'The assistant is not configured yet.',
       network: 'Network error. Check your connection and try again.',
+      timeout: 'The assistant took too long to answer. Try again.',
       rate_limit: 'Too many requests. Try again in a minute.',
       server: 'The assistant is temporarily unavailable.',
       invalid: 'Received an invalid response. Try again.',

@@ -17,68 +17,6 @@ export interface ToolOutcome {
   comparison?: AiComparison;
 }
 
-export const TOOLS = [
-  {
-    type: 'function',
-    function: {
-      name: 'set_language',
-      description: 'Change the website interface language',
-      parameters: {
-        type: 'object',
-        properties: {
-          language: {
-            type: 'string',
-            enum: ['en', 'ua'],
-            description: 'en for English, ua for Ukrainian',
-          },
-        },
-        required: ['language'],
-      },
-    },
-  },
-  {
-    type: 'function',
-    function: {
-      name: 'search_products',
-      description:
-        'Search the store for a product and open the search results page',
-      parameters: {
-        type: 'object',
-        properties: {
-          query: {
-            type: 'string',
-            description:
-              'Product model name in English as in the catalog, for example "iPhone 14 Pro". Only the model name, no extra words.',
-          },
-        },
-        required: ['query'],
-      },
-    },
-  },
-  {
-    type: 'function',
-    function: {
-      name: 'compare_products',
-      description:
-        'Compare two or three products of the same category side by side. The website shows the comparison table itself.',
-      parameters: {
-        type: 'object',
-        properties: {
-          queries: {
-            type: 'array',
-            items: { type: 'string' },
-            minItems: 2,
-            maxItems: 3,
-            description:
-              'Product model names in English as in the catalog, for example ["iPhone 14 Pro", "iPhone 11"]. Only model names, no extra words.',
-          },
-        },
-        required: ['queries'],
-      },
-    },
-  },
-];
-
 const toQueries = (value: unknown): string[] => {
   if (Array.isArray(value)) {
     return value.filter((item): item is string => typeof item === 'string');
