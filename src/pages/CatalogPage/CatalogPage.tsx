@@ -9,14 +9,11 @@ import { Pagination } from '@/components/molecules/Pagination';
 import { CatalogControls } from '@/components/organisms/CatalogControls';
 import { CatalogFilters } from '@/components/organisms/CatalogFilters';
 import { ProductsList } from '@/components/organisms/ProductsList';
-import {
-  DEFAULT_PER_PAGE_ROWS,
-  DEFAULT_SORT,
-  LOAD_MORE_STEP,
-} from '@/constants';
+import { LOAD_MORE_STEP } from '@/constants';
 import {
   useAsync,
   useCatalogFilters,
+  useCatalogView,
   useLoadMore,
   useMediaQuery,
   useTranslation,
@@ -25,7 +22,7 @@ import { getProductsByCategory } from '@/services';
 
 import styles from './CatalogPage.module.scss';
 
-import type { Category, PerPageRows, SortBy } from '@/types';
+import type { Category } from '@/types';
 
 interface CatalogPageProps {
   category: Category;
@@ -33,39 +30,15 @@ interface CatalogPageProps {
 
 export const CatalogPage = ({ category }: CatalogPageProps) => {
   const { t } = useTranslation();
-  const [sortBy, setSortBy] = useState<SortBy>(DEFAULT_SORT);
   const isDesktop = useMediaQuery('(min-width: 1200px)');
   const isTablet = useMediaQuery('(min-width: 640px)');
   const columns =
     isDesktop ? 3
     : isTablet ? 2
     : 1;
-  const [perPageRows, setPerPageRows] = useState<PerPageRows | 'all'>(
-    DEFAULT_PER_PAGE_ROWS,
-  );
-  const [page, setPage] = useState(1);
+  const { sortBy, perPageRows, page, setSortBy, setPerPageRows, setPage } =
+    useCatalogView();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-
-  const [prevCategory, setPrevCategory] = useState<Category>(category);
-  const [prevPerPageRows, setPrevPerPageRows] = useState<PerPageRows | 'all'>(
-    perPageRows,
-  );
-  const [prevColumns, setPrevColumns] = useState(columns);
-
-  if (category !== prevCategory) {
-    setPrevCategory(category);
-    setPage(1);
-  }
-
-  if (perPageRows !== prevPerPageRows) {
-    setPrevPerPageRows(perPageRows);
-    setPage(1);
-  }
-
-  if (columns !== prevColumns) {
-    setPrevColumns(columns);
-    setPage(1);
-  }
 
   const load = useCallback(() => getProductsByCategory(category), [category]);
   const { data: products, error, isLoading, retry } = useAsync(load);
@@ -80,13 +53,6 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
     toggle,
     reset,
   } = useCatalogFilters(category, products);
-
-  const [prevSignature, setPrevSignature] = useState(signature);
-
-  if (signature !== prevSignature) {
-    setPrevSignature(signature);
-    setPage(1);
-  }
 
   const title = t.categories[category];
 
@@ -112,14 +78,16 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
 
   const itemsPerPage =
     isShowingAll ? loadMore.count : Number(perPageRows) * columns;
-  const startIndex = isShowingAll ? 0 : (page - 1) * itemsPerPage;
+  const totalPages =
+    isShowingAll ? 1 : (
+      Math.max(Math.ceil(sortedProducts.length / itemsPerPage), 1)
+    );
+  const currentPage = Math.min(page, totalPages);
+  const startIndex = isShowingAll ? 0 : (currentPage - 1) * itemsPerPage;
   const visibleProducts = sortedProducts.slice(
     startIndex,
     startIndex + itemsPerPage,
   );
-
-  const totalPages =
-    isShowingAll ? 1 : Math.ceil(sortedProducts.length / itemsPerPage);
 
   return (
     <div className={styles.root}>
@@ -192,7 +160,7 @@ export const CatalogPage = ({ category }: CatalogPageProps) => {
 
                 {totalPages > 1 && (
                   <Pagination
-                    current={page}
+                    current={currentPage}
                     total={totalPages}
                     onChange={setPage}
                     labels={{
