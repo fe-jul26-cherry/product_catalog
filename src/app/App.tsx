@@ -36,6 +36,11 @@ const SearchPage = lazy(() =>
     default: module.SearchPage,
   })),
 );
+const RightsPage = lazy(() =>
+  import('@/pages/RightsPage').then((module) => ({
+    default: module.RightsPage,
+  })),
+);
 const TeamPage = lazy(() =>
   import('@/pages/TeamPage').then((module) => ({ default: module.TeamPage })),
 );
@@ -85,6 +90,10 @@ export const App = () => (
           <Route
             path={ROUTES.TEAM}
             element={<TeamPage />}
+          />
+          <Route
+            path={ROUTES.RIGHTS}
+            element={<RightsPage />}
           />
           {import.meta.env.DEV && (
             <Route
