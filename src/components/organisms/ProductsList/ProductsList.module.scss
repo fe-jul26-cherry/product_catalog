@@ -8,4 +8,8 @@
   @include desktop {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  @container (min-width: 1100px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
