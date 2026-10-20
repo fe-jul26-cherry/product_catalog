@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 import astronautActive from '@/assets/icons/astronaut-active.svg';
 import astronaut from '@/assets/icons/astronaut.svg';
@@ -42,6 +42,8 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const shouldScrollToHome = useRef(false);
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const urlQuery = searchParams.get('query') ?? '';
@@ -74,6 +76,23 @@ export const Header = () => {
   );
   const isCrowded =
     isCrowdedRange && (isSupabaseConfigured || language === 'ua');
+  const handleLogoClick = () => {
+    if (pathname === ROUTES.HOME) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    shouldScrollToHome.current = true;
+  };
+
+  useEffect(() => {
+    if (pathname !== ROUTES.HOME || !shouldScrollToHome.current) {
+      return;
+    }
+
+    shouldScrollToHome.current = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
 
   useEffect(() => {
     if (searchQuery.length < 2) {
@@ -134,7 +153,7 @@ export const Header = () => {
         className={`${styles.bar} ${language === 'ua' ? styles.barUa : ''} ${isSupabaseConfigured ? styles.barAccount : ''}`}
       >
         <div className={styles.left}>
-          <Logo />
+          <Logo onClick={handleLogoClick} />
 
           <nav
             className={styles.nav}
