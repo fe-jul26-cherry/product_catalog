@@ -33,6 +33,11 @@ export const useCheckoutForm = (
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
+  const handlePhoneChange = (phone: string) => {
+    setEdits((prev) => ({ ...prev, phone }));
+    setErrors((prev) => ({ ...prev, phone: undefined }));
+  };
+
   const handleCityChange = (city: string, cityRef = '') => {
     setEdits((prev) => ({ ...prev, city, cityRef, branch: '', postomat: '' }));
     setErrors((prev) => ({
@@ -85,6 +90,7 @@ export const useCheckoutForm = (
     errors,
     isSubmitted,
     handleChange,
+    handlePhoneChange,
     handleCityChange,
     handleSelect,
     handleSubmit,
