@@ -7,3 +7,4 @@ export * from './useDebouncedValue';
 export * from './useNovaPoshta';
 export * from './useAuthForm';
 export * from './useTranslation';
+export * from './useCatalogFilters';

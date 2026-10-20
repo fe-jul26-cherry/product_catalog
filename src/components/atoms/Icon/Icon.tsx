@@ -16,6 +16,8 @@ import favoriteFilledLightIcon from '@/assets/icons/favorite-filled-light.svg';
 import favoriteFilledIcon from '@/assets/icons/favorite-filled.svg';
 import favoriteOutlineLightIcon from '@/assets/icons/favorite-outline-light.svg';
 import favoriteOutlineIcon from '@/assets/icons/favorite-outline.svg';
+import filtersLightIcon from '@/assets/icons/filters-light.svg';
+import filtersIcon from '@/assets/icons/filters.svg';
 import homeLightIcon from '@/assets/icons/home-light.svg';
 import homeIcon from '@/assets/icons/home.svg';
 import menuLightIcon from '@/assets/icons/menu-light.svg';
@@ -53,6 +55,7 @@ const LIGHT_THEME_ICONS: Record<string, string> = {
   [closeIcon]: closeLightIcon,
   [favoriteFilledIcon]: favoriteFilledLightIcon,
   [favoriteOutlineIcon]: favoriteOutlineLightIcon,
+  [filtersIcon]: filtersLightIcon,
   [homeIcon]: homeLightIcon,
   [menuIcon]: menuLightIcon,
   [minusIcon]: minusLightIcon,
