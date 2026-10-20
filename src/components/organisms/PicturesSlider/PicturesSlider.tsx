@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { A11y, Autoplay, EffectFade, Keyboard } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,7 +8,7 @@ import 'swiper/css/effect-fade';
 import chevronLeftIcon from '@/assets/icons/chevron-left.svg';
 import chevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { Icon } from '@/components/atoms/Icon';
-import { BANNERS, CATEGORIES, ROUTES } from '@/constants';
+import { BANNER_SIZES, BANNERS, CATEGORIES, ROUTES } from '@/constants';
 import { useTranslation } from '@/hooks';
 import { useThemeStore } from '@/store';
 
@@ -21,6 +21,7 @@ import type { Swiper as SwiperInstance } from 'swiper';
 const AUTOPLAY_DELAY = 6000;
 const FADE_SPEED = 900;
 const TABLET_BREAKPOINT = 640;
+const PREFETCH_DELAY = 2500;
 
 const getCategoryPath = (id: Category) =>
   CATEGORIES.find((category) => category.id === id)?.path ?? ROUTES.HOME;
@@ -36,12 +37,21 @@ export const PicturesSlider = () => {
   const theme = useThemeStore((state) => state.theme);
   const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [reachedIndex, setReachedIndex] = useState(0);
+  const [prefetchAhead, setPrefetchAhead] = useState(0);
   const [autoplayEnabled] = useState(() => !prefersReducedMotion());
   const dotRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setPrefetchAhead(1), PREFETCH_DELAY);
+
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const handleSlideChange = (instance: SwiperInstance) => {
     dotRefs.current.forEach((dot) => dot?.style.setProperty('--progress', '0'));
     setActiveIndex(instance.realIndex);
+    setReachedIndex((prev) => Math.max(prev, instance.realIndex));
   };
 
   const handleTimeLeft = (
@@ -103,8 +113,10 @@ export const PicturesSlider = () => {
         onAutoplayTimeLeft={handleTimeLeft}
       >
         {BANNERS.map((slide, index) => {
-          const image =
-            theme === 'light' ? (slide.imageLight ?? slide.image) : slide.image;
+          const isLight = theme === 'light' && Boolean(slide.imageLight);
+          const image = isLight ? slide.imageLight : slide.image;
+          const srcSet = isLight ? slide.srcSetLight : slide.srcSet;
+          const shouldLoad = index <= reachedIndex + prefetchAhead;
           const text = t.banners[slide.id];
           const isActive = index === activeIndex;
           const slideClasses = [
@@ -130,9 +142,17 @@ export const PicturesSlider = () => {
               <div className={visualClasses}>
                 <img
                   className={styles.image}
-                  src={image}
-                  alt={text.alt}
+                  src={shouldLoad ? image : undefined}
+                  srcSet={shouldLoad ? srcSet : undefined}
+                  sizes={
+                    slide.fullBleed ?
+                      BANNER_SIZES.fullBleed
+                    : BANNER_SIZES.default
+                  }
+                  alt={shouldLoad ? text.alt : ''}
                   loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding={index === 0 ? undefined : 'async'}
+                  {...(index === 0 ? { fetchpriority: 'high' } : {})}
                   draggable={false}
                   style={{
                     objectFit: slide.fit,

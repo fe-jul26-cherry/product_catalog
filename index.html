@@ -44,16 +44,49 @@
         }
       } catch (error) {}
     </script>
+    <script>
+      (function () {
+        var hash = location.hash;
+
+        if (hash && hash !== '#' && hash !== '#/') {
+          return;
+        }
+
+        var base =
+          document.documentElement.dataset.theme === 'light' ?
+            'img/slider/banner_phone-light'
+          : 'img/slider/banner_phone';
+        var full =
+          document.documentElement.dataset.theme === 'light' ? 1372 : 1600;
+        var link = document.createElement('link');
+
+        link.rel = 'preload';
+        link.as = 'image';
+        link.setAttribute(
+          'imagesrcset',
+          [480, 800, 1200]
+            .map(function (width) {
+              return base + '-' + width + '.webp ' + width + 'w';
+            })
+            .concat(base + '.webp ' + full + 'w')
+            .join(', '),
+        );
+        link.setAttribute(
+          'imagesizes',
+          '(min-width: 1200px) 930px, (min-width: 640px) 100vw, 134vw',
+        );
+        link.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(link);
+      })();
+    </script>
     <link
-      rel="preload"
-      href="/src/assets/fonts/Mont-Regular.woff2"
-      as="font"
-      type="font/woff2"
+      rel="preconnect"
+      href="%VITE_SUPABASE_URL%"
       crossorigin
     />
     <link
       rel="preload"
-      href="/src/assets/fonts/Mont-SemiBold.woff2"
+      href="/src/assets/fonts/Mont-Regular.woff2"
       as="font"
       type="font/woff2"
       crossorigin
