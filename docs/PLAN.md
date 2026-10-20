@@ -1,125 +1,101 @@
-# План робіт
+# Roadmap
 
-10 робочих днів. Дні 1–5: верстка на моках. Дні 6–10: дані, стан, полірування, деплой.
+10 working days. Days 1–5: markup on mocks. Days 6–10: data, state, polish, deploy.
 
-## Ролі
+## Priorities for markup
 
-| Хто         | Зона                      | Фокус                                                                 |
-| ----------- | ------------------------- | --------------------------------------------------------------------- |
-| Розробник 1 | Картка товару і каталог   | `ProductCard` потрібна всім сторінкам, тому її мерж до кінця дня 2    |
-| Розробник 2 | Сторінка товару, кошик    | найбільша за обсягом верстка, залежить від інших найменше             |
-| PM          | Головна сторінка, кошик   | слайдери на Swiper, щоденний стендап і статуси в Jira                 |
-| Тімлід      | Каркас, ревʼю, інтеграція | Header і Footer, ревʼю PR, допомога тим, хто застряг, злиття в `main` |
+**P1, visible.** Without these a page looks broken: layout at 320, 640, 1200, 1440, grids, fonts, colours, cards, main blocks.
 
-Усі зони рівні за складністю. Тімлід тримає каркас, щоб інші працювали без блокувань: ревʼю, конфлікти, деплой і допомога команді теж частина роботи, яку видно в результаті.
+**P2, details.** Only an attentive eye notices them: hover, active, disabled, focus, fine spacing on tablet, counters, breadcrumbs.
 
-Якщо в когось зона не йде, команда разом переглядає розподіл на стендапі. Зони незалежні, тож обмін нічого не ламає.
+Rule: finish P1 by the end of day 4. P2 only after that.
 
-## Пріоритет у верстці
+## Work areas
 
-**P1, помітне.** Без цього сторінка виглядає зламаною: розкладка на 320, 640, 1200, 1440, сітки, шрифти, кольори, картки, головні блоки.
+| Area                  | Scope                                                                        |
+| --------------------- | ---------------------------------------------------------------------------- |
+| App shell             | repo setup, assets, Header, Footer, BurgerMenu, NotFoundPage, Loader         |
+| Product card, catalog | `ProductCard` (needed by every page, so merge it first), catalog, pagination |
+| Product page, cart    | gallery, variants, product details, cart items                               |
+| Home page             | sliders on Swiper, categories, cart summary                                  |
 
-**P2, деталі.** Помітить лише уважний: hover, active, disabled, focus, тонкі відступи на планшеті, лічильники, крихти.
+The areas are independent of each other, so they can be worked on in parallel without blocking.
 
-Правило: свої P1 закриваєш до кінця дня 4. P2 тільки після цього.
+## Stage 1: markup on mocks
 
-## Задачі
+| Day | Priority | Task                                                                     |
+| --- | -------- | ------------------------------------------------------------------------ |
+| 1   | P1       | Repo, branch protection, Jira, 30-minute kickoff on `STRUCTURE.md`       |
+| 1   | P1       | Assets: SVG icons, logo, banners, categories from Figma; donor data      |
+| 1–2 | P1       | `ProductCard`, `ProductPrice`, `ProductSpecs`. Merge by the end of day 2 |
+| 1–2 | P1       | `PicturesSlider` on Swiper: banner, arrows, dots                         |
+| 1   | P1       | `ProductGallery`                                                         |
+| 2   | P1       | `Header`: desktop, tablet, mobile bar                                    |
+| 2   | P1       | `ProductVariants`, `CapacityButton`                                      |
+| 2–3 | P1       | `ProductsSlider` on Swiper: title, arrows, cards                         |
+| 3   | P1       | `Footer` with "Back to top"                                              |
+| 3   | P1       | `CatalogPage`: title, count, `ProductsList` grid                         |
+| 3   | P1       | `CatalogControls`: sorting and items per page                            |
+| 3   | P1       | `ProductAbout`, `ProductTechSpecs`                                       |
+| 3   | P1       | `ProductDetailsPage` layout at all breakpoints                           |
+| 3   | P1       | `Categories`, `CategoryCard`                                             |
+| 3   | P1       | `HomePage` assembly at all breakpoints                                   |
+| 3   | P2       | `NotFoundPage`, `Loader`                                                 |
+| 4   | P1       | `Pagination`                                                             |
+| 4   | P1       | `FavoritesPage`                                                          |
+| 4   | P1       | `CartItem`, `QuantityCounter`                                            |
+| 4   | P1       | `CartPage`, `CartSummary`                                                |
+| 4   | P2       | `BurgerMenu`                                                             |
+| 4   | P2       | Icon counters, active menu item                                          |
+| 5   | P2       | `Breadcrumbs`, card hover, pagination states                             |
+| 5   | P2       | Thumbnail, colour and capacity states, `BackLink`, "You may also like"   |
+| 5   | P2       | Arrow and dot states, autoplay 5 s, loop                                 |
+| 5   | P1       | Integration check of all pages, merge freeze for the evening             |
 
-### Тімлід: каркас
+## Stage 2: data and state
 
-| День | Пріоритет | Задача                                                             |
-| ---- | --------- | ------------------------------------------------------------------ |
-| 1    | P1        | Репо, branch protection, Jira, кікоф 30 хв за `STRUCTURE.md`       |
-| 1    | P1        | Асети: SVG-іконки, логотип, банери, категорії з Figma; дані донора |
-| 2    | P1        | Header: десктоп, планшет, мобільна панель                          |
-| 3    | P1        | Footer з «Back to top»                                             |
-| 3    | P2        | NotFoundPage, Loader                                               |
-| 4    | P2        | BurgerMenu                                                         |
-| 4    | P2        | Лічильники на іконках, активний пункт меню                         |
-| 5    | P1        | Інтеграційна перевірка всіх сторінок, заморозка мержів на вечір    |
+| Day | Priority | Task                                                                           |
+| --- | -------- | ------------------------------------------------------------------------------ |
+| 6   | P1       | `services/products.ts`: `fetch` from `public/api`                              |
+| 6–7 | P1       | Sorting, page and perPage in the URL; sorting and pagination utilities         |
+| 7   | P1       | Loader, error with a reload button, empty list in the catalog                  |
+| 6   | P1       | `getProductDetails`, `getSuggestedProducts`, "Product was not found"           |
+| 6–7 | P1       | `cartStore` (Zustand + persist), "Added to cart" button                        |
+| 7   | P1       | Cart: quantity, removal, total, checkout via `confirm()`                       |
+| 6   | P1       | `favoritesStore`, heart button on the card                                     |
+| 7   | P1       | Home page data: Hot prices by discount, Brand new by `year`, category counters |
+| 6   | P1       | Cart and favourites counters in the Header                                     |
+| 7–8 | Nice     | Light theme and the switcher in the Footer                                     |
+| 8   | Nice     | `Reveal` on home page sections                                                 |
+| 9   | P1       | Test deploy to GitHub Pages                                                    |
 
-### Розробник 1: картка і каталог
+## Schedule
 
-| День | Пріоритет | Задача                                                             |
-| ---- | --------- | ------------------------------------------------------------------ |
-| 1–2  | P1        | `ProductCard`, `ProductPrice`, `ProductSpecs`. Мерж до кінця дня 2 |
-| 3    | P1        | `CatalogPage`: заголовок, кількість, сітка `ProductsList`          |
-| 3    | P1        | `CatalogControls`: сортування і кількість на сторінці              |
-| 4    | P1        | `Pagination`                                                       |
-| 4    | P1        | `FavoritesPage`                                                    |
-| 5    | P2        | `Breadcrumbs`, hover картки, стани пагінації                       |
+| Day | Focus                 | Result by the evening                                                                             |
+| --- | --------------------- | ------------------------------------------------------------------------------------------------- |
+| 1   | Start                 | Repo, Jira, assets. Everyone has opened the project and started a first task                      |
+| 2   | P1                    | `ProductCard` in `main`                                                                           |
+| 3   | P1, checkpoint        | 50% of P1. If less, nice-to-have tasks are cancelled                                              |
+| 4   | P1                    | All stage 1 P1 in `main`                                                                          |
+| 5   | P2 and responsiveness | All pages at 320, 640, 1200, 1440. Evening: freeze, demo                                          |
+| 6   | Data and state        | API, cart and favourites stores                                                                   |
+| 7   | Data and state        | Catalog, product, cart and favourites work on real data                                           |
+| 8   | Checkpoint, polish    | Decide: theme yes or no, Supabase yes or no, animations or plan B                                 |
+| 9   | Cross QA              | Every area is checked at 4 breakpoints by someone who did not write it; bugs in Jira; test deploy |
+| 10  | Finalisation          | Fixes until noon, then freeze, final deploy, demo preparation                                     |
 
-### Розробник 2: сторінка товару і кошик
+## Review
 
-| День | Пріоритет | Задача                                                              |
-| ---- | --------- | ------------------------------------------------------------------- |
-| 1    | P1        | `ProductGallery`                                                    |
-| 2    | P1        | `ProductVariants`, `CapacityButton`                                 |
-| 3    | P1        | `ProductAbout`, `ProductTechSpecs`                                  |
-| 3    | P1        | Розкладка `ProductDetailsPage` на всіх брейкпоінтах                 |
-| 4    | P1        | `CartItem`, `QuantityCounter`                                       |
-| 5    | P2        | Стани мініатюр, кольорів і ємності, `BackLink`, «You may also like» |
+- Every pull request gets at least one review from someone who did not write it.
+- Changes to `atoms/`, `styles/`, `types/`, `constants/` get extra attention, because they affect the whole app.
+- Other pull requests do not wait for any specific reviewer.
 
-### PM: головна і кошик
+## Anti-crisis rules
 
-| День | Пріоритет | Задача                                                 |
-| ---- | --------- | ------------------------------------------------------ |
-| 1–2  | P1        | `PicturesSlider` на Swiper: банер, стрілки, точки      |
-| 2–3  | P1        | `ProductsSlider` на Swiper: заголовок, стрілки, картки |
-| 3    | P1        | `Categories`, `CategoryCard`                           |
-| 3    | P1        | Збірка `HomePage` на всіх брейкпоінтах                 |
-| 4    | P1        | `CartPage`, `CartSummary`                              |
-| 5    | P2        | Стани стрілок і точок, автопрокрутка 5 с, зациклення   |
-
-### Етап 2: дані і стан
-
-| День | Хто         | Пріоритет | Задача                                                                          |
-| ---- | ----------- | --------- | ------------------------------------------------------------------------------- |
-| 6    | Розробник 1 | P1        | `services/products.ts`: `fetch` з `public/api`                                  |
-| 6–7  | Розробник 1 | P1        | Сортування, сторінка, perPage в URL; утиліти сортування і пагінації             |
-| 7    | Розробник 1 | P1        | Loader, помилка з кнопкою reload, порожній список у каталозі                    |
-| 6    | Розробник 2 | P1        | `getProductDetails`, `getSuggestedProducts`, «Product was not found»            |
-| 6–7  | Розробник 2 | P1        | `cartStore` (Zustand + persist), кнопка «Added to cart»                         |
-| 7    | Розробник 2 | P1        | Кошик: кількість, видалення, сума, checkout через `confirm()`                   |
-| 6    | PM          | P1        | `favoritesStore`, сердечко в картці                                             |
-| 7    | PM          | P1        | Дані головної: Hot prices за знижкою, Brand new за `year`, лічильники категорій |
-| 6    | Тімлід      | P1        | Лічильники кошика й обраного в Header                                           |
-| 7–8  | Тімлід      | Nice      | Світла тема і перемикач у Footer                                                |
-| 8    | PM          | Nice      | `Reveal` на секціях головної                                                    |
-| 9    | Тімлід      | P1        | Тестовий деплой на GitHub Pages                                                 |
-
-## Графік
-
-| День | Фокус                         | Результат на вечір                                                        |
-| ---- | ----------------------------- | ------------------------------------------------------------------------- |
-| 1    | Старт                         | Репо, Jira, асети. Кожен відкрив проєкт і почав свою першу задачу         |
-| 2    | P1                            | `ProductCard` у `main`                                                    |
-| 3    | P1, контрольна точка          | 50% P1. Якщо менше, nice-задачі скасовуються                              |
-| 4    | P1                            | Усі P1 етапу 1 в `main`                                                   |
-| 5    | P2 і адаптив                  | Усі сторінки на 320, 640, 1200, 1440. Вечір: заморозка, демо команді      |
-| 6    | Дані і стан                   | API, сторі кошика й обраного                                              |
-| 7    | Дані і стан                   | Каталог, товар, кошик і обране працюють на справжніх даних                |
-| 8    | Контрольна точка, полірування | Рішення: тема так чи ні, Supabase так чи ні, анімації чи план Б           |
-| 9    | Перехресний QA                | Кожен перевіряє чужу зону на 4 брейкпоінтах, баги в Jira, тестовий деплой |
-| 10   | Фіналізація                   | До обіду фікси, потім заморозка, фінальний деплой, підготовка до демо     |
-
-## Ревʼю
-
-| Автор       | Ревʼюер     |
-| ----------- | ----------- |
-| Розробник 1 | Розробник 2 |
-| Розробник 2 | Розробник 1 |
-| PM          | Тімлід      |
-| Тімлід      | PM          |
-
-Тімлід додатково ревʼюїть усі PR, що змінюють `atoms/`, `styles/`, `types/`, `constants/`. Решта PR не чекають на тімліда.
-
-## Антикризові правила
-
-1. PR маленькі, мерж щодня. Гілка не живе довше 2 днів.
-2. Застряг більше 1 години: пиши в чат. Більше 2 годин: тімлід спрощує задачу або забирає P2.
-3. Спільні файли (`atoms/`, `styles/`, `types/`, `constants/`) змінюються тільки з ревʼю тімліда.
-4. Не чекай чужий компонент: у кожного вже є заготовка, яка рендериться.
-5. Немає іконки чи картинки: став текст-заглушку і рухайся далі.
-6. P1 завжди перед P2. Nice тільки після рішення на контрольній точці дня 8.
-7. Стендап щодня 15 хвилин: що зробив, що роблю, що блокує. Веде PM.
+1. Keep pull requests small and merge daily. A branch does not live longer than 2 days.
+2. Stuck for more than 1 hour: ask in the chat. More than 2 hours: simplify the task or drop its P2 part.
+3. Shared files (`atoms/`, `styles/`, `types/`, `constants/`) change only through a reviewed pull request.
+4. Do not wait for someone else's component: every one already has a starter that renders.
+5. No icon or image yet: put a text placeholder and move on.
+6. P1 always comes before P2. Nice-to-have only after the day 8 checkpoint decision.
+7. A daily 15-minute standup: what was done, what is next, what blocks.
