@@ -26,5 +26,13 @@
 
 .icon {
   filter: brightness(0) invert(1);
-  transition: opacity $transition;
+  transition: filter $transition;
+}
+
+:global([data-theme='light']) .icon {
+  filter: var(--filter-slider-arrow);
+}
+
+.link:hover .icon {
+  filter: $filter-accent;
 }

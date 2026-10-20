@@ -51,6 +51,7 @@ export const Pagination = ({
     >
       <IconButton
         variant="slider"
+        className={styles.arrowButton}
         onClick={handlePrev}
         disabled={current === 1}
         aria-label={labels.previous}
@@ -80,6 +81,7 @@ export const Pagination = ({
 
       <IconButton
         variant="slider"
+        className={styles.arrowButton}
         onClick={handleNext}
         disabled={current === total}
         aria-label={labels.next}
