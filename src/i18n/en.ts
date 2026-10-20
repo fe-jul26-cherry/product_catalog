@@ -246,6 +246,46 @@ export const en = {
   assistant: {
     open: 'Open AI assistant',
     hide: 'Hide AI assistant button',
+    title: 'AI assistant',
+    close: 'Close AI assistant',
+    greeting:
+      'Hi! I can help you with the store:\n• switch the site language;\n• find a product by model name;\n• compare two or three products.\nFor example: "compare iPhone 11 and iPhone 14 Pro".',
+    messages: 'Chat messages',
+    inputLabel: 'Message',
+    placeholder: 'Ask the assistant',
+    send: 'Send',
+    thinking: 'Thinking...',
+    clear: 'Clear chat',
+    actions: {
+      set_language: 'Interface language changed',
+      search_products: 'Opened search results',
+    } as Record<string, string>,
+    errors: {
+      config: 'The assistant is not configured yet.',
+      network: 'Network error. Check your connection and try again.',
+      rate_limit: 'Too many requests. Try again in a minute.',
+      server: 'The assistant is temporarily unavailable.',
+      invalid: 'Received an invalid response. Try again.',
+    },
+    compare: {
+      table: 'Product comparison',
+      notEnough:
+        'I could not find two products to compare. Try the exact model names.',
+      missing: (names: string) => `Not found: ${names}`,
+      mismatched: (names: string) => `Different category, skipped: ${names}`,
+    },
+    chips: {
+      label: 'Suggestions',
+      switchLanguage: 'Switch to Ukrainian',
+      find: 'Find a product',
+      findPrefix: 'Find ',
+      findExample: 'iPhone 14 Pro',
+      compare: 'Compare products',
+      comparePrefix: 'Compare ',
+      compareExample: 'iPhone 11 and iPhone 14 Pro',
+      show: 'Show suggestions',
+      hide: 'Hide suggestions',
+    },
   },
   filters: {
     title: 'Filters',
