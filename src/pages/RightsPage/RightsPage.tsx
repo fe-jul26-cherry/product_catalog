@@ -21,6 +21,7 @@ export const RightsPage = () => {
         >
           GitHub
         </a>
+        .
       </p>
     </div>
   );

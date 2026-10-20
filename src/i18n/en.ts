@@ -241,7 +241,7 @@ export const en = {
     educational:
       'Nice Gadgets is an educational project. It is not a real store: no orders are fulfilled and no payments are processed.',
     contact:
-      'Questions or requests about the content of this site: contact the team on GitHub.',
+      'Questions or requests about the content of this site: contact the team on',
   },
   notFound: {
     title: 'Page not found',
