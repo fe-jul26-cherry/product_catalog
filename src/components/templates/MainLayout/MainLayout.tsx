@@ -17,6 +17,7 @@ export const MainLayout = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const closeChat = useCallback(() => setIsChatOpen(false), []);
+  const toggleChat = useCallback(() => setIsChatOpen((isOpen) => !isOpen), []);
 
   return (
     <>
@@ -31,7 +32,10 @@ export const MainLayout = () => {
             </ErrorBoundary>
           </PageTransition>
         </main>
-        <AiAssistant onOpen={() => setIsChatOpen(true)} />
+        <AiAssistant
+          isOpen={isChatOpen}
+          onToggle={toggleChat}
+        />
       </div>
       <Footer />
       {isChatOpen && <AiChat onClose={closeChat} />}
