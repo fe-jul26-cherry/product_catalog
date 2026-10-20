@@ -1,4 +1,4 @@
-import { supabaseClient } from './supabaseClient';
+import { getSupabaseClient } from './supabaseClient';
 
 import type { AuthUser, AuthErrorCode, AuthResult } from '@/types';
 import type { AuthError, Session } from '@supabase/supabase-js';
@@ -38,12 +38,14 @@ export const signIn = async (
   email: string,
   password: string,
 ): Promise<AuthResult> => {
-  if (!supabaseClient) {
-    return failure('unknown');
-  }
-
   try {
-    const { error } = await supabaseClient.auth.signInWithPassword({
+    const client = await getSupabaseClient();
+
+    if (!client) {
+      return failure('unknown');
+    }
+
+    const { error } = await client.auth.signInWithPassword({
       email,
       password,
     });
@@ -60,12 +62,14 @@ export const signUp = async (
   email: string,
   password: string,
 ): Promise<AuthResult> => {
-  if (!supabaseClient) {
-    return failure('unknown');
-  }
-
   try {
-    const { data, error } = await supabaseClient.auth.signUp({
+    const client = await getSupabaseClient();
+
+    if (!client) {
+      return failure('unknown');
+    }
+
+    const { data, error } = await client.auth.signUp({
       email,
       password,
       options: {
@@ -88,21 +92,21 @@ export const signUp = async (
 };
 
 export const signOut = async (): Promise<void> => {
-  if (!supabaseClient) {
-    return;
-  }
+  const client = await getSupabaseClient();
 
-  await supabaseClient.auth.signOut({ scope: 'local' });
+  await client?.auth.signOut({ scope: 'local' });
 };
 
-export const onAuthChange = (
+export const onAuthChange = async (
   callback: (user: AuthUser | null) => void,
-): (() => void) => {
-  if (!supabaseClient) {
+): Promise<() => void> => {
+  const client = await getSupabaseClient();
+
+  if (!client) {
     return () => undefined;
   }
 
-  const { data } = supabaseClient.auth.onAuthStateChange((_event, session) =>
+  const { data } = client.auth.onAuthStateChange((_event, session) =>
     callback(toAuthUser(session)),
   );
 

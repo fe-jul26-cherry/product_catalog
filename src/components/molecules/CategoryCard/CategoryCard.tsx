@@ -44,8 +44,13 @@ export const CategoryCard = ({
           <img
             className={styles.image}
             src={category.image}
+            srcSet={category.srcSet}
+            sizes={category.sizes}
+            width={category.width}
+            height={category.height}
             alt={title}
             loading="lazy"
+            decoding="async"
           />
         </span>
       </div>
