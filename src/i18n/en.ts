@@ -265,6 +265,14 @@ export const en = {
       server: 'The assistant is temporarily unavailable.',
       invalid: 'Received an invalid response. Try again.',
     },
+    compare: {
+      table: 'Product comparison',
+      price: 'Price',
+      notEnough:
+        'I could not find two products to compare. Try the exact model names.',
+      missing: (names: string) => `Not found: ${names}`,
+      mismatched: (names: string) => `Different category, skipped: ${names}`,
+    },
   },
   filters: {
     title: 'Filters',
