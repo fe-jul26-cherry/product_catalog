@@ -34,6 +34,7 @@ $action-width: clamp(44px, calc(44px + (100vw - 640px) * 0.2), 64px);
 }
 
 .left {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 32px;
@@ -43,7 +44,7 @@ $action-width: clamp(44px, calc(44px + (100vw - 640px) * 0.2), 64px);
   }
 
   @include desktop {
-    gap: 64px;
+    gap: 40px;
   }
 }
 

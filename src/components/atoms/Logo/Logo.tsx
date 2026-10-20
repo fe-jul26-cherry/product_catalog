@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import logoSrc from '@/assets/logo-dark-theme.svg';
-import lightLogoSrc from '@/assets/logo-light-theme.svg';
+import darkThemeLogo from '@/assets/brand-logo-dark-theme.svg';
+import lightThemeLogo from '@/assets/brand-logo-light-theme.svg';
 import { ROUTES } from '@/constants';
 import { useThemeStore } from '@/store';
 
@@ -23,8 +23,10 @@ export const Logo = ({ onClick }: LogoProps) => {
     >
       <img
         className={styles.image}
-        src={theme === 'light' ? lightLogoSrc : logoSrc}
+        src={theme === 'light' ? lightThemeLogo : darkThemeLogo}
         alt="Nice Gadgets"
+        width="119"
+        height="32"
       />
     </Link>
   );
