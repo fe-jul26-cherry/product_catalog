@@ -1,16 +1,25 @@
 import { runToolCall, TOOLS } from './aiTools';
 
+import type { AiComparison } from './aiCompare';
 import type { ToolCall, Navigate } from './aiTools';
 
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY as string | undefined;
 const MODEL = 'xingchen-agi/xing4.0-29b-a4b:free';
 
+const SYSTEM_PROMPT =
+  'You are the assistant of the Nice Gadgets online store. You can do exactly three things: switch the site language between English and Ukrainian (set_language), search for a product by model name (search_products) and compare two or three products of the same category (compare_products). You cannot place orders or answer other questions about the store. When asked to compare, only call compare_products with the model names: the website shows the comparison table itself, so never describe the comparison yourself. Always reply in the same language as the user, in one or two short sentences, in plain text without markdown. When the user asks for one of the three actions, call the tool. If asked what you can do, list only these three actions. If asked for anything else, say you cannot do it yet.';
+
 export type AiErrorReason =
   'config' | 'network' | 'rate_limit' | 'server' | 'invalid';
 
 export type AiResult =
-  | { ok: true; text: string; actions: string[] }
+  | {
+      ok: true;
+      text: string;
+      actions: string[];
+      comparisons: AiComparison[];
+    }
   | { ok: false; reason: AiErrorReason };
 
 interface AiResponse {
@@ -19,9 +28,6 @@ interface AiResponse {
     message?: { content?: string | null; tool_calls?: ToolCall[] };
   }[];
 }
-
-const SYSTEM_PROMPT =
-  'You are the assistant of the Nice Gadgets online store. You can do exactly two things: switch the site language between English and Ukrainian (set_language) and search for a product by model name (search_products). You cannot compare products, place orders or answer other questions about the store. Always reply in the same language as the user, in one or two short sentences, in plain text without markdown. When the user asks for one of the two actions, call the tool. If asked what you can do, list only these two actions. If asked for anything else, say you cannot do it yet.';
 
 export const askAi = async (
   text: string,
@@ -43,10 +49,7 @@ export const askAi = async (
       body: JSON.stringify({
         model: MODEL,
         messages: [
-          {
-            role: 'system',
-            content: SYSTEM_PROMPT,
-          },
+          { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: text },
         ],
         tools: TOOLS,
@@ -79,16 +82,21 @@ export const askAi = async (
   }
 
   const actions: string[] = [];
+  const comparisons: AiComparison[] = [];
 
   for (const call of message.tool_calls ?? []) {
     try {
-      if (runToolCall(call, navigate)) {
-        actions.push(call.function.name);
+      const outcome = await runToolCall(call, navigate);
+
+      if (outcome?.comparison) {
+        comparisons.push(outcome.comparison);
+      } else if (outcome) {
+        actions.push(outcome.name);
       }
     } catch {
       continue;
     }
   }
 
-  return { ok: true, text: message.content ?? '', actions };
+  return { ok: true, text: message.content ?? '', actions, comparisons };
 };
