@@ -248,7 +248,8 @@ export const en = {
     hide: 'Hide AI assistant button',
     title: 'AI assistant',
     close: 'Close AI assistant',
-    greeting: 'Hi! I can switch the language or find a product for you.',
+    greeting:
+      'Hi! I can help you with the store:\n• switch the site language;\n• find a product by model name;\n• compare two or three products.\nFor example: "compare iPhone 11 and iPhone 14 Pro".',
     messages: 'Chat messages',
     inputLabel: 'Message',
     placeholder: 'Ask the assistant',
