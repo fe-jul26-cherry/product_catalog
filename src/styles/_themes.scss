@@ -1,6 +1,7 @@
 :root,
 [data-theme='dark'] {
   --color-bg: #0f1121;
+  --color-page-bg: #0f1121;
   --color-btn: #f1f2f9;
   --color-surface-1: #161827;
   --color-surface-2: #323542;
@@ -32,6 +33,7 @@
 
 [data-theme='light'] {
   --color-bg: #ffffff;
+  --color-page-bg: #f5f6f8;
   --color-btn: #f1f2f9;
   --color-surface-1: #fafbfc;
   --color-surface-2: #e2e6e9;
