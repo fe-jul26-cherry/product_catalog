@@ -1,0 +1,1 @@
+import{j as r,T as o,N as x}from"./index-CIIBEs5H.js";const j=({isLoading:t,error:e,onRetry:a,labels:s,children:n})=>t?r.jsx(o,{label:s.loading}):e?r.jsx(x,{message:e,retryLabel:s.retry,onRetry:a}):r.jsx(r.Fragment,{children:n});export{j as A};

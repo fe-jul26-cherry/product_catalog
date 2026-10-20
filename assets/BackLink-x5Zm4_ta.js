@@ -1,1 +1,0 @@
-import{j as s,I as l,i as a}from"./index-eSirnjr-.js";const e="_link_flr97_1",r="_icon_flr97_22",n={link:e,icon:r},k=({className:o,children:t,...c})=>{const i=[n.link,o].filter(Boolean).join(" ");return s.jsxs("button",{type:"button",className:i,...c,children:[s.jsx(l,{src:a,alt:"",className:n.icon}),s.jsx("span",{children:t})]})};export{k as B};

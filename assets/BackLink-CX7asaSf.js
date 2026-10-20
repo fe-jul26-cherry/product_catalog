@@ -1,0 +1,1 @@
+import{j as s,I as l,v as a}from"./index-CIIBEs5H.js";const e="_link_l7c7z_1",r="_icon_l7c7z_22",n={link:e,icon:r},k=({className:o,children:c,...t})=>{const i=[n.link,o].filter(Boolean).join(" ");return s.jsxs("button",{type:"button",className:i,...t,children:[s.jsx(l,{src:a,alt:"",className:n.icon}),s.jsx("span",{children:c})]})};export{k as B};
