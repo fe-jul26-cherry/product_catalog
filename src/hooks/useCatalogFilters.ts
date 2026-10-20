@@ -5,6 +5,7 @@ import {
   buildCatalogFacets,
   countActiveFilters,
   filterProducts,
+  keepViewParams,
   parseSelection,
   serializeSelection,
 } from '@/utils';
@@ -36,9 +37,13 @@ export const useCatalogFilters = (
   );
 
   const update = (next: FilterSelection) =>
-    setSearchParams(serializeSelection(next, catalog?.price ?? null), {
-      replace: true,
-    });
+    setSearchParams(
+      keepViewParams(
+        serializeSelection(next, catalog?.price ?? null),
+        searchParams,
+      ),
+      { replace: true },
+    );
 
   const setPrice = (price: PriceBounds) => update({ ...selection, price });
 
@@ -52,14 +57,17 @@ export const useCatalogFilters = (
     update({ ...selection, facets: { ...selection.facets, [id]: next } });
   };
 
-  const reset = () => setSearchParams({}, { replace: true });
+  const reset = () =>
+    setSearchParams(keepViewParams(new URLSearchParams(), searchParams), {
+      replace: true,
+    });
 
   return {
     selection,
     catalog,
     filtered,
     activeCount: countActiveFilters(selection),
-    signature: searchParams.toString(),
+    signature: serializeSelection(selection, null).toString(),
     setPrice,
     toggle,
     reset,
