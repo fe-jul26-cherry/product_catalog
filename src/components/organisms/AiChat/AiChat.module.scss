@@ -34,6 +34,32 @@
   margin: 0;
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.clear {
+  @include small;
+  padding: 4px 0;
+  border: 0;
+  color: $color-secondary;
+  background: transparent;
+  cursor: pointer;
+  transition: color $transition;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-accent-hover;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 .close {
   display: flex;
   flex-shrink: 0;

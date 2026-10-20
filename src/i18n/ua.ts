@@ -276,6 +276,7 @@ export const ua: Translations = {
     placeholder: 'Напишіть помічнику',
     send: 'Надіслати',
     thinking: 'Думаю...',
+    clear: 'Очистити чат',
     actions: {
       set_language: 'Змінено мову інтерфейсу',
       search_products: 'Відкрито результати пошуку',

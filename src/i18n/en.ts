@@ -255,6 +255,7 @@ export const en = {
     placeholder: 'Ask the assistant',
     send: 'Send',
     thinking: 'Thinking...',
+    clear: 'Clear chat',
     actions: {
       set_language: 'Interface language changed',
       search_products: 'Opened search results',

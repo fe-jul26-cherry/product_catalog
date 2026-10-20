@@ -32,6 +32,7 @@ export const AiChat = ({ onClose }: AiChatProps) => {
   const navigate = useNavigate();
   const messages = useAiChatStore((state) => state.messages);
   const add = useAiChatStore((state) => state.add);
+  const clear = useAiChatStore((state) => state.clear);
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ChatError | null>(null);
@@ -114,6 +115,11 @@ export const AiChat = ({ onClose }: AiChatProps) => {
     void request(text);
   };
 
+  const handleClear = () => {
+    clear();
+    setError(null);
+  };
+
   const renderComparison = (
     id: string,
     { products, missing, mismatched }: AiComparison,
@@ -189,17 +195,29 @@ export const AiChat = ({ onClose }: AiChatProps) => {
     >
       <header className={styles.header}>
         <h2 className={styles.title}>{t.assistant.title}</h2>
-        <button
-          type="button"
-          className={styles.close}
-          aria-label={t.assistant.close}
-          onClick={onClose}
-        >
-          <Icon
-            src={closeIcon}
-            alt=""
-          />
-        </button>
+        <div className={styles.actions}>
+          {messages.length > 0 && (
+            <button
+              type="button"
+              className={styles.clear}
+              disabled={isLoading}
+              onClick={handleClear}
+            >
+              {t.assistant.clear}
+            </button>
+          )}
+          <button
+            type="button"
+            className={styles.close}
+            aria-label={t.assistant.close}
+            onClick={onClose}
+          >
+            <Icon
+              src={closeIcon}
+              alt=""
+            />
+          </button>
+        </div>
       </header>
 
       <div
