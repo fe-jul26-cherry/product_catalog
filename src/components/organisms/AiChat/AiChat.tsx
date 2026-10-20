@@ -1,17 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import closeIcon from '@/assets/icons/close.svg';
 import { Button } from '@/components/atoms/Button';
 import { Icon } from '@/components/atoms/Icon';
+import { ChatCompare } from '@/components/molecules/ChatCompare';
 import { ChatMessage } from '@/components/molecules/ChatMessage';
 import { useTranslation } from '@/hooks';
 import { askAi } from '@/services/ai';
 import { useAiChatStore } from '@/store';
 
 import styles from './AiChat.module.scss';
+import { buildCompareTable } from './buildCompareTable';
 
 import type { AiErrorReason } from '@/services/ai';
+import type { AiComparison } from '@/services/aiCompare';
+import type { AiChatMessage } from '@/store';
 import type { FormEvent } from 'react';
 
 interface AiChatProps {
@@ -24,7 +28,7 @@ interface ChatError {
 }
 
 export const AiChat = ({ onClose }: AiChatProps) => {
-  const { t } = useTranslation();
+  const { t, formatValue, formatPrice } = useTranslation();
   const navigate = useNavigate();
   const messages = useAiChatStore((state) => state.messages);
   const add = useAiChatStore((state) => state.add);
@@ -76,15 +80,22 @@ export const AiChat = ({ onClose }: AiChatProps) => {
 
     const answer = result.text.trim();
 
-    if (result.actions.length === 0 && !answer) {
+    if (
+      result.actions.length === 0 &&
+      result.comparisons.length === 0 &&
+      !answer
+    ) {
       setError({ reason: 'invalid', text });
 
       return;
     }
 
     result.actions.forEach((action) => add({ role: 'action', action }));
+    result.comparisons.forEach((comparison) =>
+      add({ role: 'compare', comparison }),
+    );
 
-    if (answer) {
+    if (answer && result.comparisons.length === 0) {
       add({ role: 'assistant', text: answer });
     }
   };
@@ -101,6 +112,74 @@ export const AiChat = ({ onClose }: AiChatProps) => {
     add({ role: 'user', text });
     setValue('');
     void request(text);
+  };
+
+  const renderComparison = (
+    id: string,
+    { products, missing, mismatched }: AiComparison,
+  ) => {
+    const c = t.assistant.compare;
+    const notes: string[] = [];
+
+    if (missing.length > 0) {
+      notes.push(c.missing(missing.join(', ')));
+    }
+
+    if (mismatched.length > 0) {
+      notes.push(c.mismatched(mismatched.join(', ')));
+    }
+
+    const table =
+      products.length >= 2 ?
+        buildCompareTable(products, t.specs, formatValue, formatPrice)
+      : null;
+
+    return (
+      <Fragment key={id}>
+        {table ?
+          <ChatCompare
+            caption={c.table}
+            columns={table.columns}
+            rows={table.rows}
+          />
+        : <ChatMessage variant="assistant">{c.notEnough}</ChatMessage>}
+
+        {notes.map((note) => (
+          <ChatMessage
+            key={note}
+            variant="action"
+          >
+            {note}
+          </ChatMessage>
+        ))}
+      </Fragment>
+    );
+  };
+
+  const renderMessage = (message: AiChatMessage) => {
+    if (message.role === 'action') {
+      return (
+        <ChatMessage
+          key={message.id}
+          variant="action"
+        >
+          {t.assistant.actions[message.action] ?? message.action}
+        </ChatMessage>
+      );
+    }
+
+    if (message.role === 'compare') {
+      return renderComparison(message.id, message.comparison);
+    }
+
+    return (
+      <ChatMessage
+        key={message.id}
+        variant={message.role}
+      >
+        {message.text}
+      </ChatMessage>
+    );
   };
 
   return (
@@ -133,21 +212,7 @@ export const AiChat = ({ onClose }: AiChatProps) => {
           <ChatMessage variant="assistant">{t.assistant.greeting}</ChatMessage>
         )}
 
-        {messages.map((message) =>
-          message.role === 'action' ?
-            <ChatMessage
-              key={message.id}
-              variant="action"
-            >
-              {t.assistant.actions[message.action] ?? message.action}
-            </ChatMessage>
-          : <ChatMessage
-              key={message.id}
-              variant={message.role}
-            >
-              {message.text}
-            </ChatMessage>,
-        )}
+        {messages.map(renderMessage)}
 
         {isLoading && (
           <ChatMessage variant="assistant">{t.assistant.thinking}</ChatMessage>

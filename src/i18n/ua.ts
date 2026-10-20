@@ -288,7 +288,6 @@ export const ua: Translations = {
     },
     compare: {
       table: 'Порівняння товарів',
-      price: 'Ціна',
       notEnough:
         'Не вдалося знайти два товари для порівняння. Спробуйте точні назви моделей.',
       missing: (names) => `Не знайдено: ${names}`,

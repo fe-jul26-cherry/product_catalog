@@ -267,7 +267,6 @@ export const en = {
     },
     compare: {
       table: 'Product comparison',
-      price: 'Price',
       notEnough:
         'I could not find two products to compare. Try the exact model names.',
       missing: (names: string) => `Not found: ${names}`,

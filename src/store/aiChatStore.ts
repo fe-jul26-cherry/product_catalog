@@ -1,11 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import type { AiComparison } from '@/services/aiCompare';
+
 const MAX_MESSAGES = 50;
 
 export type NewAiChatMessage =
   | { role: 'user' | 'assistant'; text: string }
-  | { role: 'action'; action: string };
+  | { role: 'action'; action: string }
+  | { role: 'compare'; comparison: AiComparison };
 
 export type AiChatMessage = NewAiChatMessage & { id: string };
 
