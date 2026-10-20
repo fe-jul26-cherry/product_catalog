@@ -11,10 +11,3 @@
 
   flex-grow: 1;
 }
-
-.wide {
-  @include wide {
-    max-width: 1840px;
-    padding-inline: 32px;
-  }
-}
