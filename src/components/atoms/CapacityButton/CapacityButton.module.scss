@@ -29,6 +29,25 @@
   }
 }
 
+.filter {
+  height: 28px;
+  padding: 0 12px;
+  border-color: $color-elements;
+  border-radius: 8px;
+  background: $color-surface-2;
+  font-size: 12px;
+  line-height: 16px;
+
+  &:hover:not(:disabled) {
+    border-color: $color-secondary;
+  }
+
+  &:disabled {
+    background: transparent;
+    opacity: 0.5;
+  }
+}
+
 .selected {
   border-color: $color-primary;
   background: $color-primary;
@@ -36,5 +55,15 @@
 
   &:hover:not(:disabled) {
     border-color: $color-primary;
+  }
+}
+
+.filter.selected {
+  border-color: $color-accent;
+  background: color-mix(in srgb, $color-accent 20%, transparent);
+  color: $color-accent;
+
+  &:hover:not(:disabled) {
+    border-color: $color-accent;
   }
 }

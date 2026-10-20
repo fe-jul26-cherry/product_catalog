@@ -1,3 +1,5 @@
+import filtersIcon from '@/assets/icons/filters.svg';
+import { Icon } from '@/components/atoms/Icon';
 import { Dropdown } from '@/components/molecules/Dropdown';
 import { PER_PAGE_VALUES, SORT_VALUES } from '@/constants';
 import { useTranslation } from '@/hooks';
@@ -11,6 +13,8 @@ interface CatalogControlsProps {
   perPage: PerPage;
   onSortChange: (value: SortBy) => void;
   onPerPageChange: (value: PerPage) => void;
+  filtersCount: number;
+  onOpenFilters: () => void;
 }
 
 export const CatalogControls = ({
@@ -18,11 +22,27 @@ export const CatalogControls = ({
   perPage,
   onSortChange,
   onPerPageChange,
+  filtersCount,
+  onOpenFilters,
 }: CatalogControlsProps) => {
   const { t } = useTranslation();
 
   return (
     <div className={styles.root}>
+      <button
+        type="button"
+        className={styles.filters}
+        onClick={onOpenFilters}
+      >
+        <Icon
+          src={filtersIcon}
+          alt=""
+        />
+        {t.filters.open}
+        {filtersCount > 0 && (
+          <span className={styles.badge}>{filtersCount}</span>
+        )}
+      </button>
       <Dropdown
         description={t.catalog.sortBy}
         options={SORT_VALUES.map((value) => ({

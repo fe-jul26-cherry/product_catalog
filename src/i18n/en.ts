@@ -1,4 +1,4 @@
-import type { Category, SortBy } from '@/types';
+import type { Category, FacetTitleKey, SortBy } from '@/types';
 
 export const en = {
   meta: {
@@ -246,6 +246,29 @@ export const en = {
   assistant: {
     open: 'Open AI assistant',
     hide: 'Hide AI assistant button',
+  },
+  filters: {
+    title: 'Filters',
+    reset: 'Reset all',
+    open: 'Filters',
+    price: 'Price range',
+    min: 'Min',
+    max: 'Max',
+    groups: {
+      brand: 'Brand',
+      memory: 'Internal memory',
+      caseSize: 'Case size',
+      screen: 'Screen diagonal',
+      ram: 'RAM',
+      color: 'Color',
+      year: 'Release year',
+    } satisfies Record<FacetTitleKey, string>,
+    upTo: (value: number) => `Up to ${value}"`,
+    between: (from: number, to: number) => `${from}" - ${to}"`,
+    over: (value: number) => `Over ${value}"`,
+    noResults: 'No models match the selected filters.',
+    apply: 'Show results',
+    resetFilters: 'Reset filters',
   },
 };
 
