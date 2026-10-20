@@ -12,12 +12,6 @@ export const ROUTES = {
   NOT_FOUND: '*',
 } as const;
 
-export const CATALOG_ROUTES: string[] = [
-  ROUTES.PHONES,
-  ROUTES.TABLETS,
-  ROUTES.ACCESSORIES,
-];
-
 export const getProductPath = (productId: string) => `/product/${productId}`;
 
 export const getSearchPath = (query: string) =>
