@@ -274,6 +274,18 @@ export const en = {
       missing: (names: string) => `Not found: ${names}`,
       mismatched: (names: string) => `Different category, skipped: ${names}`,
     },
+    chips: {
+      label: 'Suggestions',
+      switchLanguage: 'Switch to Ukrainian',
+      find: 'Find a product',
+      findPrefix: 'Find ',
+      findExample: 'iPhone 14 Pro',
+      compare: 'Compare products',
+      comparePrefix: 'Compare ',
+      compareExample: 'iPhone 11 and iPhone 14 Pro',
+      show: 'Show suggestions',
+      hide: 'Hide suggestions',
+    },
   },
   filters: {
     title: 'Filters',

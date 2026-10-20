@@ -295,6 +295,18 @@ export const ua: Translations = {
       missing: (names) => `Не знайдено: ${names}`,
       mismatched: (names) => `Інша категорія, пропущено: ${names}`,
     },
+    chips: {
+      label: 'Підказки',
+      switchLanguage: 'Перемкнути на англійську',
+      find: 'Знайти товар',
+      findPrefix: 'Знайди ',
+      findExample: 'iPhone 14 Pro',
+      compare: 'Порівняти товари',
+      comparePrefix: 'Порівняй ',
+      compareExample: 'iPhone 11 і iPhone 14 Pro',
+      show: 'Показати підказки',
+      hide: 'Сховати підказки',
+    },
   },
   filters: {
     title: 'Фільтри',
