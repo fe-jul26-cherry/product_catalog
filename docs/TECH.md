@@ -1,143 +1,143 @@
-# Технології: що вчити і навіщо
+# Technologies: what to learn and why
 
-Читати все не треба. У кожної технології є «мінімум»: цього вистачить для нашого проєкту.
+You do not need to read everything. Each technology has a "minimum" that is enough for this project.
 
-## Коротко
+## At a glance
 
-| Що                      | Простими словами                      | Коли треба      | Хто вчить       |
-| ----------------------- | ------------------------------------- | --------------- | --------------- |
-| React                   | будуємо сторінку з компонентів        | з дня 1         | усі             |
-| TypeScript              | підказує, які дані де лежать          | з дня 1         | усі             |
-| SCSS Modules            | стилі, які не ламають чужі компоненти | з дня 1         | усі             |
-| Vite                    | запускає проєкт                       | з дня 1         | вчити не треба  |
-| React Router            | переходи між сторінками               | з дня 1         | усі, трохи      |
-| Swiper                  | слайдери                              | з дня 1         | PM              |
-| Zustand                 | кошик і обране                        | з дня 6         | Розробник 2, PM |
-| useSearchParams         | сортування і сторінка в адресі        | з дня 6         | Розробник 1     |
-| motion                  | анімації                              | вже готово      | вчити не треба  |
-| Supabase                | база даних у хмарі                    | можливо, день 8 | поки ніхто      |
-| ESLint, Prettier, Husky | перевіряють і форматують код          | завжди          | вчити не треба  |
-| Git, Jira               | командна робота                       | з дня 1         | усі             |
+| What                    | In plain words                            | When it is needed | Learning needed |
+| ----------------------- | ----------------------------------------- | ----------------- | --------------- |
+| React                   | build a page from components              | from day 1        | yes             |
+| TypeScript              | tells you what data lives where           | from day 1        | yes             |
+| SCSS Modules            | styles that do not break other components | from day 1        | yes             |
+| Vite                    | runs the project                          | from day 1        | no              |
+| React Router            | navigation between pages                  | from day 1        | a little        |
+| Swiper                  | sliders                                   | from day 1        | yes             |
+| Zustand                 | cart and favourites                       | from day 6        | yes             |
+| useSearchParams         | sorting and page in the address           | from day 6        | yes             |
+| motion                  | animations                                | already set up    | no              |
+| Supabase                | cloud database                            | maybe day 8       | not yet         |
+| ESLint, Prettier, Husky | check and format the code                 | always            | no              |
+| Git, Jira               | teamwork                                  | from day 1        | yes             |
 
 ## React
 
-**Що це.** Бібліотека, де сторінка складається з компонентів, як з Lego. Компонент — це функція, яка повертає розмітку.
+**What it is.** A library where a page is built from components, like Lego. A component is a function that returns markup.
 
-**У нас.** Кожна кнопка, картка й сторінка — це компонент у `src/components` або `src/pages`.
+**In this project.** Every button, card and page is a component in `src/components` or `src/pages`.
 
-**Мінімум:**
+**Minimum:**
 
-- компонент і props: як передати дані в компонент;
-- `map` для списків і `key`;
-- `useState` для простого стану: відкритий dropdown, вибрана картинка;
-- умовний рендер: `{isOpen && <Menu />}`.
+- a component and props: how to pass data into a component;
+- `map` for lists and `key`;
+- `useState` for simple state: an open dropdown, the selected picture;
+- conditional rendering: `{isOpen && <Menu />}`.
 
-**Не треба зараз:** `useReducer`, Context, класові компоненти.
+**Not needed now:** `useReducer`, Context, class components.
 
-Документація: https://react.dev/learn
+Docs: https://react.dev/learn
 
 ## TypeScript
 
-**Що це.** JavaScript, який заздалегідь знає форму даних. Якщо передаси в картку не те, редактор підкреслить червоним ще до запуску.
+**What it is.** JavaScript that knows the shape of the data in advance. If you pass the wrong thing into a card, the editor underlines it in red before you even run the code.
 
-**У нас.** Усі типи даних уже описані в `src/types`: `Product`, `ProductDetails`, `CartItem`. Свої типи пишеш лише для props компонента.
+**In this project.** All data types are already described in `src/types`: `Product`, `ProductDetails`, `CartItem`. You only write your own types for a component's props.
 
-**Мінімум:**
+**Minimum:**
 
-- `interface` для props;
-- типи `string`, `number`, `boolean`, масиви `Product[]`;
-- необовʼязкове поле: `delay?: number`;
+- `interface` for props;
+- the types `string`, `number`, `boolean`, arrays like `Product[]`;
+- an optional field: `delay?: number`;
 - `import type { Product } from '@/types'`.
 
-**Не треба зараз:** generics, utility types, перевантаження.
+**Not needed now:** generics, utility types, overloads.
 
-Документація: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+Docs: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
 
 ## SCSS Modules
 
-**Що це.** Звичайний SCSS, але назви класів унікальні для кожного компонента. Твій `.title` не зламає чужий `.title`.
+**What it is.** Regular SCSS, but class names are unique per component. Your `.title` will not break someone else's `.title`.
 
-**У нас.** Біля кожного компонента лежить `Name.module.scss`. Кольори, шрифти й брейкпоінти вже готові в `src/styles`.
+**In this project.** Next to every component there is a `Name.module.scss`. Colours, fonts and breakpoints are already prepared in `src/styles`.
 
-**Мінімум:**
+**Minimum:**
 
-- `import styles from './Card.module.scss'` і `className={styles.title}`;
-- змінні: `$color-primary`, `$color-accent`;
-- міксини адаптиву: `@include tablet { ... }`, `@include desktop { ... }`;
-- міксини тексту: `@include h2;`, `@include body;`;
-- кілька класів: ``className={`${styles.button} ${styles.active}`}``.
+- `import styles from './Card.module.scss'` and `className={styles.title}`;
+- variables: `$color-primary`, `$color-accent`;
+- responsive mixins: `@include tablet { ... }`, `@include desktop { ... }`;
+- text mixins: `@include h2;`, `@include body;`;
+- several classes: ``className={`${styles.button} ${styles.active}`}``.
 
-**Головне правило.** Жодного hex-кольору в модулях, тільки змінні. Інакше тема не перемкнеться.
+**Main rule.** No hex colours in modules, variables only. Otherwise the theme will not switch.
 
-Документація: https://sass-lang.com/guide
+Docs: https://sass-lang.com/guide
 
 ## Vite
 
-**Що це.** Інструмент, який запускає проєкт локально і збирає його для деплою.
+**What it is.** A tool that runs the project locally and builds it for deployment.
 
-**У нас.** Вже налаштований. Тобі потрібні лише команди:
+**In this project.** Already configured. You only need two commands:
 
-- `npm run dev`: запустити;
-- `npm run check`: перевірити все перед PR.
+- `npm run dev`: start the project;
+- `npm run check`: verify everything before a pull request.
 
 ## React Router
 
-**Що це.** Перемикає сторінки без перезавантаження браузера.
+**What it is.** Switches pages without reloading the browser.
 
-**У нас.** Маршрути вже прописані в `src/app/App.tsx`. Адреса має вигляд `/#/phones`: так GitHub Pages не віддає 404.
+**In this project.** Routes are already defined in `src/app/App.tsx`. Addresses look like `/#/phones`, so GitHub Pages never returns a 404.
 
-**Мінімум:**
+**Minimum:**
 
-- `<Link to="/phones">` замість `<a href>`;
-- `<NavLink>` для меню з активним пунктом;
-- `useParams()`: дістати `productId` з адреси;
-- `useNavigate()`: кнопка «Back».
+- `<Link to="/phones">` instead of `<a href>`;
+- `<NavLink>` for a menu with an active item;
+- `useParams()`: get `productId` from the address;
+- `useNavigate()`: the "Back" button.
 
-Документація: https://reactrouter.com/6.30.0/start/tutorial
+Docs: https://reactrouter.com/6.30.0/start/tutorial
 
 ## Swiper
 
-**Що це.** Готові слайдери зі свайпами на телефоні.
+**What it is.** Ready-made sliders with swipe support on phones.
 
-**У нас.** Банер на головній і каруселі товарів («Hot prices», «Brand new», «You may also like»).
+**In this project.** The banner on the home page and the product carousels ("Hot prices", "Brand new", "You may also like").
 
-**Мінімум:**
+**Minimum:**
 
-- `<Swiper>` і `<SwiperSlide>`;
-- `slidesPerView` і `breakpoints` для адаптиву;
-- `navigation` для своїх стрілок, `pagination` для точок, `autoplay`, `loop`.
+- `<Swiper>` and `<SwiperSlide>`;
+- `slidesPerView` and `breakpoints` for responsiveness;
+- `navigation` for custom arrows, `pagination` for dots, `autoplay`, `loop`.
 
-Документація: https://swiperjs.com/react
+Docs: https://swiperjs.com/react
 
 ## Zustand
 
-**Що це.** Спільне сховище даних для всього застосунку. Кошик видно і в Header (лічильник), і на сторінці кошика.
+**What it is.** A shared data store for the whole app. The cart is visible both in the Header (the counter) and on the cart page.
 
-**У нас.** Тільки три сховища: кошик, обране, тема. Лежать у `src/store`. З `persist` дані самі зберігаються в localStorage.
+**In this project.** Only three stores: cart, favourites, theme. They live in `src/store`. With `persist` the data is saved to localStorage automatically.
 
-**Мінімум:**
+**Minimum:**
 
-- створити store через `create`;
-- прочитати дані в компоненті: `const items = useCartStore((s) => s.items)`;
-- `persist`, щоб кошик не зникав після перезавантаження.
+- create a store with `create`;
+- read data in a component: `const items = useCartStore((s) => s.items)`;
+- `persist`, so that the cart does not disappear after a reload.
 
-**Не треба:** класти в Zustand усе підряд. Відкритий dropdown — це `useState`.
+**Do not:** put everything into Zustand. An open dropdown is `useState`.
 
-Документація: https://zustand.docs.pmnd.rs/getting-started/introduction
+Docs: https://zustand.docs.pmnd.rs/getting-started/introduction
 
 ## useSearchParams
 
-**Що це.** Хук React Router для параметрів в адресі: `?sort=age&page=2`.
+**What it is.** A React Router hook for parameters in the address: `?sort=age&page=2`.
 
-**У нас.** Сортування, сторінка і кількість на сторінці живуть в адресі. Так вимагає завдання, і посиланням можна поділитися.
+**In this project.** Sorting, page and items per page live in the address. The task requires it, and the link can be shared.
 
-Документація: https://reactrouter.com/6.30.0/hooks/use-search-params
+Docs: https://reactrouter.com/6.30.0/hooks/use-search-params
 
 ## motion
 
-**Що це.** Бібліотека анімацій.
+**What it is.** An animation library.
 
-**У нас.** Вже налаштовано. Якщо хочеш анімувати появу блоку, обгорни його:
+**In this project.** Already set up. To animate a block appearing, wrap it:
 
 ```tsx
 import { Reveal } from '@/animations';
@@ -147,39 +147,37 @@ import { Reveal } from '@/animations';
 </Reveal>;
 ```
 
-Напряму `motion` імпортувати не можна, ESLint не пропустить. Hover робимо звичайним CSS `transition`.
+`motion` must not be imported directly, ESLint will not allow it. Hover effects are plain CSS `transition`.
 
 ## Supabase
 
-**Що це.** Готовий бекенд: база даних і API без власного сервера.
+**What it is.** A ready-made backend: a database and an API without your own server.
 
-**У нас.** Можливо, на дні 8, якщо все інше готове. Рішення приймаємо на контрольній точці. Поки дані беремо з JSON у `public/api`. Вчити зараз не треба.
+**In this project.** Possibly on day 8, if everything else is ready. The decision is made at the checkpoint. For now the data comes from JSON in `public/api`. No need to learn it yet.
 
 ## ESLint, Prettier, Husky
 
-**Що це.** ESLint шукає помилки, Prettier форматує код, Husky запускає їх перед кожним комітом.
+**What it is.** ESLint finds errors, Prettier formats the code, Husky runs both before every commit.
 
-**У нас.** Все автоматично. Якщо коміт не проходить, виконай `npm run fix-style` і подивись, що лишилось.
+**In this project.** Everything is automatic. If a commit is rejected, run `npm run fix-style` and look at what is left.
 
-Постав у VS Code розширення ESLint і Prettier. Редактор запропонує їх сам.
+Install the ESLint and Prettier extensions in VS Code. The editor will suggest them itself.
 
-## Git і Jira
+## Git and Jira
 
-**Мінімум:**
+**Minimum:**
 
-- гілка: `DEV-12_header`;
-- коміт: `feat(DEV-12): add header layout`;
-- перед PR: `git pull origin main`;
-- задача в Jira рухається: To Do → In Progress → Review → Done.
+- branch: `DEV-12_header`;
+- commit: `feat(DEV-12): add header layout`;
+- before a pull request: `git pull origin develop`;
+- a Jira task moves: To Do → In Progress → Review → Done.
 
-Деталі в `CONTRIBUTING.md`.
+Details are in `CONTRIBUTING.md`.
 
-## Що вчити до старту
+## What to learn and when
 
-| Хто         | До дня 1                                       | До дня 6                   |
-| ----------- | ---------------------------------------------- | -------------------------- |
-| Усі         | React (props, map), SCSS Modules, TS interface | —                          |
-| Розробник 1 | + `Link` з React Router                        | `fetch`, `useSearchParams` |
-| Розробник 2 | + `useState`, `useParams`, `useNavigate`       | Zustand, `persist`         |
-| PM          | + Swiper                                       | Zustand, `persist`         |
-| Тімлід      | + `NavLink`                                    | Zustand (для лічильників)  |
+| Phase        | Topics                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------ |
+| Before day 1 | React (props, `map`), SCSS Modules, TS `interface`, `Link` and `NavLink` from React Router |
+| Days 1–5     | `useState`, `useParams`, `useNavigate`, Swiper (as the task needs them)                    |
+| Before day 6 | `fetch`, `useSearchParams`, Zustand, `persist`                                             |

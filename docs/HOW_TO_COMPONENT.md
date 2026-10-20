@@ -1,8 +1,8 @@
-# Як писати компонент
+# How to write a component
 
-Нічого не створюй з нуля. У кожного компонента вже є заготовка, яка рендериться. Твоя робота: відкрити файли, додати розмітку і стилі за макетом у Figma.
+Do not create anything from scratch. Every component already has a starter that renders. Your job: open the files, add the markup and styles from the Figma design.
 
-## Що лежить у папці компонента
+## What is in a component folder
 
 ```
 ProductCard/
@@ -11,17 +11,17 @@ ProductCard/
 └── index.ts
 ```
 
-- `.tsx`: розмітка і props.
-- `.module.scss`: стилі цього компонента.
-- `index.ts`: один рядок `export * from './ProductCard';`. Не чіпай.
+- `.tsx`: markup and props.
+- `.module.scss`: styles of this component.
+- `index.ts`: a single line `export * from './ProductCard';`. Do not touch it.
 
-## Крок 1. Подивись макет
+## Step 1. Look at the design
 
-Відкрий у Figma свій блок на 320, 640, 1200, 1440. Знайди, з яких шматків він складається і які з них вже є в `atoms` і `molecules`. Готове використовуй, а не пиши заново.
+Open the block in Figma at 320, 640, 1200 and 1440. Find the pieces it consists of and which of them already exist in `atoms` and `molecules`. Reuse what is ready instead of writing it again.
 
-## Крок 2. Props
+## Step 2. Props
 
-Props — це дані, які компонент отримує ззовні. Опиши їх через `interface`:
+Props are the data a component receives from outside. Describe them with an `interface`:
 
 ```tsx
 import styles from './ProductCard.module.scss';
@@ -41,9 +41,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 };
 ```
 
-Атоми і молекули беруть дані тільки з props. Імпортувати `mocks`, `store` чи `services` дозволено лише в organisms і pages.
+Atoms and molecules take data only from props. Importing `mocks`, `store` or `services` is allowed only in organisms and pages.
 
-## Крок 3. Використай готові компоненти
+## Step 3. Use the ready components
 
 ```tsx
 import { Button } from '@/components/atoms/Button';
@@ -56,11 +56,11 @@ import { ProductPrice } from '@/components/molecules/ProductPrice';
 <Button>Add to cart</Button>
 ```
 
-Правило імпортів: вниз по рівнях. `pages → templates → organisms → molecules → atoms`. Атом не імпортує молекулу. Шлях завжди через `@/`.
+Import rule: only downwards. `pages → templates → organisms → molecules → atoms`. An atom never imports a molecule. The path always goes through `@/`.
 
-## Крок 4. Стилі
+## Step 4. Styles
 
-На початку `.module.scss` підключи те, що треба:
+At the top of `.module.scss`, include what you need:
 
 ```scss
 @use '../../../styles/variables' as *;
@@ -68,7 +68,7 @@ import { ProductPrice } from '@/components/molecules/ProductPrice';
 @use '../../../styles/typography' as *;
 ```
 
-Приклад. Mobile-first: базові стилі для 320, далі розширюєш:
+Example. Mobile-first: base styles for 320, then extend:
 
 ```scss
 .root {
@@ -93,19 +93,19 @@ import { ProductPrice } from '@/components/molecules/ProductPrice';
 }
 ```
 
-У розмітці підключай клас так: `className={styles.title}`.
+In the markup, apply a class like this: `className={styles.title}`.
 
-Що можна і що ні:
+What is allowed and what is not:
 
-| Можна                                         | Не можна                       |
+| Allowed                                       | Not allowed                    |
 | --------------------------------------------- | ------------------------------ |
 | `$color-primary`, `$color-accent`             | `#905bff`, `rgb(...)`          |
 | `@include tablet / desktop / wide`            | `@media (min-width: 640px)`    |
-| `@include h1…h4, body, button, small`         | свій `font-size` для тексту    |
-| `@include container`, `@include product-grid` | свої сітки для товарів         |
-| `transition` для hover                        | `!important`, коментарі в коді |
+| `@include h1…h4, body, button, small`         | your own `font-size` for text  |
+| `@include container`, `@include product-grid` | your own product grids         |
+| `transition` for hover                        | `!important`, comments in code |
 
-## Крок 5. Кілька класів
+## Step 5. Several classes
 
 ```tsx
 const classes = [styles.button, styles[variant], className]
@@ -113,11 +113,11 @@ const classes = [styles.button, styles[variant], className]
   .join(' ');
 ```
 
-Так працює `Button`: базовий клас, клас варіанту і зовнішній `className`.
+This is how `Button` works: the base class, the variant class and the external `className`.
 
-## Крок 6. Іконки
+## Step 6. Icons
 
-SVG лежать у `src/assets/icons`. Підключення:
+SVG files live in `src/assets/icons`. Usage:
 
 ```tsx
 import closeIcon from '@/assets/icons/close.svg';
@@ -128,22 +128,22 @@ import closeIcon from '@/assets/icons/close.svg';
 />;
 ```
 
-Немає потрібної іконки: став текст-заглушку і напиши в чат тімліду.
+If the icon you need is missing, put a text placeholder and note it in the pull request.
 
-## Крок 7. Перевір
+## Step 7. Check
 
-1. Відкрий `npm run dev` і перевір на 320, 640, 1200, 1440 (DevTools → Responsive).
-2. Порівняй з Figma: відступи, шрифти, кольори.
-3. `npm run check` має пройти без помилок.
-4. Якщо коміт не проходить: `npm run fix-style`.
+1. Run `npm run dev` and check 320, 640, 1200 and 1440 (DevTools → Responsive).
+2. Compare with Figma: spacing, fonts, colours.
+3. `npm run check` must pass without errors.
+4. If a commit is rejected, run `npm run fix-style`.
 
-## Що не робити
+## What not to do
 
-- Не створювати нові файли в `atoms/`, `styles/`, `types/`, `constants/` без PR на ревʼю тімліда.
-- Не ставити нові npm-пакети. Це робить тільки тімлід.
-- Не імпортувати `motion` напряму. Для анімації обгорни блок у `Reveal` з `@/animations`.
-- Не писати коментарі в коді. Пояснення йде в опис PR.
+- Do not add new files to `atoms/`, `styles/`, `types/`, `constants/` without a reviewed pull request.
+- Do not add new npm packages outside a dedicated pull request.
+- Do not import `motion` directly. To animate a block, wrap it in `Reveal` from `@/animations`.
+- Do not write comments in code. Explanations go in the pull request description.
 
-## Застряг
+## Stuck
 
-Більше 2 години: напиши в чат. Не мовчи й не роби складніше, ніж у макеті.
+More than 2 hours: ask for help. Do not stay silent and do not make it more complex than the design.

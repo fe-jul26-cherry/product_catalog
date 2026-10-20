@@ -1,46 +1,46 @@
 # Product catalog
 
-Каталог телефонів, планшетів і аксесуарів з кошиком і обраним. Дизайн: Figma «Phone catalog (V2) Original Dark».
+A catalog of phones, tablets and accessories with a cart and favourites. Design: Figma "Phone catalog (V2) Original Dark".
 
-Стек: React 18, TypeScript, Vite, SCSS Modules, React Router (HashRouter), Swiper, Zustand, motion.
+Stack: React 18, TypeScript, Vite, SCSS Modules, React Router (HashRouter), Swiper, Zustand, motion.
 
-## Старт
+## Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-Відкрий http://localhost:5173.
+Open http://localhost:5173.
 
-## Перед роботою
+## Before you start
 
-Прочитай `docs/TECH.md`, `docs/STRUCTURE.md`, `docs/HOW_TO_COMPONENT.md` і `CONTRIBUTING.md`.
+Read `docs/TECH.md`, `docs/STRUCTURE.md`, `docs/HOW_TO_COMPONENT.md` and `CONTRIBUTING.md`.
 
-## Скрипти
+## Scripts
 
-| Команда                | Що робить                             |
-| ---------------------- | ------------------------------------- |
-| `npm run dev`          | dev-сервер                            |
-| `npm run build`        | перевірка типів і збірка              |
-| `npm run preview`      | перегляд зібраної версії              |
-| `npm run typecheck`    | лише перевірка типів                  |
-| `npm run lint`         | ESLint                                |
-| `npm run format:check` | перевірка Prettier                    |
-| `npm run check`        | типи, ESLint, Prettier і збірка разом |
-| `npm run fix-style`    | автовиправлення ESLint і Prettier     |
+| Command                | What it does                                   |
+| ---------------------- | ---------------------------------------------- |
+| `npm run dev`          | dev server                                     |
+| `npm run build`        | type check and production build                |
+| `npm run preview`      | preview the production build                   |
+| `npm run typecheck`    | type check only                                |
+| `npm run lint`         | ESLint                                         |
+| `npm run format:check` | Prettier check                                 |
+| `npm run check`        | types, ESLint, Prettier and build all together |
+| `npm run fix-style`    | auto-fix ESLint and Prettier issues            |
 
-## Автоматизація
+## Automation
 
-- Pre-commit: ESLint і Prettier на змінених файлах.
-- PR: GitHub Actions перевіряє типи, ESLint і Prettier (check «Lint»).
-- Пуш у `main`: деплой на GitHub Pages з гілки `gh-pages`.
+- Pre-commit: ESLint and Prettier on changed files.
+- Pull requests: GitHub Actions checks types, ESLint and Prettier (the "Lint" check).
+- Push to `main`: deploy to GitHub Pages from the `gh-pages` branch.
 
-## Документація
+## Documentation
 
-- `docs/TECH.md`: технології простими словами.
-- `docs/STRUCTURE.md`: структура, правила, етапи, дані.
-- `docs/HOW_TO_COMPONENT.md`: як писати компонент.
-- `docs/PLAN.md`: розподіл задач і графік по днях.
-- `docs/design-grid.md`: брейкпоінти і сітка.
-- `CONTRIBUTING.md`: гілки, коміти, PR, ревʼю, розподіл.
+- `docs/TECH.md`: the technologies in plain words.
+- `docs/STRUCTURE.md`: structure, rules, stages, data.
+- `docs/HOW_TO_COMPONENT.md`: how to write a component.
+- `docs/PLAN.md`: roadmap, priorities and schedule.
+- `docs/design-grid.md`: breakpoints and grid.
+- `CONTRIBUTING.md`: branches, commits, pull requests, code review.

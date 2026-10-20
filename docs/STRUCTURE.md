@@ -1,61 +1,61 @@
-# Структура проєкту
+# Project structure
 
-Основа: Atomic Design (документ «Структура проєкту»), вимоги README завдання і Figma (Original Dark).
+Based on Atomic Design (the "Project structure" document), the README requirements of the task and Figma (Original Dark).
 
-## Дерево
+## Tree
 
 ```
 product_catalog/
 ├── .github/
-│   ├── workflows/deploy.yml        деплой на GitHub Pages з main
-│   ├── workflows/lint.yml          перевірка PR: типи, ESLint, Prettier
+│   ├── workflows/deploy.yml        deploy to GitHub Pages from main
+│   ├── workflows/lint.yml          PR check: types, ESLint, Prettier
 │   └── pull_request_template.md
-├── .husky/pre-commit               lint-staged перед кожним комітом
+├── .husky/pre-commit               lint-staged before every commit
 ├── docs/
-│   ├── STRUCTURE.md                цей файл
-│   ├── TECH.md                     технології простими словами
-│   ├── HOW_TO_COMPONENT.md         як писати компонент
-│   ├── PLAN.md                     розподіл задач і графік
-│   └── design-grid.md              брейкпоінти і сітка з Figma
+│   ├── STRUCTURE.md                this file
+│   ├── TECH.md                     technologies in plain words
+│   ├── HOW_TO_COMPONENT.md         how to write a component
+│   ├── PLAN.md                     roadmap and schedule
+│   └── design-grid.md              breakpoints and grid from Figma
 ├── public/
-│   ├── api/                        JSON з даними товарів (етап 2)
-│   └── img/                        фото товарів, банери, картинки категорій
+│   ├── api/                        JSON with product data (stage 2)
+│   └── img/                        product photos, banners, category images
 └── src/
-    ├── app/                        App.tsx: роутер і маршрути
-    ├── animations/                 Reveal, PageTransition: motion і запасний CSS
+    ├── app/                        App.tsx: router and routes
+    ├── animations/                 Reveal, PageTransition: motion and a CSS fallback
     ├── components/
-    │   ├── atoms/                  найменші елементи UI kit
-    │   ├── molecules/              комбінації атомів
-    │   ├── organisms/              великі блоки сторінок
-    │   └── templates/              каркаси сторінок (MainLayout)
-    ├── pages/                      сторінки за маршрутами
-    ├── constants/                  маршрути, категорії, опції сортування, кольори
+    │   ├── atoms/                  the smallest UI kit elements
+    │   ├── molecules/              combinations of atoms
+    │   ├── organisms/              large page blocks
+    │   └── templates/              page skeletons (MainLayout)
+    ├── pages/                      pages by route
+    ├── constants/                  routes, categories, sort options, colours
     ├── types/                      Product, ProductDetails, CartItem, SortBy, PerPage
-    ├── mocks/                      захардкоджені дані для етапу 1
-    ├── services/                   функції запитів до даних (етап 2)
-    ├── store/                      Zustand: кошик, обране, тема (етап 2)
-    ├── hooks/                      власні хуки (етап 2)
-    ├── utils/                      чисті функції: сортування, пагінація
-    ├── styles/                     змінні, теми, міксини, типографіка, global
+    ├── mocks/                      hardcoded data for stage 1
+    ├── services/                   data request functions (stage 2)
+    ├── store/                      Zustand: cart, favourites, theme (stage 2)
+    ├── hooks/                      custom hooks (stage 2)
+    ├── utils/                      pure functions: sorting, pagination
+    ├── styles/                     variables, themes, mixins, typography, global
     └── assets/
         ├── fonts/                  Mont (woff2)
-        ├── icons/                  SVG-іконки з Figma
-        ├── logo-dark-theme.svg     логотип для темної теми
-        └── logo-light-theme.svg    логотип для світлої теми
+        ├── icons/                  SVG icons from Figma
+        ├── logo-dark-theme.svg     logo for the dark theme
+        └── logo-light-theme.svg    logo for the light theme
 ```
 
-### public чи src/assets
+### public or src/assets
 
-| Папка         | Що там                                    | Як підключати                                                    |
-| ------------- | ----------------------------------------- | ---------------------------------------------------------------- |
-| `public/`     | дані й фото, які вказані текстовим шляхом | рядок: `img/category-phones.png`, `fetch('api/products.json')`   |
-| `src/assets/` | іконки, логотип, шрифти                   | імпорт у коді: `import logo from '@/assets/logo-dark-theme.svg'` |
+| Folder        | What is there                             | How to use it                                                        |
+| ------------- | ----------------------------------------- | -------------------------------------------------------------------- |
+| `public/`     | data and photos referenced by a text path | a string: `img/category-phones.png`, `fetch('api/products.json')`    |
+| `src/assets/` | icons, logo, fonts                        | an import in code: `import logo from '@/assets/logo-dark-theme.svg'` |
 
-Просте правило: якщо шлях береться з JSON або константи, файл лежить у `public/`. Якщо файл імпортується в `.tsx` або `.scss`, він лежить у `src/assets/`.
+A simple rule: if the path comes from JSON or a constant, the file lives in `public/`. If the file is imported in a `.tsx` or `.scss`, it lives in `src/assets/`.
 
-## Компоненти
+## Components
 
-| Рівень    | Компоненти                                                                                                                                                                          |
+| Level     | Components                                                                                                                                                                          |
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | atoms     | Button, IconButton, Icon, Logo, Counter, BackLink, ColorSwatch, CapacityButton, Loader                                                                                              |
 | molecules | Dropdown, Pagination, Breadcrumbs, NavItem, IconLink, ProductPrice, ProductSpecs, ProductCard, CartItem, QuantityCounter, CategoryCard                                              |
@@ -63,11 +63,11 @@ product_catalog/
 | templates | MainLayout                                                                                                                                                                          |
 | pages     | HomePage, CatalogPage, ProductDetailsPage, CartPage, FavoritesPage, NotFoundPage                                                                                                    |
 
-`CatalogPage` одна на три маршрути: `/phones`, `/tablets`, `/accessories`. Категорія приходить через prop.
+`CatalogPage` is one page for three routes: `/phones`, `/tablets`, `/accessories`. The category arrives as a prop.
 
-### Відповідність Figma UI Kit
+### Figma UI Kit mapping
 
-| Figma                                    | Код                                        |
+| Figma                                    | Code                                       |
 | ---------------------------------------- | ------------------------------------------ |
 | Dark Theme Palette                       | `styles/_themes.scss`                      |
 | Typography (Desktop/Tablet, Mobile)      | `styles/_typography.scss`                  |
@@ -83,123 +83,123 @@ product_catalog/
 | Product card, Cart item                  | `molecules/ProductCard`, `CartItem`        |
 | Item card                                | `pages/ProductDetailsPage`                 |
 
-## Правила
+## Rules
 
-1. Кожен компонент у своїй папці: `Name.tsx`, `Name.module.scss`, `index.ts`.
-2. Імпорт тільки вниз: `pages → templates → organisms → molecules → atoms`. Атом не імпортує молекулу.
-3. Атоми і молекули не знають про store, services і mocks. Дані приходять через props.
-4. Store, services і mocks підключаються тільки в organisms і pages.
-5. Імпорти через alias `@/`: `import { Button } from '@/components/atoms/Button'`.
-6. Кольори тільки через змінні з `_variables.scss`. Hex у модулях заборонений, інакше не запрацює зміна теми.
-7. Медіа-запити тільки міксинами `tablet`, `desktop`, `wide` з `_mixins.scss`. Mobile-first.
-8. Коментарів у коді немає. Пояснення пишемо в описі PR.
-9. Новий спільний атом або зміни в `styles/` — тільки через PR з ревʼю тімліда.
+1. Every component lives in its own folder: `Name.tsx`, `Name.module.scss`, `index.ts`.
+2. Imports only go downwards: `pages → templates → organisms → molecules → atoms`. An atom never imports a molecule.
+3. Atoms and molecules know nothing about store, services or mocks. Data arrives through props.
+4. Store, services and mocks are used only in organisms and pages.
+5. Imports go through the `@/` alias: `import { Button } from '@/components/atoms/Button'`.
+6. Colours only through variables from `_variables.scss`. Hex values are forbidden in modules, otherwise theme switching breaks.
+7. Media queries only through the `tablet`, `desktop`, `wide` mixins from `_mixins.scss`. Mobile-first.
+8. There are no comments in the code. Explanations go in the pull request description.
+9. A new shared atom or changes in `styles/` go only through a reviewed pull request.
 
-## Стан
+## State
 
-| Що                                   | Де                     | Інструмент          |
-| ------------------------------------ | ---------------------- | ------------------- |
-| Кошик, обране                        | `store/`               | Zustand + `persist` |
-| Тема                                 | `store/`               | Zustand + `persist` |
-| Сортування, сторінка, perPage, пошук | URL `?sort=age&page=2` | `useSearchParams`   |
-| Відкритий dropdown, burger, слайд    | компонент              | `useState`          |
+| What                              | Where                  | Tool                |
+| --------------------------------- | ---------------------- | ------------------- |
+| Cart, favourites                  | `store/`               | Zustand + `persist` |
+| Theme                             | `store/`               | Zustand + `persist` |
+| Sorting, page, perPage, search    | URL `?sort=age&page=2` | `useSearchParams`   |
+| Open dropdown, burger menu, slide | component              | `useState`          |
 
-Параметри каталогу живуть в URL, а не в Zustand: так вимагає README, і посилання можна копіювати.
+Catalog parameters live in the URL, not in Zustand: the task README requires it, and links can be copied.
 
-## Пріоритети
+## Priorities
 
-Межу проводимо за вимогами README, а не за кількістю компонентів. Усе, що вимагає README, обовʼязкове.
+The line is drawn by the README requirements, not by the number of components. Everything the README requires is mandatory.
 
-### Must: вимоги README
+### Must: README requirements
 
-| Зона    | Що                                                                                                                                         |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Каркас  | styles, MainLayout, Header з лічильниками, BurgerMenu, Footer з «Back to top», NotFoundPage                                                |
-| Каталог | CatalogPage, ProductsList, ProductCard, CatalogControls (сортування, perPage), Pagination, Loader                                          |
-| Товар   | ProductDetailsPage, ProductGallery, ProductVariants (статичні), ProductAbout, ProductTechSpecs, Breadcrumbs, BackLink, «You may also like» |
-| Кошик   | CartPage, CartItem, QuantityCounter, CartSummary, checkout через `confirm()`                                                               |
-| Обране  | FavoritesPage (перевикористовує ProductsList)                                                                                              |
-| Головна | HomePage, PicturesSlider, ProductsSlider (Brand new, Hot prices), Categories                                                               |
-| Ефекти  | плавні hover, зображення в картці збільшується на 10%                                                                                      |
+| Area       | What                                                                                                                                     |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Shell      | styles, MainLayout, Header with counters, BurgerMenu, Footer with "Back to top", NotFoundPage                                            |
+| Catalog    | CatalogPage, ProductsList, ProductCard, CatalogControls (sorting, perPage), Pagination, Loader                                           |
+| Product    | ProductDetailsPage, ProductGallery, ProductVariants (static), ProductAbout, ProductTechSpecs, Breadcrumbs, BackLink, "You may also like" |
+| Cart       | CartPage, CartItem, QuantityCounter, CartSummary, checkout via `confirm()`                                                               |
+| Favourites | FavoritesPage (reuses ProductsList)                                                                                                      |
+| Home       | HomePage, PicturesSlider, ProductsSlider (Brand new, Hot prices), Categories                                                             |
+| Effects    | smooth hover, the card image grows by 10%                                                                                                |
 
-### Nice: можна викинути без втрати оцінки
+### Nice: can be dropped without losing the grade
 
-- Анімації `motion`: поява hero, перехід між сторінками. План Б нижче.
-- Світла тема і перемикач у Footer.
+- `motion` animations: hero reveal, page transition. See plan B below.
+- Light theme and the switcher in the Footer.
 - Supabase.
-- Пошук (advanced task README).
-- Власне модальне вікно checkout замість `confirm()`.
-- Перемикання кольору і ємності на сторінці товару. README дозволяє зафіксувати одне значення.
-- Свайпи і тонке налаштування Swiper. Запасний варіант: CSS `scroll-snap`.
+- Search (an advanced task in the README).
+- A custom checkout modal instead of `confirm()`.
+- Switching colour and capacity on the product page. The README allows fixing a single value.
+- Swipes and fine-tuning of Swiper. Fallback: CSS `scroll-snap`.
 
-### Контрольні точки
+### Checkpoints
 
-- День 3: must етапу 1 готовий на 50%. Якщо ні, nice не чіпаємо до кінця проєкту.
-- День 5: всі сторінки зверстані на 320, 640, 1200, 1440.
-- День 8: дані, кошик і обране працюють. Якщо анімацій немає, вмикаємо план Б.
-- День 10: деплой.
+- Day 3: stage 1 must-haves are 50% done. If not, nice-to-haves are not touched until the end of the project.
+- Day 5: all pages are laid out at 320, 640, 1200, 1440.
+- Day 8: data, cart and favourites work. If there are no animations yet, switch to plan B.
+- Day 10: deploy.
 
-## Етапи
+## Stages
 
-### Етап 1, дні 1–5: верстка на моках
+### Stage 1, days 1–5: markup on mocks
 
-- Дані беремо з `src/mocks/`. Моки мають ті самі типи, що й реальні дані, тому на етапі 2 змінюється лише джерело.
-- Обробники кліків поки порожні: `onClick={() => {}}`.
-- Першою робимо `ProductCard`: вона потрібна каталогу, головній, обраному і сторінці товару.
-- Результат: усі сторінки зверстані на 320, 640, 1200, 1440.
+- Data comes from `src/mocks/`. Mocks have the same types as the real data, so in stage 2 only the source changes.
+- Click handlers are empty for now: `onClick={() => {}}`.
+- `ProductCard` goes first: the catalog, home page, favourites and product page all need it.
+- Result: all pages are laid out at 320, 640, 1200, 1440.
 
-### Етап 2, дні 6–10: дані, стан, анімації, тема, деплой
+### Stage 2, days 6–10: data, state, animations, theme, deploy
 
-1. `services/products.ts`: `getProducts`, `getProductsByCategory`, `getProductDetails`, `getSuggestedProducts`. Спочатку `fetch` з `public/api`.
-2. `store/cartStore.ts`, `store/favoritesStore.ts`: Zustand + `persist` у localStorage.
-3. `hooks/`: стан каталогу з URL, завантаження з Loader і помилкою.
-4. Тема: `store/themeStore.ts` ставить `data-theme` на `<html>`. Світлу палітру додаємо блоком `[data-theme='light']` у `_themes.scss`. Перемикач у `Footer`.
-5. Supabase: тільки якщо пункти 1–4 готові. Змінюється лише вміст функцій у `services/`, компоненти не чіпаємо.
-6. Фінальна перевірка всіх брейкпоінтів і деплой.
+1. `services/products.ts`: `getProducts`, `getProductsByCategory`, `getProductDetails`, `getSuggestedProducts`. `fetch` from `public/api` first.
+2. `store/cartStore.ts`, `store/favoritesStore.ts`: Zustand + `persist` in localStorage.
+3. `hooks/`: catalog state from the URL, loading with a Loader and an error.
+4. Theme: `store/themeStore.ts` sets `data-theme` on `<html>`. The light palette is added as a `[data-theme='light']` block in `_themes.scss`. The switcher is in `Footer`.
+5. Supabase: only if items 1–4 are ready. Only the content of the functions in `services/` changes, components stay untouched.
+6. Final check of all breakpoints and deploy.
 
-## Анімації
+## Animations
 
-Анімацій три, і всі вже підключені:
+There are three animations, all already wired up:
 
-| Що                           | Де                        | Чим                       |
-| ---------------------------- | ------------------------- | ------------------------- |
-| Поява hero на головній       | `HomePage`                | `Reveal` з `@/animations` |
-| Плавна поява сторінки        | `MainLayout`              | `PageTransition`          |
-| Hover картки і її зображення | `ProductCard.module.scss` | CSS `transition`          |
+| What                         | Where                     | How                          |
+| ---------------------------- | ------------------------- | ---------------------------- |
+| Hero reveal on the home page | `HomePage`                | `Reveal` from `@/animations` |
+| Smooth page appearance       | `MainLayout`              | `PageTransition`             |
+| Card hover and its image     | `ProductCard.module.scss` | CSS `transition`             |
 
-Правила:
+Rules:
 
-- `motion` імпортується тільки в `src/animations/motion/`. ESLint блокує імпорт в інших місцях.
-- У компонентах тільки `import { Reveal, PageTransition } from '@/animations'`.
-- `Reveal` можна обгорнути будь-яку секцію, це не нова анімація.
-- Hover робимо CSS, без `motion`.
-- Користувачам з увімкненим «зменшеним рухом» анімації вимикаються автоматично.
+- `motion` is imported only in `src/animations/motion/`. ESLint blocks imports anywhere else.
+- Components only use `import { Reveal, PageTransition } from '@/animations'`.
+- `Reveal` can wrap any section, it is not a new animation.
+- Hover is done with CSS, without `motion`.
+- Animations switch off automatically for users with "reduced motion" enabled.
 
-### План Б: прибрати motion за 5 хвилин
+### Plan B: remove motion in 5 minutes
 
-`src/animations/css/` має ті самі компоненти на CSS-анімаціях.
+`src/animations/css/` has the same components built on CSS animations.
 
-1. У `src/animations/index.ts` заміни рядок на `export * from './css';`.
-2. Видали папку `src/animations/motion/`.
+1. In `src/animations/index.ts`, replace the line with `export * from './css';`.
+2. Delete the `src/animations/motion/` folder.
 3. `npm uninstall motion`.
-4. `npm run check`. Має пройти без помилок.
+4. `npm run check`. It must pass without errors.
 
-Компоненти й сторінки не змінюються.
+Components and pages do not change.
 
-## Рішення
+## Decisions
 
-| Рішення                                | Чому                                                                                                                                                  |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Vite замість CRA                       | CRA застарів і не підтримується. Vite рекомендує документація курсу.                                                                                  |
-| HashRouter                             | GitHub Pages не підтримує SPA-fallback для вкладених маршрутів, тому використовуємо HashRouter. Для продакшену з власним сервером буде BrowserRouter. |
-| «Brand new» сортуємо за `year`         | У всіх товарів є знижка, тому фільтр «без знижки» за README дає порожній блок.                                                                        |
-| Параметри каталогу в URL, не в Zustand | Так вимагає README, і посиланням можна поділитися.                                                                                                    |
-| Кольори через CSS-змінні               | Тема перемикається без зміни компонентів.                                                                                                             |
-| Залежності ставить тільки тімлід       | `package-lock.json` не конфліктує в PR.                                                                                                               |
+| Decision                                   | Why                                                                                                                                        |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Vite instead of CRA                        | CRA is deprecated and unmaintained. The course documentation recommends Vite.                                                              |
+| HashRouter                                 | GitHub Pages has no SPA fallback for nested routes, so HashRouter is used. A production setup with its own server would use BrowserRouter. |
+| "Brand new" is sorted by `year`            | Every product has a discount, so the README's "no discount" filter gives an empty block.                                                   |
+| Catalog parameters in the URL, not Zustand | The README requires it, and the link can be shared.                                                                                        |
+| Colours through CSS variables              | The theme switches without changing components.                                                                                            |
+| Dependencies are added in dedicated PRs    | `package-lock.json` does not conflict between branches.                                                                                    |
 
-### Світла палітра (Figma Original)
+### Light palette (Figma Original)
 
-| Роль       | Колір     |
+| Role       | Colour    |
 | ---------- | --------- |
 | Primary    | `#313237` |
 | Secondary  | `#89939a` |
@@ -210,16 +210,16 @@ product_catalog/
 | Green      | `#27ae60` |
 | Red        | `#eb5757` |
 
-## Дані
+## Data
 
-- `public/api/products.json` (194 товари): короткий формат для списків. Поле `itemId` веде на `id` у детальних файлах.
-- `public/api/phones.json`, `tablets.json`, `accessories.json`: детальний формат для сторінки товару.
-- Окремих файлів `phones/:id.json` немає. Деталі шукаємо за `id` у файлі категорії.
-- У всіх 194 товарів є знижка. Блок «Brand new» сортуємо за `year`, від найновіших.
-- Назви 4 записів iPhone 14 Pro Gold у `phones.json` виправлені з «Space Black» на «Gold». Дані з донора не редагуємо без потреби.
-- Назви кольорів непослідовні (`space gray`, `space-gray`, `spacegray`). Використовуємо `getColorHex` з `constants/colors.ts`.
+- `public/api/products.json` (194 products): the short format for lists. The `itemId` field points to `id` in the detailed files.
+- `public/api/phones.json`, `tablets.json`, `accessories.json`: the detailed format for the product page.
+- There are no separate `phones/:id.json` files. Details are looked up by `id` in the category file.
+- All 194 products have a discount. The "Brand new" block is sorted by `year`, newest first.
+- The names of 4 iPhone 14 Pro Gold records in `phones.json` were fixed from "Space Black" to "Gold". Donor data is not edited unless necessary.
+- Colour names are inconsistent (`space gray`, `space-gray`, `spacegray`). Use `getColorHex` from `constants/colors.ts`.
 
-## Що ще потрібно з Figma
+## What else is needed from Figma
 
-- Усе вже в репо: іконки в `src/assets/icons/`, логотип у `src/assets/`, банери й картинки категорій у `public/img/`.
-- Фреймів Catalog і Favourites для 320 немає. Мобільну сітку беремо з Home (320) і «Mobile grid».
+- Everything is already in the repo: icons in `src/assets/icons/`, the logo in `src/assets/`, banners and category images in `public/img/`.
+- There are no Catalog and Favourites frames for 320. The mobile grid is taken from Home (320) and "Mobile grid".
