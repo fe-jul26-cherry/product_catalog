@@ -12,18 +12,38 @@ interface AuthState {
   isReady: boolean;
 }
 
+const SESSION_KEY = /^sb-.+-auth-token$/;
+const IDLE_TIMEOUT = 3000;
+
+let isStarted = false;
+
 export const useAuthStore = create<AuthState>()(() => ({
   user: null,
   isReady: false,
 }));
 
-export const initAuth = () => {
-  if (!isSupabaseConfigured) {
-    useAuthStore.setState({ isReady: true });
+const hasStoredSession = () => {
+  try {
+    return Object.keys(localStorage).some((key) => SESSION_KEY.test(key));
+  } catch {
+    return false;
+  }
+};
 
+const whenIdle = (task: () => void) => {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(task, { timeout: IDLE_TIMEOUT });
+  } else {
+    setTimeout(task, 1);
+  }
+};
+
+export const startAuth = () => {
+  if (isStarted || !isSupabaseConfigured) {
     return;
   }
 
+  isStarted = true;
   startUserSync();
 
   onAuthChange((user) => {
@@ -32,5 +52,18 @@ export const initAuth = () => {
       void syncUser(user);
       void syncProfile(user);
     }, 0);
+  }).catch(() => {
+    isStarted = false;
+    useAuthStore.setState({ isReady: true });
   });
+};
+
+export const initAuth = () => {
+  if (!isSupabaseConfigured || !hasStoredSession()) {
+    useAuthStore.setState({ isReady: true });
+
+    return;
+  }
+
+  whenIdle(startAuth);
 };

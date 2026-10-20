@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/atoms/Button';
 import { FormField } from '@/components/molecules/FormField';
@@ -6,7 +6,7 @@ import { Modal } from '@/components/molecules/Modal';
 import { AUTH_RULES } from '@/constants';
 import { useAuthForm, useTranslation } from '@/hooks';
 import { signOut } from '@/services';
-import { useAuthStore } from '@/store';
+import { startAuth, useAuthStore } from '@/store';
 
 import styles from './AuthModal.module.scss';
 
@@ -19,6 +19,11 @@ interface AuthModalProps {
 export const AuthModal = ({ onClose }: AuthModalProps) => {
   const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
+
+  useEffect(() => {
+    startAuth();
+  }, []);
+
   const [mode, setMode] = useState<AuthMode>('signin');
   const {
     values,
