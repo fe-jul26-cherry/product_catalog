@@ -1,0 +1,44 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/typography' as *;
+
+.root {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.strip {
+  padding: 8px 16px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.chip {
+  @include small;
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid $color-elements;
+  border-radius: 16px;
+  color: $color-primary;
+  background: transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color $transition,
+    color $transition;
+
+  &:hover,
+  &:focus-visible {
+    border-color: $color-accent;
+    color: $color-accent;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
