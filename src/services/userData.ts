@@ -1,7 +1,13 @@
 import { PRODUCT_COLUMNS, toProduct } from './products';
-import { supabaseClient } from './supabaseClient';
+import { getSupabaseClient } from './supabaseClient';
 
-import type { CartItem, Product, ProductRow } from '@/types';
+import type {
+  CartItem,
+  Product,
+  ProductRow,
+  ProfileRow,
+  UserProfile,
+} from '@/types';
 
 interface CartRow {
   item_id: string;
@@ -15,18 +21,23 @@ interface FavoriteRow {
 
 const CART_TABLE = 'cart_items';
 const FAVORITES_TABLE = 'favorites';
+const PROFILES_TABLE = 'profiles';
 const CONFLICT_TARGET = 'user_id,item_id';
 
-const getClient = () => {
-  if (!supabaseClient) {
+const getClient = async () => {
+  const client = await getSupabaseClient();
+
+  if (!client) {
     throw new Error('Supabase is not configured.');
   }
 
-  return supabaseClient;
+  return client;
 };
 
 export const fetchCart = async (): Promise<CartItem[]> => {
-  const { data, error } = await getClient()
+  const { data, error } = await (
+    await getClient()
+  )
     .from(CART_TABLE)
     .select(`item_id,quantity,products(${PRODUCT_COLUMNS})`)
     .order('updated_at');
@@ -55,12 +66,10 @@ export const saveCartItems = async (
     return;
   }
 
-  const { error } = await getClient()
-    .from(CART_TABLE)
-    .upsert(
-      items.map((item) => ({ item_id: item.id, quantity: item.quantity })),
-      { onConflict: CONFLICT_TARGET },
-    );
+  const { error } = await (await getClient()).from(CART_TABLE).upsert(
+    items.map((item) => ({ item_id: item.id, quantity: item.quantity })),
+    { onConflict: CONFLICT_TARGET },
+  );
 
   if (error) {
     throw error;
@@ -72,7 +81,9 @@ export const removeCartItems = async (itemIds: string[]): Promise<void> => {
     return;
   }
 
-  const { error } = await getClient()
+  const { error } = await (
+    await getClient()
+  )
     .from(CART_TABLE)
     .delete()
     .in('item_id', itemIds);
@@ -83,7 +94,9 @@ export const removeCartItems = async (itemIds: string[]): Promise<void> => {
 };
 
 export const fetchFavorites = async (): Promise<Product[]> => {
-  const { data, error } = await getClient()
+  const { data, error } = await (
+    await getClient()
+  )
     .from(FAVORITES_TABLE)
     .select(`item_id,products(${PRODUCT_COLUMNS})`)
     .order('created_at');
@@ -102,12 +115,10 @@ export const saveFavorites = async (itemIds: string[]): Promise<void> => {
     return;
   }
 
-  const { error } = await getClient()
-    .from(FAVORITES_TABLE)
-    .upsert(
-      itemIds.map((itemId) => ({ item_id: itemId })),
-      { onConflict: CONFLICT_TARGET, ignoreDuplicates: true },
-    );
+  const { error } = await (await getClient()).from(FAVORITES_TABLE).upsert(
+    itemIds.map((itemId) => ({ item_id: itemId })),
+    { onConflict: CONFLICT_TARGET, ignoreDuplicates: true },
+  );
 
   if (error) {
     throw error;
@@ -119,10 +130,53 @@ export const removeFavorites = async (itemIds: string[]): Promise<void> => {
     return;
   }
 
-  const { error } = await getClient()
+  const { error } = await (
+    await getClient()
+  )
     .from(FAVORITES_TABLE)
     .delete()
     .in('item_id', itemIds);
+
+  if (error) {
+    throw error;
+  }
+};
+
+export const fetchProfile = async (): Promise<UserProfile | null> => {
+  const { data, error } = await (
+    await getClient()
+  )
+    .from(PROFILES_TABLE)
+    .select('full_name,phone,city,city_ref')
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  const row = data as ProfileRow | null;
+
+  return row ?
+      {
+        fullName: row.full_name ?? '',
+        phone: row.phone ?? '',
+        city: row.city ?? '',
+        cityRef: row.city_ref ?? '',
+      }
+    : null;
+};
+
+export const upsertProfile = async (profile: UserProfile): Promise<void> => {
+  const { error } = await (await getClient()).from(PROFILES_TABLE).upsert(
+    {
+      full_name: profile.fullName || null,
+      phone: profile.phone || null,
+      city: profile.city || null,
+      city_ref: profile.cityRef || null,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'user_id' },
+  );
 
   if (error) {
     throw error;

@@ -1,4 +1,4 @@
-import type { Category, SortBy } from '@/types';
+import type { Category, FacetTitleKey, SortBy } from '@/types';
 
 export const en = {
   meta: {
@@ -223,6 +223,15 @@ export const en = {
       unknown: 'Something went wrong. Try again.',
     },
   },
+  team: {
+    title: 'Team',
+    roles: {
+      teamLead: 'Team Lead',
+      developer1: 'Developer 1',
+      projectManager: 'Project Manager',
+      developer2: 'Developer 2',
+    },
+  },
   notFound: {
     title: 'Page not found',
   },
@@ -237,6 +246,70 @@ export const en = {
   assistant: {
     open: 'Open AI assistant',
     hide: 'Hide AI assistant button',
+    title: 'AI assistant',
+    close: 'Close AI assistant',
+    greeting:
+      'Hi! I can help you with the store:\n• switch the site language;\n• find a product by model name;\n• compare two or three products.\nFor example: "compare iPhone 11 and iPhone 14 Pro".',
+    messages: 'Chat messages',
+    inputLabel: 'Message',
+    placeholder: 'Ask the assistant',
+    send: 'Send',
+    thinking: 'Thinking...',
+    clear: 'Clear chat',
+    actions: {
+      set_language: 'Interface language changed',
+      search_products: 'Opened search results',
+    } as Record<string, string>,
+    errors: {
+      config: 'The assistant is not configured yet.',
+      network: 'Network error. Check your connection and try again.',
+      timeout: 'The assistant took too long to answer. Try again.',
+      rate_limit: 'Too many requests. Try again in a minute.',
+      server: 'The assistant is temporarily unavailable.',
+      invalid: 'Received an invalid response. Try again.',
+    },
+    compare: {
+      table: 'Product comparison',
+      notEnough:
+        'I could not find two products to compare. Try the exact model names.',
+      missing: (names: string) => `Not found: ${names}`,
+      mismatched: (names: string) => `Different category, skipped: ${names}`,
+    },
+    chips: {
+      label: 'Suggestions',
+      switchLanguage: 'Switch to Ukrainian',
+      find: 'Find a product',
+      findPrefix: 'Find ',
+      findExample: 'iPhone 14 Pro',
+      compare: 'Compare products',
+      comparePrefix: 'Compare ',
+      compareExample: 'iPhone 11 and iPhone 14 Pro',
+      show: 'Show suggestions',
+      hide: 'Hide suggestions',
+    },
+  },
+  filters: {
+    title: 'Filters',
+    reset: 'Reset all',
+    open: 'Filters',
+    price: 'Price range',
+    min: 'Min',
+    max: 'Max',
+    groups: {
+      brand: 'Brand',
+      memory: 'Internal memory',
+      caseSize: 'Case size',
+      screen: 'Screen diagonal',
+      ram: 'RAM',
+      color: 'Color',
+      year: 'Release year',
+    } satisfies Record<FacetTitleKey, string>,
+    upTo: (value: number) => `Up to ${value}"`,
+    between: (from: number, to: number) => `${from}" - ${to}"`,
+    over: (value: number) => `Over ${value}"`,
+    noResults: 'No models match the selected filters.',
+    apply: 'Show results',
+    resetFilters: 'Reset filters',
   },
 };
 

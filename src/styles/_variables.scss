@@ -1,4 +1,5 @@
 $color-bg: var(--color-bg);
+$color-page-bg: var(--color-page-bg);
 $color-btn: var(--color-btn);
 $color-surface-1: var(--color-surface-1);
 $color-surface-2: var(--color-surface-2);
@@ -11,6 +12,7 @@ $color-accent: var(--color-accent);
 $color-accent-hover: var(--color-accent-hover);
 $color-green: var(--color-green);
 $color-red: var(--color-red);
+$color-team: var(--color-team);
 $shadow-card: var(--shadow-card);
 $color-toggle-start: var(--color-toggle-start);
 $color-toggle-end: var(--color-toggle-end);
@@ -19,6 +21,13 @@ $color-slider-progress: var(--color-slider-progress);
 $color-category-phones: var(--color-c-phones);
 $color-category-tablets: var(--color-c-tablets);
 $color-category-accessories: var(--color-c-accessories);
+
+$color-space-deep: var(--color-space-deep);
+$color-space-mid: var(--color-space-mid);
+$color-space-star: var(--color-space-star);
+
+$filter-accent: brightness(0) saturate(100%) invert(30%) sepia(23%)
+  saturate(3254%) hue-rotate(229deg) brightness(140%) contrast(118%);
 
 $font-family: 'Mont', sans-serif;
 

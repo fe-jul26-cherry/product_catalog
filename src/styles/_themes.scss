@@ -1,6 +1,7 @@
 :root,
 [data-theme='dark'] {
   --color-bg: #0f1121;
+  --color-page-bg: #0f1121;
   --color-btn: #f1f2f9;
   --color-surface-1: #161827;
   --color-surface-2: #323542;
@@ -16,9 +17,14 @@
   --color-c-phones: #6d6474;
   --color-c-tablets: #4e5b66;
   --color-c-accessories: #803d4c;
+  --color-space-deep: #06070f;
+  --color-space-mid: #2a1458;
+  --color-space-star: #ffffff;
+  --rim-saturation: 90%;
+  --rim-lightness: 65%;
   --color-toggle-start: #905bff;
   --color-toggle-end: #f099b5;
-  --color-team: #0f111c;
+  --color-team: #0a0c17;
   --color-card-border: transparent;
   --shadow-card: 0 2px 16px rgb(0 0 0 / 40%);
   --filter-slider-arrow: brightness(0) invert(1);
@@ -27,6 +33,7 @@
 
 [data-theme='light'] {
   --color-bg: #ffffff;
+  --color-page-bg: #f5f6f8;
   --color-btn: #f1f2f9;
   --color-surface-1: #fafbfc;
   --color-surface-2: #e2e6e9;
@@ -39,11 +46,17 @@
   --color-accent-hover: #a378ff;
   --color-green: #27ae60;
   --color-red: #eb5757;
-  --color-c-phones: #6d6474;
-  --color-c-tablets: #4e5b66;
-  --color-c-accessories: #803d4c;
+  --color-c-phones: #93889b;
+  --color-c-tablets: #7f8d99;
+  --color-c-accessories: #b56576;
+  --color-space-deep: #cdbff5;
+  --color-space-mid: #f6e9ff;
+  --color-space-star: #ffffff;
+  --rim-saturation: 85%;
+  --rim-lightness: 74%;
   --color-toggle-start: #f19af3;
   --color-toggle-end: #f099b5;
+  --color-team: #e6e8f2;
   --color-card-border: var(--color-elements);
   --shadow-card: 0 2px 16px rgb(0 0 0 / 10%);
   --filter-slider-arrow: brightness(0);

@@ -8,10 +8,11 @@ import { useTranslation } from '@/hooks';
 import styles from './AiAssistant.module.scss';
 
 interface AiAssistantProps {
-  onOpen?: () => void;
+  isOpen?: boolean;
+  onToggle?: () => void;
 }
 
-export const AiAssistant = ({ onOpen }: AiAssistantProps) => {
+export const AiAssistant = ({ isOpen = false, onToggle }: AiAssistantProps) => {
   const { t } = useTranslation();
   const [isHidden, setIsHidden] = useState(false);
 
@@ -23,8 +24,9 @@ export const AiAssistant = ({ onOpen }: AiAssistantProps) => {
     <div className={styles.dock}>
       <div className={styles.widget}>
         <AiButton
-          aria-label={t.assistant.open}
-          onClick={onOpen}
+          aria-label={isOpen ? t.assistant.close : t.assistant.open}
+          aria-expanded={isOpen}
+          onClick={onToggle}
         >
           AI
         </AiButton>

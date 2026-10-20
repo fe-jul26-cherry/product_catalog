@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 import astronautActive from '@/assets/icons/astronaut-active.svg';
 import astronaut from '@/assets/icons/astronaut.svg';
@@ -19,7 +19,7 @@ import { AuthModal } from '@/components/organisms/AuthModal';
 import { BurgerMenu } from '@/components/organisms/BurgerMenu';
 import { CATEGORIES, getSearchPath, ROUTES } from '@/constants';
 import { useMediaQuery, useTranslation } from '@/hooks';
-import { isSupabaseConfigured } from '@/services';
+import { getSearchSuggestions, isSupabaseConfigured } from '@/services';
 import {
   selectCartCount,
   selectFavoritesCount,
@@ -42,6 +42,8 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const shouldScrollToHome = useRef(false);
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const urlQuery = searchParams.get('query') ?? '';
@@ -51,6 +53,16 @@ export const Header = () => {
   });
   const query =
     searchDraft.urlQuery === urlQuery ? searchDraft.value : urlQuery;
+  const searchQuery = query.trim();
+  const [suggestionResult, setSuggestionResult] = useState<{
+    query: string;
+    suggestions: string[];
+    error: boolean;
+  } | null>(null);
+  const suggestions =
+    suggestionResult?.query === searchQuery ? suggestionResult.suggestions : [];
+  const suggestionError =
+    suggestionResult?.query === searchQuery && suggestionResult.error;
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const language = useLanguageStore((state) => state.language);
@@ -64,6 +76,57 @@ export const Header = () => {
   );
   const isCrowded =
     isCrowdedRange && (isSupabaseConfigured || language === 'ua');
+  const handleLogoClick = () => {
+    if (pathname === ROUTES.HOME) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    shouldScrollToHome.current = true;
+  };
+
+  useEffect(() => {
+    if (pathname !== ROUTES.HOME || !shouldScrollToHome.current) {
+      return;
+    }
+
+    shouldScrollToHome.current = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+
+  useEffect(() => {
+    if (searchQuery.length < 2) {
+      return;
+    }
+
+    let isActive = true;
+    const timeoutId = window.setTimeout(() => {
+      getSearchSuggestions(searchQuery)
+        .then((results) => {
+          if (isActive) {
+            setSuggestionResult({
+              query: searchQuery,
+              suggestions: results,
+              error: false,
+            });
+          }
+        })
+        .catch(() => {
+          if (isActive) {
+            setSuggestionResult({
+              query: searchQuery,
+              suggestions: [],
+              error: true,
+            });
+          }
+        });
+    }, 150);
+
+    return () => {
+      isActive = false;
+      window.clearTimeout(timeoutId);
+    };
+  }, [searchQuery]);
 
   const closeSearch = () => setIsSearchOpen(false);
   const openAuth = () => setIsAuthOpen(true);
@@ -90,7 +153,7 @@ export const Header = () => {
         className={`${styles.bar} ${language === 'ua' ? styles.barUa : ''} ${isSupabaseConfigured ? styles.barAccount : ''}`}
       >
         <div className={styles.left}>
-          <Logo />
+          <Logo onClick={handleLogoClick} />
 
           <nav
             className={styles.nav}
@@ -117,6 +180,8 @@ export const Header = () => {
             <SearchInput
               value={query}
               onChange={(value) => setSearchDraft({ urlQuery, value })}
+              suggestions={suggestions}
+              suggestionError={suggestionError ? t.errors.unknown : undefined}
               placeholder={t.header.search}
               label={t.header.searchProducts}
             />
@@ -227,6 +292,8 @@ export const Header = () => {
               value={query}
               onChange={(value) => setSearchDraft({ urlQuery, value })}
               onEscape={closeSearch}
+              suggestions={suggestions}
+              suggestionError={suggestionError ? t.errors.unknown : undefined}
               placeholder={t.header.search}
               label={t.header.searchProducts}
               focusOnMount

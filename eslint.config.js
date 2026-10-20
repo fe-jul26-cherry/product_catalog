@@ -77,6 +77,10 @@ export default tseslint.config(
     },
   },
   {
+    files: ['api/**/*.ts', 'vite.config.ts'],
+    languageOptions: { globals: globals.node },
+  },
+  {
     files: ['src/animations/motion/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': 'off',

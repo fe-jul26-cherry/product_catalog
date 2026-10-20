@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { BackLink } from '@/components/atoms/BackLink';
@@ -6,9 +6,10 @@ import { AsyncContent } from '@/components/molecules/AsyncContent';
 import { Breadcrumbs } from '@/components/molecules/Breadcrumbs';
 import { Pagination } from '@/components/molecules/Pagination';
 import { ProductsList } from '@/components/organisms/ProductsList';
-import { DEFAULT_PAGE, DEFAULT_PER_PAGE, DEFAULT_SORT } from '@/constants';
+import { DEFAULT_PER_PAGE, DEFAULT_SORT } from '@/constants';
 import { useAsync, useTranslation } from '@/hooks';
 import { searchProducts } from '@/services';
+import { applyCatalogView, parsePage } from '@/utils';
 
 import styles from './SearchPage.module.scss';
 
@@ -17,10 +18,9 @@ const PER_PAGE = Number(DEFAULT_PER_PAGE);
 export const SearchPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query') ?? '';
-  const [pagination, setPagination] = useState({ query, page: DEFAULT_PAGE });
-  const page = pagination.query === query ? pagination.page : DEFAULT_PAGE;
+  const page = parsePage(searchParams);
 
   const load = useCallback(
     () =>
@@ -65,7 +65,9 @@ export const SearchPage = () => {
                     current={page}
                     total={totalPages}
                     onChange={(nextPage) =>
-                      setPagination({ query, page: nextPage })
+                      setSearchParams((prev) =>
+                        applyCatalogView(prev, { page: nextPage }),
+                      )
                     }
                     labels={{
                       pagination: t.catalog.pagination,

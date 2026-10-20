@@ -7,6 +7,7 @@ import {
   saveFavorites,
 } from '@/services';
 
+import { useAiChatStore } from './aiChatStore';
 import { useCartStore } from './cartStore';
 import { useFavoritesStore } from './favoritesStore';
 
@@ -128,6 +129,7 @@ export const syncUser = async (user: AuthUser | null) => {
         useCartStore.setState({ items: [] });
         useFavoritesStore.setState({ items: [] });
       });
+      useAiChatStore.getState().clear();
     }
 
     return;

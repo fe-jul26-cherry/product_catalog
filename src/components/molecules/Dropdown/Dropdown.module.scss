@@ -120,3 +120,36 @@
   background: $color-surface-2;
   color: $color-primary;
 }
+
+.menu.menuUp {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+
+.multiline {
+  .control {
+    gap: 8px;
+    height: auto;
+    min-height: 40px;
+    padding: 8px 12px;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  .menu {
+    max-height: 280px;
+    overscroll-behavior: contain;
+
+    li + li {
+      border-top: 1px solid $color-elements;
+    }
+  }
+
+  .item {
+    height: auto;
+    min-height: 40px;
+    padding: 8px 12px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}

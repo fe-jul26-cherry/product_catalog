@@ -3,3 +3,9 @@
 .root {
   @include product-grid;
 }
+
+.withSidebar {
+  @include desktop {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

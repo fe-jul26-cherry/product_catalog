@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom';
+
 import scrollToTopIcon from '@/assets/icons/chevron-up.svg';
 import { Icon } from '@/components/atoms/Icon';
 import { Logo } from '@/components/atoms/Logo';
+import { ROUTES } from '@/constants';
 import { useTranslation } from '@/hooks';
 
 import styles from './Footer.module.scss';
@@ -30,7 +33,7 @@ export const Footer = () => {
           >
             Github
           </a>
-          <a href="#contacts">{t.footer.contacts}</a>
+          <Link to={ROUTES.TEAM}>{t.footer.contacts}</Link>
           <a href="#rights">{t.footer.rights}</a>
         </nav>
 

@@ -3,6 +3,7 @@ import { CityAutocomplete } from '@/components/molecules/CityAutocomplete';
 import { Dropdown } from '@/components/molecules/Dropdown';
 import { FormField } from '@/components/molecules/FormField';
 import { Modal } from '@/components/molecules/Modal';
+import { PhoneField } from '@/components/molecules/PhoneField';
 import { CHECKOUT_FIELDS } from '@/constants';
 import {
   useCheckoutForm,
@@ -35,6 +36,7 @@ export const CheckoutModal = ({
     errors,
     isSubmitted,
     handleChange,
+    handlePhoneChange,
     handleCityChange,
     handleSelect,
     handleSubmit,
@@ -130,6 +132,8 @@ export const CheckoutModal = ({
             {value === 'branch' && (
               <Dropdown
                 fullWidth
+                multiline
+                autoPlacement
                 name="branch"
                 disabled={!values.cityRef || warehouses.isLoading}
                 placeholder={getPointPlaceholder(c.novaPoshta.selectBranch)}
@@ -143,6 +147,8 @@ export const CheckoutModal = ({
             {value === 'postomat' && (
               <Dropdown
                 fullWidth
+                multiline
+                autoPlacement
                 name="postomat"
                 disabled={!values.cityRef || warehouses.isLoading}
                 placeholder={getPointPlaceholder(c.novaPoshta.selectPostomat)}
@@ -197,6 +203,14 @@ export const CheckoutModal = ({
                   error={getError('city')}
                   onInputChange={(city) => handleCityChange(city)}
                   onSelect={({ value }) => handleCitySelect(value)}
+                />
+              : field.name === 'phone' ?
+                <PhoneField
+                  key={field.name}
+                  label={c.fields.phone}
+                  value={values.phone}
+                  error={getError('phone')}
+                  onChange={handlePhoneChange}
                 />
               : <FormField
                   key={field.name}

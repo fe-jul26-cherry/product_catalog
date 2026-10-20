@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { CHECKOUT_FIELDS, CHECKOUT_INITIAL_VALUES } from '@/constants';
+import { rememberProfile, useAuthStore, useProfileStore } from '@/store';
 import { validateCheckout } from '@/utils';
 
 import type { CheckoutErrors, CheckoutFormValues } from '@/types';
@@ -9,21 +10,36 @@ import type { ChangeEvent, FormEvent } from 'react';
 export const useCheckoutForm = (
   onValid: (values: CheckoutFormValues) => void,
 ) => {
-  const [values, setValues] = useState<CheckoutFormValues>(
-    CHECKOUT_INITIAL_VALUES,
-  );
+  const user = useAuthStore((state) => state.user);
+  const profile = useProfileStore((state) => state.profile);
+  const [edits, setEdits] = useState<Partial<CheckoutFormValues>>({});
   const [errors, setErrors] = useState<CheckoutErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const values: CheckoutFormValues = {
+    ...CHECKOUT_INITIAL_VALUES,
+    email: user?.email ?? '',
+    name: profile?.fullName ?? '',
+    phone: profile?.phone ?? '',
+    city: profile?.city ?? '',
+    cityRef: profile?.cityRef ?? '',
+    ...edits,
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
-    setValues((prev) => ({ ...prev, [name]: value }));
+    setEdits((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
+  const handlePhoneChange = (phone: string) => {
+    setEdits((prev) => ({ ...prev, phone }));
+    setErrors((prev) => ({ ...prev, phone: undefined }));
+  };
+
   const handleCityChange = (city: string, cityRef = '') => {
-    setValues((prev) => ({ ...prev, city, cityRef, branch: '', postomat: '' }));
+    setEdits((prev) => ({ ...prev, city, cityRef, branch: '', postomat: '' }));
     setErrors((prev) => ({
       ...prev,
       city: undefined,
@@ -33,7 +49,7 @@ export const useCheckoutForm = (
   };
 
   const handleSelect = (name: 'branch' | 'postomat', value: string) => {
-    setValues((prev) => ({ ...prev, [name]: value }));
+    setEdits((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
@@ -56,6 +72,15 @@ export const useCheckoutForm = (
       return;
     }
 
+    if (user) {
+      void rememberProfile({
+        fullName: values.name.trim(),
+        phone: values.phone.trim(),
+        city: values.city.trim(),
+        cityRef: values.cityRef,
+      });
+    }
+
     onValid(values);
     setIsSubmitted(true);
   };
@@ -65,6 +90,7 @@ export const useCheckoutForm = (
     errors,
     isSubmitted,
     handleChange,
+    handlePhoneChange,
     handleCityChange,
     handleSelect,
     handleSubmit,

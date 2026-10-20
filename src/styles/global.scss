@@ -31,6 +31,7 @@
 html {
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
+  background: $color-page-bg;
 }
 
 html,
@@ -41,7 +42,7 @@ body {
 
 body {
   min-height: 100vh;
-  background: $color-bg;
+  background: $color-page-bg;
   color: $color-primary;
   font-family: $font-family;
   -webkit-font-smoothing: antialiased;
