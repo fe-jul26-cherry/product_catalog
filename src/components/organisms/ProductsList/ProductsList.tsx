@@ -7,15 +7,23 @@ import type { Product } from '@/types';
 
 interface ProductsListProps {
   products: Product[];
+  withSidebar?: boolean;
 }
 
-export const ProductsList = ({ products }: ProductsListProps) => {
+export const ProductsList = ({
+  products,
+  withSidebar = false,
+}: ProductsListProps) => {
   const { t, formatValue, formatPrice } = useTranslation();
   const { isInCart, isFavourite, toggleCart, toggleFavourite } =
     useProductActions();
 
   return (
-    <ul className={styles.root}>
+    <ul
+      className={
+        withSidebar ? `${styles.root} ${styles.withSidebar}` : styles.root
+      }
+    >
       {products.map((product) => (
         <li key={product.id}>
           <ProductCard

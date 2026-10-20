@@ -4,6 +4,7 @@
 
 .root {
   @include container;
+  max-width: none;
   display: flex;
   flex-direction: column;
   padding-top: 24px;
@@ -44,4 +45,48 @@
   color: $color-secondary;
   text-align: center;
   padding: 40px 0;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @include desktop {
+    display: grid;
+    grid-template-columns: 272px minmax(0, 1fr);
+    align-items: start;
+    gap: 24px;
+  }
+}
+
+.sidebar {
+  display: none;
+
+  @include desktop {
+    display: block;
+  }
+}
+
+.content {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+
+  @include tablet {
+    gap: 40px;
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.apply {
+  width: 100%;
 }
