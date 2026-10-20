@@ -132,6 +132,8 @@ export const CheckoutModal = ({
             {value === 'branch' && (
               <Dropdown
                 fullWidth
+                multiline
+                autoPlacement
                 name="branch"
                 disabled={!values.cityRef || warehouses.isLoading}
                 placeholder={getPointPlaceholder(c.novaPoshta.selectBranch)}
@@ -145,6 +147,8 @@ export const CheckoutModal = ({
             {value === 'postomat' && (
               <Dropdown
                 fullWidth
+                multiline
+                autoPlacement
                 name="postomat"
                 disabled={!values.cityRef || warehouses.isLoading}
                 placeholder={getPointPlaceholder(c.novaPoshta.selectPostomat)}
