@@ -9,6 +9,7 @@
   border: 1px solid var(--color-card-border, #{$color-elements});
   border-radius: 12px;
   background: $color-surface-1;
+  box-shadow: $shadow-block;
 }
 
 .plain {
