@@ -27,14 +27,14 @@ export const Footer = () => {
           aria-label={t.footer.nav}
         >
           <a
-            href="https://github.com/"
+            href="https://github.com/fe-jul26-cherry/product_catalog"
             target="_blank"
             rel="noreferrer"
           >
             Github
           </a>
           <Link to={ROUTES.TEAM}>{t.footer.contacts}</Link>
-          <a href="#rights">{t.footer.rights}</a>
+          <Link to={ROUTES.RIGHTS}>{t.footer.rights}</Link>
         </nav>
 
         <div className={styles.action}>

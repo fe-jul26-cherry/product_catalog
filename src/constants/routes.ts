@@ -8,6 +8,7 @@ export const ROUTES = {
   CART: '/cart',
   FAVORITES: '/favorites',
   TEAM: '/team',
+  RIGHTS: '/rights',
   UI_KIT: '/ui-kit',
   NOT_FOUND: '*',
 } as const;

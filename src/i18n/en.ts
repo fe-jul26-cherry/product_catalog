@@ -232,6 +232,17 @@ export const en = {
       developer2: 'Developer 2',
     },
   },
+  rights: {
+    title: 'Rights',
+    copyright:
+      '© 2026 Nice Gadgets. All rights reserved. The source code, design and texts of this site are the property of their authors.',
+    trademarks:
+      'Apple, iPhone, iPad and other product names and logos are trademarks of their respective owners. They are used on this site for illustration only and do not imply any affiliation or endorsement.',
+    educational:
+      'Nice Gadgets is an educational project. It is not a real store: no orders are fulfilled and no payments are processed.',
+    contact:
+      'Questions or requests about the content of this site: contact the team on',
+  },
   notFound: {
     title: 'Page not found',
   },

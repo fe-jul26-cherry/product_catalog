@@ -1,33 +1,32 @@
-# Як працюємо в команді
+# How we work
 
-Джерела: «group project setup», «Робота з Git та Github», «Чекліст роботи над завданням», «Код-ревʼю».
+Sources: "group project setup", "Working with Git and GitHub", "Task checklist", "Code review".
 
-## Старт після клонування
+## Getting started after cloning
 
 ```bash
-git clone <адреса репо>
+git clone <repo url>
 cd product_catalog
 git checkout develop
 npm install
 npm run dev
 ```
 
-- `git checkout develop`: працюємо з гілки `develop`, а не з `main`.
-- `npm install` ставить усі пакети з `package.json`: React, React Router, Swiper, Zustand та інші. Окремо `npm install react-router-dom` чи інші пакети ставити не треба. Команду виконуй один раз після клонування і після кожного `git pull`, якщо змінився `package.json`.
-- `npm run dev` запускає сайт локально і сам відкриває браузер. Зміни видно одразу після збереження файлу.
-- Усі сторінки вже відкриваються з тестовими даними з `src/mocks`. Готові атоми (кнопки, іконки, Dropdown, Pagination) і сітка товарів. Решта блоків без дизайну: це заглушки, які треба довести до вигляду з Figma. Твій блок визначено в `docs/PLAN.md`.
-- Перед роботою прочитай `docs/TECH.md`, `docs/STRUCTURE.md` і `docs/HOW_TO_COMPONENT.md`.
+- `git checkout develop`: work from the `develop` branch, not from `main`.
+- `npm install` installs every package from `package.json`: React, React Router, Swiper, Zustand and others. There is no need to install `react-router-dom` or other packages separately. Run it once after cloning and again after every `git pull` that changes `package.json`.
+- `npm run dev` starts the site locally and opens the browser. Changes show up as soon as you save a file.
+- Read `docs/TECH.md`, `docs/STRUCTURE.md` and `docs/HOW_TO_COMPONENT.md` before you start.
 
-## Гілки
+## Branches
 
-- `main`: стабільний код, з нього йде деплой. Пушити напряму заборонено. У `main` змінює тільки тімлід через PR з `develop`.
-- `develop`: спільна гілка команди. Напряму не пушимо, тільки через PR.
-- Гілка задачі: `DEV-TP-1234_implement-home-page-slider` (ключ Jira + короткий опис англійською). Створюється від `develop`.
-- Після мерджу гілку видаляємо.
+- `main`: stable code, deployed from here. Direct pushes are not allowed. `main` changes only through a pull request from `develop`.
+- `develop`: the shared working branch. No direct pushes, pull requests only.
+- Task branch: `DEV-TP-1234_implement-home-page-slider` (Jira key plus a short English description). Created from `develop`.
+- Delete the branch after it is merged.
 
-## Робота з гілкою крок за кроком
+## Working with a branch step by step
 
-1. Початок задачі:
+1. Starting a task:
 
 ```bash
 git checkout develop
@@ -35,14 +34,14 @@ git pull origin develop
 git checkout -b DEV-TP-1234_short-name
 ```
 
-2. Робота і коміти (часто, дрібно):
+2. Working and committing (often, in small steps):
 
 ```bash
 git add .
 git commit -m "feat(DEV-TP-1234): what was done"
 ```
 
-3. Перед пушем:
+3. Before pushing:
 
 ```bash
 npm run check
@@ -50,54 +49,47 @@ git pull origin develop
 git push origin DEV-TP-1234_short-name
 ```
 
-4. На GitHub відкрий Pull Request у `develop` (не в `main`). Дочекайся approve і зеленого Lint, змерджи й видали гілку.
-5. Наступна задача: знову з кроку 1.
+4. On GitHub, open a Pull Request into `develop` (not `main`). Wait for an approval and a green Lint check, merge, and delete the branch.
+5. Next task: start again from step 1.
 
-Коміт не проходить: `npm run fix-style` і повтори. Конфлікт після `git pull`: виріши локально, `git add .`, `git commit`, запусти `npm run check`. Не впевнений: звернись до автора коду або тімліда.
+If a commit is rejected, run `npm run fix-style` and try again. If `git pull` causes a conflict, resolve it locally, run `git add .` and `git commit`, then `npm run check`. If you are unsure, ask the author of the code.
 
-Не робимо: пуш напряму в `develop` і `main`, `--force`, `reset --hard`, `--no-verify`. Одна задача: одна гілка і один PR.
+Do not: push directly to `develop` or `main`, use `--force`, `reset --hard` or `--no-verify`. One task means one branch and one pull request.
 
-## Коміти
+## Commits
 
-Формат: `<тип>(DEV-TP-1234): <опис>`.
+Format: `<type>(DEV-TP-1234): <description>`.
 
-| Тип        | Коли                           |
-| ---------- | ------------------------------ |
-| `feat`     | новий функціонал               |
-| `fix`      | виправлення бага               |
-| `refactor` | зміна коду без зміни поведінки |
-| `style`    | стилі, форматування            |
-| `docs`     | документація                   |
-| `chore`    | залежності, конфіги            |
+| Type       | When                                   |
+| ---------- | -------------------------------------- |
+| `feat`     | new functionality                      |
+| `fix`      | bug fix                                |
+| `refactor` | code change without changing behaviour |
+| `style`    | styles, formatting                     |
+| `docs`     | documentation                          |
+| `chore`    | dependencies, configs                  |
 
-Приклад: `feat(DEV-TP-1234): add slider to home page`.
+Example: `feat(DEV-TP-1234): add slider to home page`.
 
-## Pull Request
+## Pull requests
 
-- Назва як коміт: `feat(DEV-TP-1234): implement home page slider`.
-- До 500 рядків змін. Більше розбий на кілька PR.
-- Заповни шаблон: що зроблено, Figma-фрейм, скріншоти 320 / 640 / 1200 / 1440.
-- Коментарів у коді немає. Складні рішення поясни в описі PR.
-- Мердж після 1 approve і зеленого check «Lint».
+- Title like a commit: `feat(DEV-TP-1234): implement home page slider`.
+- Up to 500 changed lines. Split larger changes into several pull requests.
+- Fill in the template: what was done, the Figma frame, screenshots at 320 / 640 / 1200 / 1440.
+- There are no comments in the code. Explain non-obvious decisions in the pull request description.
+- Merge after 1 approval and a green "Lint" check.
 
-## Код-ревʼю
+## Code review
 
-- Пропонуй рішення, а не лише вказуй на проблему.
-- Незрозуміло — запитай автора.
-- Дружній тон.
+- Suggest a solution, do not just point out a problem.
+- If something is unclear, ask the author.
+- Keep a friendly tone.
+- Changes to shared code (`atoms/`, `styles/`, `types/`, `constants/`) need extra care: check that they do not break existing components.
 
-## Залежності
+## Dependencies
 
-Нові npm-пакети ставить тільки тімлід, щоб `package-lock.json` не конфліктував у PR.
+New npm packages are added in a dedicated pull request, so that `package-lock.json` does not conflict between branches.
 
-## Розподіл і графік
+## Roadmap
 
-Хто що робить, по днях, з пріоритетами: `docs/PLAN.md`.
-
-Задачі для імпорту в Jira: `docs/jira-tasks.csv`.
-
-## Хто кого ревʼюїть
-
-- Розробник 1 і Розробник 2 ревʼюять один одного.
-- PM і тімлід ревʼюять один одного.
-- Тімлід додатково ревʼюїть зміни в `atoms/`, `styles/`, `types/`, `constants/`.
+Priorities and the schedule are in `docs/PLAN.md`.
