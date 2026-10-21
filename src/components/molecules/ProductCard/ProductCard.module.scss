@@ -38,16 +38,26 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 32px;
+  padding: 24px;
+
+  @media (min-width: $bp-tablet) {
+    padding: 32px;
+  }
   background: $color-surface-1;
   box-sizing: border-box;
-  border-radius: 8px;
+  border-radius: $radius-lg;
+  overflow: hidden;
 
   transition:
     transform $transition,
     box-shadow $transition,
     border-color $transition;
   border: 1px solid var(--color-card-border);
+  box-shadow: $shadow-block;
+
+  :global([data-theme='light']) & {
+    background: $color-bg;
+  }
 
   &::after {
     content: '';
@@ -62,8 +72,37 @@
     transition: transform $transition;
   }
 
+  // gradient rim, revealed on hover
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgb(144 91 255 / 45%),
+      rgb(240 153 181 / 45%)
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity $transition;
+  }
+
   &:hover {
     transform: translateY(-8px);
+
+    &::before {
+      opacity: 1;
+
+      :global([data-theme='light']) & {
+        opacity: 0;
+      }
+    }
     box-shadow: $shadow-card;
     z-index: 2;
 
@@ -79,9 +118,31 @@
   justify-content: center;
   height: 196px;
   margin-bottom: 24px;
+  position: relative;
+
+  // soft glow behind the product, like a lit showcase
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 10% 5%;
+    background: radial-gradient(
+      closest-side,
+      var(--nebula-a),
+      transparent 100%
+    );
+    opacity: 0.9;
+    transition: opacity $transition;
+    pointer-events: none;
+  }
+}
+
+.root:hover .imageLink::before {
+  opacity: 1;
+  filter: brightness(1.6);
 }
 
 .image {
+  position: relative;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -114,9 +175,16 @@
   margin-bottom: 8px;
 }
 
+// the rule fades out at both edges
 .divider {
   height: 1px;
-  background-color: $color-elements;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    $color-elements 20%,
+    $color-elements 80%,
+    transparent
+  );
   margin-bottom: 16px;
 }
 

@@ -3,9 +3,8 @@ import { runToolCall } from './aiTools';
 import type { AiComparison } from './aiCompare';
 import type { Navigate } from './aiTools';
 
-// The OpenRouter key never reaches the browser: requests go to our own proxy
-// (`api/ai.ts`), whose address comes from VITE_AI_API_URL.
-const API_URL = import.meta.env.VITE_AI_API_URL as string | undefined;
+const API_URL =
+  (import.meta.env.VITE_AI_API_URL as string | undefined) || '/api/ai';
 const REQUEST_TIMEOUT_MS = 25_000;
 const RETRY_DELAY_MS = 3000;
 
@@ -45,10 +44,6 @@ export const askAi = async (
   messages: AiHistoryMessage[],
   navigate: Navigate,
 ): Promise<AiResult> => {
-  if (!API_URL) {
-    return { ok: false, reason: 'config' };
-  }
-
   const body = JSON.stringify({ messages });
 
   const send = () =>
