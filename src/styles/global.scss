@@ -29,9 +29,64 @@
 }
 
 html {
+  position: relative;
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
   background: $color-page-bg;
+  transition: background-color $transition;
+}
+
+html::before,
+html::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+html::before {
+  background:
+    radial-gradient(ellipse 60% 50% at 8% 0%, var(--nebula-a), transparent 70%),
+    radial-gradient(
+      ellipse 50% 45% at 100% 100%,
+      var(--nebula-b),
+      transparent 70%
+    );
+}
+
+html::after {
+  opacity: var(--stars-opacity);
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, var(--star-a), transparent),
+    radial-gradient(1px 1px at 90px 140px, var(--star-a), transparent),
+    radial-gradient(1.5px 1.5px at 160px 70px, var(--star-b), transparent),
+    radial-gradient(1px 1px at 230px 190px, var(--star-a), transparent),
+    radial-gradient(1px 1px at 300px 20px, var(--star-a), transparent),
+    radial-gradient(1.5px 1.5px at 340px 150px, var(--star-c), transparent);
+  background-size: 360px 220px;
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+html[data-theme='light']::before,
+html[data-theme='light']::after {
+  display: none;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: calc(var(--stars-opacity) * 0.5);
+  }
+
+  to {
+    opacity: var(--stars-opacity);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html::after {
+    animation: none;
+  }
 }
 
 html,
@@ -42,13 +97,11 @@ body {
 
 body {
   min-height: 100vh;
-  background: $color-page-bg;
+  background: transparent;
   color: $color-primary;
   font-family: $font-family;
   -webkit-font-smoothing: antialiased;
-  transition:
-    background-color $transition,
-    color $transition;
+  transition: color $transition;
 }
 
 body:has([data-loader]) footer {

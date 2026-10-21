@@ -14,6 +14,8 @@ $color-green: var(--color-green);
 $color-red: var(--color-red);
 $color-team: var(--color-team);
 $shadow-card: var(--shadow-card);
+$shadow-block: var(--shadow-block);
+$gradient-accent: var(--gradient-accent);
 $color-toggle-start: var(--color-toggle-start);
 $color-toggle-end: var(--color-toggle-end);
 $color-slider-progress: var(--color-slider-progress);
@@ -42,3 +44,7 @@ $header-height-mobile: 48px;
 $header-height: 64px;
 
 $transition: 0.3s ease;
+
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;

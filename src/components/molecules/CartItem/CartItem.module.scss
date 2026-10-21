@@ -11,6 +11,7 @@
   border-radius: 8px;
   background: $color-surface-1;
 
+  box-shadow: $shadow-block;
   @include tablet {
     flex-wrap: nowrap;
     gap: 24px;
