@@ -1,0 +1,1 @@
+import{j as c}from"./index-CaQnZNSD.js";const t="_root_1px19_1",i="_price_1px19_8",l="_fullPrice_1px19_22",o={root:t,price:i,fullPrice:l},n=({price:r,fullPrice:s,format:e})=>c.jsxs("p",{className:o.root,children:[c.jsx("span",{className:o.price,children:e(r)}),s&&s!==r&&c.jsx("s",{className:o.fullPrice,children:e(s)})]});export{n as P};
