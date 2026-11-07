@@ -226,7 +226,7 @@ export const en = {
   team: {
     title: 'Team',
     roles: {
-      teamLead: 'Team Lead',
+      teamLead: 'Tech/Team Lead',
       developer1: 'Developer 1',
       projectManager: 'Project Manager',
       developer2: 'Developer 2',
