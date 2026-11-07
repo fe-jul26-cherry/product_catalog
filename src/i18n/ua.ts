@@ -220,7 +220,7 @@ export const ua: Translations = {
   team: {
     title: 'Команда',
     roles: {
-      teamLead: 'Тімлід',
+      teamLead: 'Техлід/Тімлід',
       developer1: 'Розробник 1',
       projectManager: 'Проєктний менеджер',
       developer2: 'Розробник 2',
